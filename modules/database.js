@@ -20,15 +20,6 @@ export class TherapyArea extends Model { }
 export class TherapistArea extends Model { }
 // END TODO
 
-User.hasMany(Role);
-Therapist.hasOne(User);
-
-User.hasMany(Appointment);
-RoomReservations.hasMany(Appointment);
-RoomReservations.belongsTo(Therapist);
-RoomReservations.belongsTo(Room);
-RoomPrice.belongsTo(Room);
-
 User.init({
     username: {
         type: DataTypes.STRING,
@@ -122,5 +113,14 @@ RoomPrice.init({
         }
     }
 }, { sequelize });
+
+User.hasMany(Role);
+Therapist.hasOne(User);
+
+User.hasMany(Appointment);
+RoomReservations.hasMany(Appointment);
+RoomReservations.belongsTo(Therapist);
+RoomReservations.belongsTo(Room);
+RoomPrice.belongsTo(Room);
 
 sequelize.sync();
