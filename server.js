@@ -26,8 +26,8 @@ app.use(session({
 
 app.use(express.static("public"));
 
-app.use(pagesRouter)
+app.use(pagesRouter);
 
 app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`)
+    console.log(`Example app listening on port ${port}`);
 })
