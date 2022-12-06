@@ -1,30 +1,24 @@
-
+function preventReloadPageIfLocal(element) {
+    console.log(element)
+    element.addEventListener("click", e => {
+        let href = e.currentTarget.href;
+        e.preventDefault();
+        if (!(href && href.startsWith(document.location.origin))) return;
+        fetchPage(href).then(page => {
+            changePage(page, href);
+        });
+    });
+}
 
 function start() {
-
     document.querySelectorAll("a").forEach(a => {
-        a.addEventListener("click", e => {
-            e.preventDefault();
-            if (!e.target.href) return;
-            fetchPage(e.target.href).then(page => {
-                changePage(page, e.target.href);
-            });
-        });
-    
+        preventReloadPageIfLocal(a);
     });
-
 }
 
 function changeContentLinkEvent() {
     document.querySelectorAll("body > .container-fluid a").forEach(a => {
-        a.addEventListener("click", e => {
-            e.preventDefault();
-            if (!e.target.href) return;
-            fetchPage(e.target.href).then(page => {
-                changePage(page, e.target.href);
-            });
-        });
-    
+        preventReloadPageIfLocal(a);
     });
 }
 
