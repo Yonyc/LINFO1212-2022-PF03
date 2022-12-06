@@ -1,0 +1,17 @@
+/* ////////////////////////////////////////////////// */
+/* /        Stylisation de la page 1 du sie         / */
+/* ////////////////////////////////////////////////// */
+
+.one{
+
+    background-size: cover;
+    margin-right : auto;
+    margin-left : auto;
+}
+
+.mainpage{
+
+    width : 100%;
+    height : 100%;
+
+}
