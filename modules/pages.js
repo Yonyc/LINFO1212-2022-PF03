@@ -3,8 +3,8 @@ import { renderCSS } from "./scss.js";
 
 const pagesRouter = new Router();
 
-pagesRouter.use("/", (req, res, next)=>{
-    renderCSS();
+pagesRouter.use("/", async (req, res, next)=>{
+    await renderCSS();
     next();
 });
 
