@@ -10,16 +10,12 @@
             </button>
             <div class="collapse navbar-collapse ms-3" id="navbarSupportedContent">
                 <ul class="nav navbar-nav mx-auto">
-                    <%
-                        let pageList = {
-                            profil:  "/profil",
-                        };
-                        for (let [key, value] of Object.entries(pageList)) {
-                    %>
-                    <li class="nav-item"><a class="nav-link" href="<%= value; %>"><%= key; %></a></li>
-                    <% }; %>
+                    <li class="nav-item"><a class="nav-link" href=""></a></li>
                 </ul>
                 <div class="nav navbar-nav me-2">
+                    <a href="/profil" class="navbar-profil me-0">
+                        <img src="/img/profile_pictures/photo-anonyme.png" alt="pp">
+                    </a>
                 </div>
             </div>
         </div>
