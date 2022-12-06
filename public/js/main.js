@@ -62,6 +62,9 @@ async function fetchPage(url) {
 document.addEventListener("DOMContentLoaded", e => {
     window.history.replaceState({"html":document.querySelector("body > .container-fluid").innerHTML, "pageTitle":document.title}, '', document.location.href);
     start();
+    document.querySelectorAll("[data-background-image-url]").forEach(el => {
+		el.style.backgroundImage = "url(" + el.dataset.backgroundImageUrl + ")";
+	});
 });
 
 window.onpopstate = function(e){
