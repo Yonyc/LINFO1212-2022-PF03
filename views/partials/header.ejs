@@ -1,5 +1,27 @@
 <header>
-    <nav>
-        
+    <!-- Navbar -->
+    <nav class="navbar navbar-white navbar-expand-lg sticky-top navbar-light bg-light shadow-lg">
+        <div class="container-fluid">
+            <a class="navbar-brand text-color-2 ms-5" href="/">
+                <img src="/img/logo.png" alt="Logo">
+            </a>
+            <button class="navbar-toggler me-5" id="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse ms-3" id="navbarSupportedContent">
+                <ul class="nav navbar-nav mx-auto">
+                    <%
+                        let pageList = {
+                            profil:  "/profil",
+                        };
+                        for (let [key, value] of Object.entries(pageList)) {
+                    %>
+                    <li class="nav-item"><a class="nav-link" href="<%= value; %>"><%= key; %></a></li>
+                    <% }; %>
+                </ul>
+                <div class="nav navbar-nav me-2">
+                </div>
+            </div>
+        </div>
     </nav>
 </header>

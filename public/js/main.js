@@ -29,7 +29,8 @@ function changeContentLinkEvent() {
 }
 
 function changePage(data, urlPath){
-    document.querySelector("body .container-fluid").innerHTML = data.html;
+    window.history.replaceState({"html":document.querySelector("body > .container-fluid").innerHTML, "pageTitle":document.title}, '', document.location.href);
+    document.querySelector("body > .container-fluid").innerHTML = data.html;
     document.title = data.pageTitle;
     window.history.pushState({"html":data.html,"pageTitle":data.pageTitle},"", urlPath);
     changeContentLinkEvent();
@@ -59,7 +60,7 @@ async function fetchPage(url) {
 }
 
 document.addEventListener("DOMContentLoaded", e => {
-    window.history.replaceState({"html":document.querySelector("body .container-fluid").innerHTML, "pageTitle":document.title}, '', document.location.href);
+    window.history.replaceState({"html":document.querySelector("body > .container-fluid").innerHTML, "pageTitle":document.title}, '', document.location.href);
     start();
 });
 

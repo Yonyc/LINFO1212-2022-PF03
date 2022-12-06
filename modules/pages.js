@@ -1,6 +1,12 @@
 import { Router } from "express";
+import { renderCSS } from "./scss.js";
 
 const pagesRouter = new Router();
+
+pagesRouter.use("/", (req, res, next)=>{
+    renderCSS();
+    next();
+});
 
 function renderTemplate(req, res, path="", title="", args={}) {
     if (req.query.content) {
@@ -11,11 +17,12 @@ function renderTemplate(req, res, path="", title="", args={}) {
         res.json({title: title});
         return;
     }
+
     res.render('partials/template', {title: title, path: "../" + path, args: args });
 }
 
-pagesRouter.use("/profile", (req, res) => {
-    renderTemplate(req, res, "pages/profile", "CT - profil", {});
+pagesRouter.use("/profil", (req, res) => {
+    renderTemplate(req, res, "pages/profil", "CT - profil", {});
 });
 
 pagesRouter.use("/therapist", (req, res) => {});

@@ -1,4 +1,4 @@
-import "./modules/scss.js";
+import {renderCSS} from "./modules/scss.js";
 import * as db from "./modules/database.js";
 import pagesRouter from "./modules/pages.js";
 
@@ -6,6 +6,7 @@ import express from "express";
 import session from "express-session";
 import bodyParser from "body-parser";
 
+renderCSS();
 const app = express();
 const port = 3000;
 
