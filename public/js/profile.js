@@ -60,14 +60,7 @@ async function login(username, password) {
     let res = await fetchUser(username, password);
     if (res === true) {
         updateUserEditPage();
-<<<<<<< HEAD
         display(divSelectors.logged);
-=======
-        let a = document.querySelector(divSelectors.login);
-        let b = a.parentNode;
-        b.removeChild(a);
-        b.appendChild(a);
->>>>>>> 9012b087e1e9fabbc9199ae04cdadb0380c27b78
         
         return;
     };
@@ -76,10 +69,7 @@ async function login(username, password) {
 export function main() {
     if (typeof user !== 'undefined') {
         updateUserEditPage();
-        let a = document.querySelector(divSelectors.login);
-        let b = a.parentNode;
-        b.removeChild(a);
-        b.appendChild(a);
+        display(divSelectors.logged);
         
         return;
     }
@@ -156,10 +146,7 @@ async function register() {
             let res = await fetchUser(username, password);
             if (res === true) {
                 updateUserEditPage();
-                let a = document.querySelector(divSelectors.login);
-                let b = a.parentNode;
-                b.removeChild(a);
-                b.appendChild(a);
+                display(divSelectors.logged);
                 
                 return;
             };
