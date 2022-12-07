@@ -26,11 +26,7 @@ function renderTemplate(req, res, path="", title="", args={}) {
 }
 
 pagesRouter.use("/profile", (req, res) => {
-    if (req.isAuthenticated()) {
-        renderTemplate(req, res, "pages/profile", "CT - profile", {suser: req.user});
-    } else {
-        renderTemplate(req, res, "pages/profile", "CT - profile", {});
-    }
+    renderTemplate(req, res, "pages/profile", "CT - profile", {});
 });
 
 pagesRouter.use("/therapist", (req, res) => {});
