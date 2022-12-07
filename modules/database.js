@@ -41,6 +41,8 @@ User.init({
         allowNull: false
     },
     phone: DataTypes.STRING,
+    mobilephone: DataTypes.STRING,
+    address: DataTypes.STRING,
     url_pp: DataTypes.STRING,
     biography: DataTypes.STRING,
     confirmed: {
