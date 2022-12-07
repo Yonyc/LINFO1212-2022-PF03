@@ -96,10 +96,6 @@ export function main() {
     });
 
     document.querySelector("#profil_edit")?.addEventListener("click", e => editProfile());
-
-    if (typeof user !== "undefined" && user) {
-        display(divSelectors.logged);
-    }
 }
 
 async function register() {
