@@ -106,7 +106,7 @@
                         <hr>
                         <div class="row">
                             <div class="col-sm-12 text-right">
-                                <button class="btn btn-info " target="__blank" id="profil_edit">Save</button>
+                                <button class="btn btn-info " target="__blank" id="profil_edit" disabled>Save</button>
                             </div>
                         </div>
                     </div>
@@ -188,4 +188,7 @@
 
     </div>
 </div>
-<script src="/js/profile.js"></script>
+<script type="module" id="re_script">
+    import {main} from "/js/profile.js";
+    main();
+</script>
