@@ -82,3 +82,59 @@ export function main() {
 
     document.querySelector("#profil_edit")?.addEventListener("click", e => editProfile());
 }
+
+async function register() {
+    let username = document.getElementById('reg-username').value;
+    let firstname = document.getElementById('reg-firstname').value;
+    let lastname = document.getElementById('reg-lastname').value;
+    let email = document.getElementById('reg-email').value;
+    let password = document.getElementById('reg-password').value;
+    let phone = document.getElementById('reg-phone').value;
+    let mobile = document.getElementById('reg-mobile').value;
+    let address = document.getElementById('reg-address').value;
+
+    if (username == "" || firstname == "" || lastname == "" || email == "" || password == "" || phone == "" || mobile == "" || address == "") {
+        let errorP = document.getElementById("reg-error");
+        errorP.innerHTML = "Please fill in everything";
+        errorP.parentElement.hidden = false;
+        return;
+    }
+
+    let res = await fetch(api_url + "/user/register", {
+        method:"POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            username: username,
+            firstname: firstname,
+            lastname: lastname,
+            email: email,
+            password: password,
+            phone: phone,
+            mobile: mobile,
+            address: address
+            })
+        });
+
+        res = await res.json()
+
+        if (res.error == "email") {
+            let errorP = document.getElementById("reg-error");
+            errorP.innerHTML = "Incorrect email format";
+            errorP.parentElement.hidden = false;
+        } else if (res.error == "none") {
+            let res = await fetchUser(username, password);
+            if (res === true) {
+                console.log("fetched");
+                updateUserEditPage();
+                let a = document.querySelector(divSelectors.login);
+                let b = a.parentNode;
+                b.removeChild(a);
+                b.appendChild(a);
+                
+                return;
+            };
+        }
+}
+document.getElementById("reg-submit").addEventListener("click", e => register());
