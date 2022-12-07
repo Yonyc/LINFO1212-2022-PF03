@@ -3,11 +3,13 @@ const divSelectors = {
     login: ".login_register_view"
 };
 
+
+
 function display(selector) {
-    let a = document.querySelectorAll(``);
+    let a = document.querySelector(selector);
     let b = a.parentNode;
     b.removeChild(a);
-    b.appendChild(a);
+    b.prepend(a);
 }
 
 function updateText(selector, value) {
@@ -58,7 +60,7 @@ async function login(username, password) {
     let res = await fetchUser(username, password);
     if (res === true) {
         updateUserEditPage();
-        display(divSelectors.login);
+        display(divSelectors.logged);
         
         return;
     };
@@ -89,6 +91,10 @@ export function main() {
     });
 
     document.querySelector("#profil_edit")?.addEventListener("click", e => editProfile());
+
+    if (typeof user !== "undefined" && user) {
+        display(divSelectors.logged);
+    }
 }
 
 async function register() {
