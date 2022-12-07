@@ -1,10 +1,11 @@
 import {renderCSS} from "./modules/scss.js";
 import * as db from "./modules/database.js";
-import pagesRouter from "./modules/pages.js";
+import {pagesRouter} from "./modules/pages.js";
 
 import express from "express";
 import session from "express-session";
 import bodyParser from "body-parser";
+import { api } from "./api/api.js";
 
 renderCSS();
 const app = express();
@@ -26,6 +27,8 @@ app.use(session({
 }));
 
 app.use(express.static("public"));
+
+app.use("/api", api);
 
 app.use(pagesRouter);
 
