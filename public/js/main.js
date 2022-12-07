@@ -1,5 +1,4 @@
 function preventReloadPageIfLocal(element) {
-    console.log(element)
     element.addEventListener("click", e => {
         let href = e.currentTarget.href;
         e.preventDefault();
@@ -24,7 +23,17 @@ function changeContentLinkEvent() {
 
 function changePage(data, urlPath){
     window.history.replaceState({"html":document.querySelector("body > .container-fluid").innerHTML, "pageTitle":document.title}, '', document.location.href);
-    document.querySelector("body > .container-fluid").innerHTML = data.html;
+    let container = document.querySelector("body > .container-fluid");
+    container.innerHTML = data.html;
+    let script = container.querySelector("#re_script");
+    if (script) {
+        let newScript = document.createElement("script");
+        newScript.id = "re_script";
+        newScript.type = script.type;
+        newScript.appendChild(document.createTextNode(script.innerHTML));
+        script.parentNode.replaceChild(newScript, script)
+    }
+
     document.title = data.pageTitle;
     window.history.pushState({"html":data.html,"pageTitle":data.pageTitle},"", urlPath);
     changeContentLinkEvent();
@@ -68,3 +77,21 @@ window.onpopstate = function(e){
         changeContentLinkEvent();
     }
 };
+
+/* NAVBAR */
+function setNavbarWhite(navbar) {
+    if (!navbar) return;
+
+    navbar.classList
+}
+
+function setNavbarTransparent(navbar) {
+
+}
+
+document.addEventListener("scroll", e => {
+    let navbar = document.querySelector(".navbar");
+    if (window.scrollY != 0) {
+        let navbar = document
+    }
+});
