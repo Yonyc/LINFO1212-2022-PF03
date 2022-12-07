@@ -1,7 +1,11 @@
 import { Router } from "express";
 import { renderCSS } from "./scss.js";
+import passport from 'passport'
 
 export const pagesRouter = new Router();
+
+pagesRouter.use(passport.initialize());
+pagesRouter.use(passport.session());
 
 pagesRouter.use("/", async (req, res, next)=>{
     await renderCSS();
@@ -22,7 +26,11 @@ function renderTemplate(req, res, path="", title="", args={}) {
 }
 
 pagesRouter.use("/profile", (req, res) => {
-    renderTemplate(req, res, "pages/profile", "CT - profile", {});
+    if (req.isAuthenticated()) {
+        renderTemplate(req, res, "pages/profile", "CT - profile", {suser: req.user});
+    } else {
+        renderTemplate(req, res, "pages/profile", "CT - profile", {});
+    }
 });
 
 pagesRouter.use("/therapist", (req, res) => {});

@@ -3,13 +3,6 @@ const divSelectors = {
     login: ".login_register_view"
 };
 
-function display(selector) {
-    let a = document.querySelectorAll(``);
-    let b = a.parentNode;
-    b.removeChild(a);
-    b.appendChild(a);
-}
-
 function updateText(selector, value) {
     document.querySelectorAll(selector).forEach(el => {
         el.innerText = value;
@@ -58,14 +51,25 @@ async function login(username, password) {
     let res = await fetchUser(username, password);
     if (res === true) {
         updateUserEditPage();
-        display(divSelectors.login);
+        let a = document.querySelector(divSelectors.login);
+        let b = a.parentNode;
+        b.removeChild(a);
+        b.appendChild(a);
         
         return;
     };
-    console.error(res);
 }
 
 export function main() {
+    if (typeof user !== 'undefined') {
+        updateUserEditPage();
+        let a = document.querySelector(divSelectors.login);
+        let b = a.parentNode;
+        b.removeChild(a);
+        b.appendChild(a);
+        
+        return;
+    }
     document.querySelector(`${divSelectors.logged} input.firstname`)?.addEventListener("keyup", e => {
         updateText(`${divSelectors.logged} span.firstname`, e.target.value);
     });
@@ -134,7 +138,6 @@ async function register() {
         } else if (res.error == "none") {
             let res = await fetchUser(username, password);
             if (res === true) {
-                console.log("fetched");
                 updateUserEditPage();
                 let a = document.querySelector(divSelectors.login);
                 let b = a.parentNode;

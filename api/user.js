@@ -11,6 +11,9 @@ import bcrypt from 'bcrypt'
 import passport from 'passport'
 import { Strategy as LocalStrategy } from "passport-local"
 
+userApi.use(passport.initialize());
+userApi.use(passport.session());
+
 const salt = "$2b$10$XzJlrKQwqwFg4DZNXmmHPO";
 
 async function getUser(username) {
