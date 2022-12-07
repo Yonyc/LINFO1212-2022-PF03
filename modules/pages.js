@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { renderCSS } from "./scss.js";
 
-const pagesRouter = new Router();
+export const pagesRouter = new Router();
 
 pagesRouter.use("/", async (req, res, next)=>{
     await renderCSS();
@@ -34,5 +34,3 @@ pagesRouter.use("/appointment", (req, res) => {});
 pagesRouter.use("/", (req, res) => {
     renderTemplate(req, res, "pages/index", "Centre tremplin", {});
 });
-
-export default pagesRouter;
