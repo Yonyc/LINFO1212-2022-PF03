@@ -21,8 +21,8 @@ function renderTemplate(req, res, path="", title="", args={}) {
     res.render('partials/template', {title: title, path: "../" + path, args: args });
 }
 
-pagesRouter.use("/profil", (req, res) => {
-    renderTemplate(req, res, "pages/profil", "CT - profil", {});
+pagesRouter.use("/profile", (req, res) => {
+    renderTemplate(req, res, "pages/profile", "CT - profile", {});
 });
 
 pagesRouter.use("/therapist", (req, res) => {});
