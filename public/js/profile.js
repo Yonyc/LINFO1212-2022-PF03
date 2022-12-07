@@ -60,14 +60,29 @@ async function login(username, password) {
     let res = await fetchUser(username, password);
     if (res === true) {
         updateUserEditPage();
+<<<<<<< HEAD
         display(divSelectors.logged);
+=======
+        let a = document.querySelector(divSelectors.login);
+        let b = a.parentNode;
+        b.removeChild(a);
+        b.appendChild(a);
+>>>>>>> 9012b087e1e9fabbc9199ae04cdadb0380c27b78
         
         return;
     };
-    console.error(res);
 }
 
 export function main() {
+    if (typeof user !== 'undefined') {
+        updateUserEditPage();
+        let a = document.querySelector(divSelectors.login);
+        let b = a.parentNode;
+        b.removeChild(a);
+        b.appendChild(a);
+        
+        return;
+    }
     document.querySelector(`${divSelectors.logged} input.firstname`)?.addEventListener("keyup", e => {
         updateText(`${divSelectors.logged} span.firstname`, e.target.value);
     });
@@ -140,7 +155,6 @@ async function register() {
         } else if (res.error == "none") {
             let res = await fetchUser(username, password);
             if (res === true) {
-                console.log("fetched");
                 updateUserEditPage();
                 let a = document.querySelector(divSelectors.login);
                 let b = a.parentNode;
