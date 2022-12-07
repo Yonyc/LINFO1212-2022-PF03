@@ -3,6 +3,13 @@ const divSelectors = {
     login: ".login_register_view"
 };
 
+function display(selector) {
+    let a = document.querySelectorAll(``);
+    let b = a.parentNode;
+    b.removeChild(a);
+    b.appendChild(a);
+}
+
 function updateText(selector, value) {
     document.querySelectorAll(selector).forEach(el => {
         el.innerText = value;
@@ -10,7 +17,7 @@ function updateText(selector, value) {
 }
 
 function editProfile() {
-    if (typeof username === 'undefined' || !username) window.location = "/";
+    if (typeof user === 'undefined' || !user) window.location = "/";
     let body = {};
     let ids = ["website", "instagram", "facebook", "firstname", "lastname", "phone", "mobile", "address", "email"];
     ids.forEach(key => {
@@ -37,16 +44,21 @@ function updateUserEditPage() {
     changeLoggedInputContent(".instagram", user?.instagram);
     changeLoggedInputContent(".facebook", user?.facebook);
     changeLoggedInputContent(".website", user?.website);
+
+    document.querySelectorAll(`.profile_picture`).forEach(e => {
+        if (user?.url_pp)
+            e.src = user.url_pp;
+    });
+
+    updateText(`${divSelectors.logged} span.firstname`, document.querySelector(`${divSelectors.logged} input.firstname`)?.value);
+    updateText(`${divSelectors.logged} span.lastname`, document.querySelector(`${divSelectors.logged} input.lastname`)?.value);
 }
 
 async function login(username, password) {
     let res = await fetchUser(username, password);
     if (res === true) {
         updateUserEditPage();
-        let a = document.querySelector(divSelectors.login);
-        let b = a.parentNode;
-        b.removeChild(a);
-        b.appendChild(a);
+        display(divSelectors.login);
         
         return;
     };
@@ -54,15 +66,11 @@ async function login(username, password) {
 }
 
 export function main() {
-    updateText(`${divSelectors.logged} span.firstname`, document.querySelector(`${divSelectors.logged} input#firstname`)?.value);
-    
-    updateText(`${divSelectors.logged} span.lastname`, document.querySelector(`${divSelectors.logged} input#lastname`)?.value);
-    
-    document.querySelector(`${divSelectors.logged} input#firstname`)?.addEventListener("key", e => {
+    document.querySelector(`${divSelectors.logged} input.firstname`)?.addEventListener("keyup", e => {
         updateText(`${divSelectors.logged} span.firstname`, e.target.value);
     });
     
-    document.querySelector(`${divSelectors.logged} input#lastname`)?.addEventListener("change", e => {
+    document.querySelector(`${divSelectors.logged} input.lastname`)?.addEventListener("keyup", e => {
         updateText(`${divSelectors.logged} span.lastname`, e.target.value);
     });
 
