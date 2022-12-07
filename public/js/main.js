@@ -1,8 +1,8 @@
 function preventReloadPageIfLocal(element) {
     element.addEventListener("click", e => {
         let href = e.currentTarget.href;
+        if (!href || !href.startsWith(document.location.origin) || href.includes("#")) return;
         e.preventDefault();
-        if (!(href && href.startsWith(document.location.origin))) return;
         fetchPage(href).then(page => {
             changePage(page, href);
         });

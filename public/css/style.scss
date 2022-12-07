@@ -34,4 +34,8 @@ header {
 .profile_page {
     min-height: 100%;
     padding-top: 150px;
+    
+    > :not(:first-child) {
+        display: none;
+    }
 }
