@@ -1,7 +1,7 @@
 <div class="container profile_page">
     <div class="login_register_view">
         <h1>Login</h1>
-        <div class="login card mb-3"">
+        <div class="login card mb-3">
             <div class=" card-body">
             <div class="row">
                 <div class="col-sm-3">
@@ -30,53 +30,63 @@
                     <div class="col-sm-3">
                         <h6 class="mb-0">Username</h6>
                     </div>
-                    <input class="col-sm-8 text-secondary username" type="text" />
+                    <input class="col-sm-8 text-secondary username" type="text" id="reg-username" />
                 </div>
                 <hr>
                 <div class="row">
                     <div class="col-sm-3">
                         <h6 class="mb-0">Firstname</h6>
                     </div>
-                    <input class="col-sm-8 text-secondary firstname" type="text" />
+                    <input class="col-sm-8 text-secondary firstname" type="text" id="reg-firstname" />
                 </div>
                 <div class="row mt-2">
                     <div class="col-sm-3">
                         <h6 class="mb-0">Lastname</h6>
                     </div>
-                    <input class="col-sm-8 text-secondary lastname" type="text" />
+                    <input class="col-sm-8 text-secondary lastname" type="text" id="reg-lastname"/>
                 </div>
                 <hr>
                 <div class="row">
                     <div class="col-sm-3">
                         <h6 class="mb-0">Email</h6>
                     </div>
-                    <input class="col-sm-8 text-secondary email" type="email">
+                    <input class="col-sm-8 text-secondary email" type="email" id="reg-email">
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <h6 class="mb-0">Password</h6>
+                    </div>
+                    <input class="col-sm-8 text-secondary password" type="password" id="reg-password">
                 </div>
                 <hr>
                 <div class="row">
                     <div class="col-sm-3">
                         <h6 class="mb-0">Phone</h6>
                     </div>
-                    <input class="col-sm-8 text-secondary phone" type="tel">
+                    <input class="col-sm-8 text-secondary phone" type="tel" id="reg-phone">
                 </div>
                 <hr>
                 <div class="row">
                     <div class="col-sm-3">
                         <h6 class="mb-0">Mobile</h6>
                     </div>
-                    <input class="col-sm-8 text-secondary mobile" type="tel">
+                    <input class="col-sm-8 text-secondary mobile" type="tel" id="reg-mobile">
                 </div>
                 <hr>
                 <div class="row">
                     <div class="col-sm-3">
                         <h6 class="mb-0">Address</h6>
                     </div>
-                    <input class="col-sm-8 text-secondary address" type="text">
+                    <input class="col-sm-8 text-secondary address" type="text" id="reg-address">
                 </div>
                 <hr>
+                <div class="row" hidden>
+                    <p id="reg-error">Error msg</p>
+                </div>
                 <div class="row">
                     <div class="col-sm-12 text-right">
-                        <button class="btn btn-info register_btn">Register</button>
+                        <button class="btn btn-info register_btn" id="reg-submit">Register</button>
                     </div>
                 </div>
             </div>
@@ -203,6 +213,7 @@
     </div>
 </div>
 </div>
+
 <script type="module" id="re_script">
     import { main } from "/js/profile.js";
     main();

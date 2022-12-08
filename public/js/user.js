@@ -10,14 +10,19 @@ async function fetchUser(username, password) {
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify({usernmae: username, password, password})
+            body: JSON.stringify({
+                username: username, 
+                password: password
+            })
         });
         res = await res.json();
+        console.log(res);
         if (res.success) {
-            user = res.data;
+            console.log('success');
+            user = res.user;
             return true;
         } else {
-            return res.data.message;
+            return res.message;
         }
 
     } catch (err) {throw err;

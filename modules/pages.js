@@ -1,7 +1,11 @@
 import { Router } from "express";
 import { renderCSS } from "./scss.js";
+import passport from 'passport'
 
 export const pagesRouter = new Router();
+
+pagesRouter.use(passport.initialize());
+pagesRouter.use(passport.session());
 
 pagesRouter.use("/", async (req, res, next)=>{
     await renderCSS();
