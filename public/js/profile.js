@@ -138,6 +138,10 @@ async function register() {
             let errorP = document.getElementById("reg-error");
             errorP.innerHTML = "Incorrect email format";
             errorP.parentElement.hidden = false;
+        } else if (res.error == "empty") {
+            let errorP = document.getElementById("reg-error");
+            errorP.innerHTML = "Please fill in everything";
+            errorP.parentElement.hidden = false;   
         } else if (res.error == "none") {
             let res = await fetchUser(username, password);
             if (res === true) {

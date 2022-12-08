@@ -61,6 +61,13 @@ userApi.use(bodyParser.json());
 userApi.post('/register', function(req,res){
     let hashed = bcrypt.hashSync(req.body.password, salt);
     var userData = [req.body.email, req.body.username, hashed, req.body.firstname, req.body.lastname, req.body.phone, req.body.mobile, req.body.address];
+    userData.forEach(element => {
+      if (element == "") {
+        return res.status(400).send({
+          error: 'empty'
+      });
+      }
+    });
     User.findOne({
        where: { email: userData[0],
         username: userData[1]
