@@ -77,3 +77,22 @@ async function getAllAppointmentOfToday() {
 document.addEventListener('DOMContentLoaded', function() {
 	getAllAppointmentOfToday();
 });
+
+
+async function getAllRooms() {
+    let res = await fetch(api_url + "/room/getallrooms", {
+        method:"POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+	});
+
+	res = await res.json();
+
+	document.querySelector("#getallrooms").innerText = res;
+
+}
+document.addEventListener('DOMContentLoaded', function() {
+	getAllRooms();
+});
+
