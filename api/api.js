@@ -4,6 +4,7 @@ import { userApi } from "./user.js";
 
 export const api = new Router();
 
+
 api.use("/user", userApi);
 
 api.use("/appointment", appointmentApi);
