@@ -56,10 +56,6 @@ async function getAllUsers() {
 	document.querySelector("#getallusers").innerText = res;
 
 }
-document.addEventListener('DOMContentLoaded', function() {
-	getAllUsers();
-});
-
 
 async function getAllAppointmentOfToday() {
     let res = await fetch(api_url + "/appointment/getallbooking", {
@@ -74,10 +70,6 @@ async function getAllAppointmentOfToday() {
 	document.querySelector("#getallbooking").innerText = res;
 
 }
-document.addEventListener('DOMContentLoaded', function() {
-	getAllAppointmentOfToday();
-});
-
 
 async function getAllRooms() {
     let res = await fetch(api_url + "/room/getallrooms", {
@@ -92,9 +84,6 @@ async function getAllRooms() {
 	document.querySelector("#getallrooms").innerText = res;
 
 }
-document.addEventListener('DOMContentLoaded', function() {
-	getAllRooms();
-});
 
 async function getAllTherapist() {
     let res = await fetch(api_url + "/therapist/getalltherapist", {
@@ -109,6 +98,10 @@ async function getAllTherapist() {
 	document.querySelector("#getalltherapist").innerText = res;
 
 }
-document.addEventListener('DOMContentLoaded', function() {
+
+export function main(){
+	getAllUsers();
+	getAllAppointmentOfToday();
+	getAllRooms();
 	getAllTherapist();
-});
+}
