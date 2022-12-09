@@ -18,16 +18,23 @@ function updateText(selector, value) {
     });
 }
 
-function editProfile() {
+async function editProfile() {
     if (typeof user === 'undefined' || !user) window.location = "/";
     let body = {};
-    let ids = ["website", "instagram", "facebook", "firstname", "lastname", "phone", "mobile", "address", "email"];
+    let ids = ["website", "instagram", "facebook", "username", "firstname", "lastname", "phone", "mobile", "address", "email"];
     ids.forEach(key => {
-        let v = document.querySelector("input#" + key);
+        let v = document.querySelector("input." + key);
         if (v && v.value)
             body[key] = v.value;
     });
-    console.log(body);
+
+    let res = await fetch(api_url + "/user/edit", {
+        method:"POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(body)
+    });
 }
 
 function changeLoggedInputContent(selector, content) {

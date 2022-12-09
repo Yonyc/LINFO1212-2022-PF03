@@ -137,3 +137,51 @@ userApi.get('/logout', function(req, res){
     req.logout();
     res.redirect('/');
 });
+
+userApi.post('/edit', async function(req,res){
+  var userData = [req.body.email, req.body.username, req.body.firstname, req.body.lastname, req.body.phone, req.body.mobile, req.body.address];
+  userData.forEach(element => {
+    if (element == "") {
+      return res.status(400).send({
+        error: 'empty'
+      });
+    }
+  });
+  
+  await User.update(
+    {
+      email: userData[0],
+      username: userData[1],
+      firstname: userData[2],
+      lastname: userData[3],
+      phone: userData[4],
+      mobilephone: userData[5],
+      address: userData[6],
+    },
+    {
+      where: { username: req.user.username },
+    }
+  );
+
+  const updatedUser = req.user;
+  updatedUser.email= userData[0];
+  updatedUser.username= userData[1];
+  updatedUser.firstname= userData[2];
+  updatedUser.lastname= userData[3];
+  updatedUser.phone= userData[4];
+  updatedUser.mobilephone= userData[5];
+  updatedUser.address= userData[6];
+
+
+  req.login(updatedUser, async(error) => {
+    if (error) {
+      return res.status(400).send({
+        error: 'updateError'
+      });
+    }
+
+    return res.status(200).send({
+      error: 'none'
+    });
+  });
+})
