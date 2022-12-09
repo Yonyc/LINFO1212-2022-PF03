@@ -19,19 +19,28 @@ body {
 /* /      Stylisation de la section 2 du site       / */
 /* ////////////////////////////////////////////////// */
 
-#two{
+.two{
 
-    background-size: cover;
-    margin-right : auto;
-    margin-left : auto;
-}
-
-.mainpage{
-
-    width : 100%;
-    height : 100%;
+    background: #f8f9fa;
+    height: 50%;
+    margin-bottom : 5%;
 
 }
+
+.presentationcol1{
+
+    margin-left : 5%;
+
+}
+
+@media screen and (max-width: 991px) {
+
+    .feature-half-two {
+        display: none;
+    }
+
+}
+
 
 
 /* ////////////////////////////////////////////////// */
