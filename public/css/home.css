@@ -15,6 +15,53 @@ body {
 
 }
 
+.first-color {
+
+    color: var(--color1);
+
+}
+
+
+.title {
+
+    font-size: 3rem;
+    line-height: 1.2;
+    font-weight: 500;
+    color: black;
+
+}
+
+.text-faded {
+
+    color: var(--text_faded);
+
+}
+
+.btn.btn-tremplin {
+
+    background: var(--color1);
+    border-color: var(--color1);
+    color: #ffffff;
+
+}
+
+.btn.btn-tremplin:hover {
+
+    background: transparent;
+    border-color: var(--color1);
+    color: var(--color1);
+
+}
+
+
+@font-face {
+
+    font-family: aquaticoFont;
+    src: url(../fonts/Aquatico-Regular.otf);
+    font-weight: bold;
+
+}
+
 /* ////////////////////////////////////////////////// */
 /* /      Stylisation de la section 2 du site       / */
 /* ////////////////////////////////////////////////// */
@@ -39,6 +86,10 @@ body {
         display: none;
     }
 
+}   
+
+#mainTitle{
+    font-family: aquaticoFont;
 }
 
 
