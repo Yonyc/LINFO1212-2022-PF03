@@ -53,11 +53,6 @@ passport.deserializeUser(function(id, done) {
 
 //=================================================================================================
 
-import bodyParser from 'body-parser'
-
-userApi.use((bodyParser.urlencoded({ extended: false })))
-userApi.use(bodyParser.json());
-
 userApi.post('/getallusers', function(req,res){
   User.count()
     .then(data => {
