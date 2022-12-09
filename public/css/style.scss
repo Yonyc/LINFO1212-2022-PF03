@@ -53,6 +53,10 @@ header {
             border-bottom: 1px dotted gray;
         }
     }
+
+    .profile_picture:hover {
+        cursor: pointer;
+    }
 }
 
 span.error {
