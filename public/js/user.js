@@ -16,9 +16,7 @@ async function fetchUser(username, password) {
             })
         });
         res = await res.json();
-        console.log(res);
         if (res.success) {
-            console.log('success');
             user = res.user;
             return true;
         } else {
