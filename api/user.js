@@ -58,6 +58,17 @@ import bodyParser from 'body-parser'
 userApi.use((bodyParser.urlencoded({ extended: false })))
 userApi.use(bodyParser.json());
 
+userApi.post('/getallusers', function(req,res){
+  User.count()
+    .then(data => {
+        console.log(data)
+        return res.json(data);
+     })    
+      .catch(function (reason) {
+      console.log(reason);
+ });
+})
+
 userApi.post('/register', function(req,res){
     let hashed = bcrypt.hashSync(req.body.password, salt);
     var userData = [req.body.email, req.body.username, hashed, req.body.firstname, req.body.lastname, req.body.phone, req.body.mobile, req.body.address];
