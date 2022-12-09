@@ -147,6 +147,8 @@
 <!-- Fin du corps du site -->
 <script type="module" id="re_script">
     import '/js/owl.carousel.min.js';
+    import {main} from '/js/home.js';
+    main();
     import {loadCarousel} from '/js/home.js';
     loadCarousel();
     document.querySelectorAll("[data-background-image-url]").forEach(e => {
