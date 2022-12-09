@@ -1,11 +1,11 @@
 import { Router } from "express";
 
-export const roomApi = new Router();
+export const therapistApi = new Router();
 
-import {Room} from '../modules/database.js'
+import {Therapist} from '../modules/database.js'
 
-roomApi.post('/getallrooms', function(req,res){
-    Room.count()
+therapistApi.post('/getalltherapist', function(req,res){
+    Therapist.count()
     .then(data => {
         console.log(data)
         return res.json(data);
