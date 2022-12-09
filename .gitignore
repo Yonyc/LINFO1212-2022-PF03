@@ -1,4 +1,5 @@
 node_modules/
 package-lock.json
 public/css/style.css
+database/centre_tremplin.sqlite
 temp.*
