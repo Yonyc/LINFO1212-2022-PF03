@@ -14,7 +14,7 @@
     <body>
         <%- include('./header.ejs', {args: args}); %>
         <div class="container-fluid bg-light">
-            <%- include(path, {args: args}); %>
+            <%- include(path, args); %>
         </div>
         <%- include('./footer.ejs', {args: args}); %>
         <script src="https://kit.fontawesome.com/57cafc0dcd.js" crossorigin="anonymous"></script>

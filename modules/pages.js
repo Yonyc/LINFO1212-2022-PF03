@@ -29,7 +29,6 @@ pagesRouter.use("/profile", async (req, res) => {
             attributes: ["username", "firstname", "lastname", "email", "phone", "mobilephone", "address", "url_pp"]
         });
         args.user = user.dataValues;
-
     }
     renderTemplate(req, res, "pages/profile", "CT - profile", {args: args});
 });
