@@ -14,10 +14,8 @@ appointmentApi.post('/getallbooking', function(req,res){
         }
     })
     .then(data => {
-        console.log(data)
         return res.json(data);
     })    
     .catch(function (reason) {
-    console.log(reason);
     });
 })
