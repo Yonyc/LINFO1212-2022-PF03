@@ -44,4 +44,17 @@ header {
     > :not(:first-child) {
         display: none;
     }
+
+    input:is([type=text], [type=tel], [type=email], [type=password]) {
+        border: none;
+        border-bottom: 1px solid gray;
+
+        &:placeholder-shown {
+            border-bottom: 1px dotted gray;
+        }
+    }
+}
+
+span.error {
+    color: red;
 }
