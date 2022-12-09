@@ -88,7 +88,7 @@ userApi.post('/register', function (req, res) {
                 phone: userData[5],
                 mobilephone: userData[6],
                 address: userData[7],
-                url_pp: "public/img/profile_pictures/photo-anonyme.png",
+                url_pp: "/img/profile_pictures/photo-anonyme.png",
                 confirmed: false
 
             }).then(users => {
@@ -121,6 +121,7 @@ userApi.post('/login', passport.authenticate('local', {}),
                 phone: req.user.phone,
                 mobile: req.user.mobilephone,
                 address: req.user.address,
+                url_pp: req.user.url_pp
             }
         };
         return res.status(200).send(data);
