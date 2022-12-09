@@ -40,10 +40,51 @@ body {
 
 #three{
 
-    background-size: cover;
-    margin-right : auto;
-    margin-left : auto;
-    background-color: #e9fce9;
+    position: relative;
+    background: rgb(0, 0, 0);
+    opacity: .8;
+    height: 350px;
+    background-image: url("../img/home_carousel/salle_polyvalente_5.jpg");
+    background-size: cover; 
+    background-repeat: no-repeat; 
+    background-attachment: fixed; 
+
+}
+
+.parallax-box {
+
+    padding: 3rem 0;
+    text-align: center;
+    color : var(#000000);
+    font-weight : bold;
+
+}
+
+.parallax-box i {
+
+    font-size: 2.5rem;
+    margin-bottom: 25px;
+    -webkit-transition: all .3s ease-in-out;
+    -moz-transition: all .3s ease-in-out;
+    -ms-transition: all .3s ease-in-out;
+    -o-transition: all .3s ease-in-out;
+    transition: all .3s ease-in-out;
+
+}
+
+.bg-black {
+
+    background: #000000;
+
+}
+
+@media screen and (min-width: 800px) {
+
+    .infos{
+        
+        margin-top : 5%;
+
+    }
 }
 
 /* ////////////////////////////////////////////////// */
