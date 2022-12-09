@@ -96,3 +96,19 @@ document.addEventListener('DOMContentLoaded', function() {
 	getAllRooms();
 });
 
+async function getAllTherapist() {
+    let res = await fetch(api_url + "/therapist/getalltherapist", {
+        method:"POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+	});
+
+	res = await res.json();
+
+	document.querySelector("#getalltherapist").innerText = res;
+
+}
+document.addEventListener('DOMContentLoaded', function() {
+	getAllTherapist();
+});
