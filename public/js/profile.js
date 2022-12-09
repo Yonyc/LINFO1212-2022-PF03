@@ -12,6 +12,23 @@ function display(selector) {
     b.prepend(a);
 }
 
+function displayError(nextTo, error) {
+    let e = document.querySelector(nextTo);
+    if (!e || !e.parentNode) return;
+    let span = e.parentNode.querySelector("span.error");
+    if (span) {
+        span.innerText += error;
+        return;
+    }
+
+    span = document.createElement("span");
+    span.classList.add("error");
+    span.innerText = error;
+    e.after(span);
+}
+
+//displayError(`${divSelectors.login} > .register input.username`, "bananan");
+
 function updateText(selector, value) {
     document.querySelectorAll(selector).forEach(el => {
         el.innerText = value;
@@ -61,22 +78,22 @@ async function login(username, password) {
     if (res === true) {
         updateUserEditPage();
         display(divSelectors.logged);
-        
+
         return;
     };
 }
 
 export function main() {
     if (typeof user !== 'undefined') {
-        updateUserEditPage();
+        updateUserEditPage();querySelector
         display(divSelectors.logged);
-        
+
         return;
     }
     document.querySelector(`${divSelectors.logged} input.firstname`)?.addEventListener("keyup", e => {
         updateText(`${divSelectors.logged} span.firstname`, e.target.value);
     });
-    
+
     document.querySelector(`${divSelectors.logged} input.lastname`)?.addEventListener("keyup", e => {
         updateText(`${divSelectors.logged} span.lastname`, e.target.value);
     });
@@ -116,7 +133,7 @@ async function register() {
     }
 
     let res = await fetch(api_url + "/user/register", {
-        method:"POST",
+        method: "POST",
         headers: {
             "Content-Type": "application/json"
         },
@@ -129,27 +146,27 @@ async function register() {
             phone: phone,
             mobile: mobile,
             address: address
-            })
-        });
+        })
+    });
 
-        res = await res.json()
+    res = await res.json()
 
-        if (res.error == "email") {
-            let errorP = document.getElementById("reg-error");
-            errorP.innerHTML = "Incorrect email format";
-            errorP.parentElement.hidden = false;
-        } else if (res.error == "empty") {
-            let errorP = document.getElementById("reg-error");
-            errorP.innerHTML = "Please fill in everything";
-            errorP.parentElement.hidden = false;   
-        } else if (res.error == "none") {
-            let res = await fetchUser(username, password);
-            if (res === true) {
-                updateUserEditPage();
-                display(divSelectors.logged);
-                
-                return;
-            };
-        }
+    if (res.error == "email") {
+        let errorP = document.getElementById("reg-error");
+        errorP.innerHTML = "Incorrect email format";
+        errorP.parentElement.hidden = false;
+    } else if (res.error == "empty") {
+        let errorP = document.getElementById("reg-error");
+        errorP.innerHTML = "Please fill in everything";
+        errorP.parentElement.hidden = false;
+    } else if (res.error == "none") {
+        let res = await fetchUser(username, password);
+        if (res === true) {
+            updateUserEditPage();
+            display(divSelectors.logged);
+
+            return;
+        };
+    }
 }
 document.getElementById("reg-submit").addEventListener("click", e => register());
