@@ -133,6 +133,27 @@ userApi.get('/logout', function (req, res) {
 
 userApi.post('/edit', async function (req, res) {
     var userData = [req.body.email, req.body.username, req.body.firstname, req.body.lastname, req.body.phone, req.body.mobile, req.body.address];
+
+    let euser = await User.findOne({
+        where: { email: userData[0] }
+    })
+
+    if (euser && euser.username != req.user.username) {
+        return res.status(400).send({
+            error: 'emailTaken'
+        });
+    }
+
+    let uuser = await User.findOne({
+        where: { username: userData[1] }
+    })
+
+    if (uuser && uuser.email != req.user.email) {
+        return res.status(400).send({
+            error: 'usernameTaken'
+        });
+    }
+
     userData.forEach(element => {
         if (element == "") {
             return res.status(400).send({
