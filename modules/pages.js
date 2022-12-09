@@ -34,9 +34,13 @@ pagesRouter.use("/profile", async (req, res) => {
     renderTemplate(req, res, "pages/profile", "CT - profile", {args: args});
 });
 
-pagesRouter.use("/therapist", (req, res) => {});
+pagesRouter.use("/therapist", (req, res) => {
+    renderTemplate(req, res, "pages/therapist", "Mon espace", {});
+});
 
-pagesRouter.use("/reservation", (req, res) => {});
+pagesRouter.use("/booking", (req, res) => {
+    renderTemplate(req, res, "pages/booking", "Réservation", {});
+});
 
 pagesRouter.use("/appointment", (req, res) => {});
 
