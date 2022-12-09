@@ -48,11 +48,9 @@ passport.deserializeUser(function (id, done) {
 userApi.post('/getallusers', function (req, res) {
     User.count()
         .then(data => {
-            console.log(data)
             return res.json(data);
         })
         .catch(function (reason) {
-            console.log(reason);
         });
 })
 
