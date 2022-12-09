@@ -1,6 +1,5 @@
 /* Provide script for home page and for carousel slider */
 
-
 export function loadCarousel() {
 	(function ($) {
 		"use strict";
@@ -43,3 +42,20 @@ export function loadCarousel() {
 		carousel();
 	})(jQuery);
 }
+
+async function getAllUsers() {
+    let res = await fetch(api_url + "/user/getallusers", {
+        method:"POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+	});
+
+	res = await res.json();
+
+	document.querySelector("#getallusers").innerText = res;
+
+}
+document.addEventListener('DOMContentLoaded', function() {
+	getAllUsers();
+});
