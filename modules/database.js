@@ -3,7 +3,7 @@ import { Sequelize, Model, DataTypes } from 'sequelize';
 export var sequelize = new Sequelize({
     dialect: "sqlite",
     storage: "./database/centre_tremplin.sqlite",
-    logging: console.log
+    logging: false
 });
 
 export class User extends Model { }

@@ -215,8 +215,7 @@
     </div>
 </div>
 </div>
-
-
+<%- (args.user) ? `<script>user = ${JSON.stringify(args.user)};</script>` : "" %>
 <script type="module" id="re_script">
     import { main } from "/js/profile.js";
     main();
