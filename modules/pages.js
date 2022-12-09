@@ -31,7 +31,7 @@ pagesRouter.use("/profile", async (req, res) => {
         args.user = user.dataValues;
 
     }
-    renderTemplate(req, res, "pages/profile", "CT - profile", args);
+    renderTemplate(req, res, "pages/profile", "CT - profile", {args: args});
 });
 
 pagesRouter.use("/therapist", (req, res) => {});
