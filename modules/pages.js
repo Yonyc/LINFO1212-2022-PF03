@@ -1,11 +1,8 @@
 import { Router } from "express";
+import { User } from "./database.js";
 import { renderCSS } from "./scss.js";
-import passport from 'passport'
 
 export const pagesRouter = new Router();
-
-pagesRouter.use(passport.initialize());
-pagesRouter.use(passport.session());
 
 pagesRouter.use("/", async (req, res, next)=>{
     await renderCSS();
@@ -22,11 +19,19 @@ function renderTemplate(req, res, path="", title="", args={}) {
         return;
     }
 
-    res.render('partials/template', {title: title, path: "../" + path, args: args });
+    res.render("partials/template", {title: title, path: "../" + path, args: args });
 }
 
-pagesRouter.use("/profile", (req, res) => {
-    renderTemplate(req, res, "pages/profile", "CT - profile", {});
+pagesRouter.use("/profile", async (req, res) => {
+    let args = {};
+    if (req.user) {
+        let user = await User.findByPk(req.user.id, {
+            attributes: ["username", "firstname", "lastname", "email", "phone", "mobilephone", "address", "url_pp"]
+        });
+        args.user = user.dataValues;
+
+    }
+    renderTemplate(req, res, "pages/profile", "CT - profile", args);
 });
 
 pagesRouter.use("/therapist", (req, res) => {});

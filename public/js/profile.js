@@ -91,12 +91,8 @@ async function login(username, password) {
 }
 
 export function main() {
-    if (typeof user !== 'undefined') {
-        updateUserEditPage();querySelector
-        display(divSelectors.logged);
 
-        return;
-    }
+    document.querySelector("#profil_edit")?.addEventListener("click", e => editProfile());
     document.querySelector(`${divSelectors.logged} input.firstname`)?.addEventListener("keyup", e => {
         updateText(`${divSelectors.logged} span.firstname`, e.target.value);
     });
@@ -119,7 +115,12 @@ export function main() {
         });
     });
 
-    document.querySelector("#profil_edit")?.addEventListener("click", e => editProfile());
+    if (typeof user !== 'undefined') {
+        updateUserEditPage();
+        display(divSelectors.logged);
+
+        return;
+    }
 }
 
 async function register() {
