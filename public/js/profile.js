@@ -178,3 +178,5 @@ async function register() {
     }
 }
 document.getElementById("reg-submit").addEventListener("click", e => register());
+
+$('#profile_picture').click(function(){ $('#profile_pic_input').trigger('click'); });

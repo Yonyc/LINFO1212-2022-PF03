@@ -52,7 +52,7 @@ userApi.post('/getallusers', function (req, res) {
         })
         .catch(function (reason) {
         });
-})
+});
 
 userApi.post('/register', function (req, res) {
     let hashed = bcrypt.hashSync(req.body.password, salt);
@@ -197,4 +197,51 @@ userApi.post('/edit', async function (req, res) {
             error: 'none'
         });
     });
-})
+});
+
+import multer from 'multer';
+import path from 'path';
+
+const __dirname = path.resolve();
+const uploadDir = __dirname + "/public/img/profile_pictures/";
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, uploadDir);
+    },
+    filename: async (req, file, cb) => {
+        let fileName = Date.now() + path.extname(file.originalname);
+        let file_path = uploadDir + fileName
+        let db_path = file_path.substring(file_path.indexOf("/public/")+8);
+        await User.update(
+            {
+                url_pp: db_path
+            },
+            {
+                where: { username: req.user.username },
+            }
+        );
+        cb(null, fileName);
+    }
+});
+
+const fileFilter = (req, file, cb) => {
+    if (file.mimetype === "image/jpeg" || file.mimetype === "image/png" || file.mimetype === "image/jpg") {
+      cb(null, true);
+    } else {
+      cb(null, false);
+    }
+  };
+
+const upload = multer({
+    storage: storage,
+    fileFilter: fileFilter
+});
+
+userApi.post('/upload_profile_picture', upload.single('profile_picture'), (req, res) => {
+    let db_path = req.file.path.substring(req.file.path.indexOf("/public/")+8);
+    return res.status(200).send({
+        error: 'none',
+        new_url: db_path
+    });
+});
