@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { User } from '../modules/database.js';
+import { User, Therapist } from '../modules/database.js';
 import bcrypt from 'bcrypt';
 import passport from 'passport';
 import { Strategy as LocalStrategy } from "passport-local";
@@ -266,5 +266,24 @@ userApi.post('/upload_profile_picture', upload.single('profile_picture'), (req, 
     return res.status(200).send({
         error: 'none',
         new_url: db_path
+    });
+});
+
+userApi.post('/therapist_promotion', async (req, res) => {
+    let new_demand = await Therapist.create({
+        approved: false
+    });
+
+    await User.update(
+        {
+            TherapistId: new_demand.id
+        },
+        {
+            where: { username: req.user.username },
+        }
+    );
+
+    return res.status(200).send({
+        error: 'none'
     });
 });

@@ -162,7 +162,7 @@ async function register() {
 }
 
 async function askTherapistPromotion() {
-    let res = await fetch(api_url + "/user/therapistPromotion", {
+    let res = await fetch(api_url + "/user/therapist_promotion", {
         method:"POST",
         headers: {
             "Content-Type": "application/json"
