@@ -1,5 +1,4 @@
 import {renderCSS} from "./modules/scss.js";
-import * as db from "./modules/database.js";
 import {pagesRouter} from "./modules/pages.js";
 import session from "express-session";
 import express from "express";
