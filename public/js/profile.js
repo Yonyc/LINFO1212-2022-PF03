@@ -102,39 +102,6 @@ async function login(username, password) {
     };
 }
 
-export function main() {
-
-    document.querySelector("#profil_edit")?.addEventListener("click", e => editProfile());
-    document.querySelector(`${divSelectors.logged} input.firstname`)?.addEventListener("keyup", e => {
-        updateText(`${divSelectors.logged} span.firstname`, e.target.value);
-    });
-
-    document.querySelector(`${divSelectors.logged} input.lastname`)?.addEventListener("keyup", e => {
-        updateText(`${divSelectors.logged} span.lastname`, e.target.value);
-    });
-
-    document.querySelector(`${divSelectors.login} .login_btn`)?.addEventListener("click", e => {
-        let log = document.querySelector(`${divSelectors.login} input.login`)?.value;
-        let pass = document.querySelector(`${divSelectors.login} input.password`)?.value;
-        login(log, pass);
-    });
-
-    document.querySelectorAll(`input`).forEach(el => {
-        el.addEventListener("change", e => {
-            let a = document.querySelector(`${divSelectors.logged} button#profil_edit`);
-            if (a)
-                a.removeAttribute("disabled");
-        });
-    });
-
-    if (typeof user !== 'undefined') {
-        updateUserEditPage();
-        display(divSelectors.logged);
-
-        return;
-    }
-}
-
 async function register() {
     let username = document.getElementById('reg-username').value;
     let firstname = document.getElementById('reg-firstname').value;
@@ -193,6 +160,49 @@ async function register() {
         };
     }
 }
-document.getElementById("reg-submit").addEventListener("click", e => register());
 
-$('#profile_picture').click(function(){ $('#profile_pic_input').trigger('click'); });
+async function askTherapistPromotion() {
+    let res = await fetch(api_url + "/user/therapistPromotion", {
+        method:"POST",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    });
+}
+
+export function main() {
+    document.querySelector("#profil_edit")?.addEventListener("click", e => editProfile());
+    document.querySelector(`${divSelectors.logged} input.firstname`)?.addEventListener("keyup", e => {
+        updateText(`${divSelectors.logged} span.firstname`, e.target.value);
+    });
+
+    document.querySelector(`${divSelectors.logged} input.lastname`)?.addEventListener("keyup", e => {
+        updateText(`${divSelectors.logged} span.lastname`, e.target.value);
+    });
+
+    document.querySelector(`${divSelectors.login} .login_btn`)?.addEventListener("click", e => {
+        let log = document.querySelector(`${divSelectors.login} input.login`)?.value;
+        let pass = document.querySelector(`${divSelectors.login} input.password`)?.value;
+        login(log, pass);
+    });
+
+    document.querySelectorAll(`input`).forEach(el => {
+        el.addEventListener("change", e => {
+            let a = document.querySelector(`${divSelectors.logged} button#profil_edit`);
+            if (a)
+                a.removeAttribute("disabled");
+        });
+    });
+
+    document.getElementById("reg-submit").addEventListener("click", e => register());
+    $('#profile_picture').click(function(){ $('#profile_pic_input').trigger('click'); });
+
+    document.querySelector("#profil_ask_therapist").addEventListener("click", e => askTherapistPromotion());
+
+    if (typeof user !== 'undefined') {
+        updateUserEditPage();
+        display(divSelectors.logged);
+
+        return;
+    }
+}

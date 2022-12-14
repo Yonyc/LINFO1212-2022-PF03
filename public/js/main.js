@@ -79,19 +79,22 @@ window.onpopstate = function(e){
 };
 
 /* NAVBAR */
-function setNavbarWhite(navbar) {
-    if (!navbar) return;
+function overlap(b, c) {
+    
+    var slider = b.getBoundingClientRect();
+    var navbar = c.getBoundingClientRect();
 
-    navbar.classList
-}
-
-function setNavbarTransparent(navbar) {
-
+    return slider.y <= navbar.y && slider.y + slider.height >= navbar.y ||
+        slider.y <= navbar.y + navbar.height && slider.y + slider.height >= navbar.y + navbar.height;
 }
 
 document.addEventListener("scroll", e => {
-    let navbar = document.querySelector(".navbar");
-    if (window.scrollY != 0) {
-        let navbar = document
+    let navbar = document.querySelector("nav");
+    let carousel = document.querySelector(".mainpage");
+    if (!navbar || !carousel) return;
+    if (overlap(carousel, navbar)) {
+        navbar.classList.remove("bg-light");
+    } else {
+        navbar.classList.add("bg-light");
     }
-});
+})
