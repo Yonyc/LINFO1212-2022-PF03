@@ -1,5 +1,8 @@
 node_modules/
 package-lock.json
+
 public/css/style.css
+public/img/profile_pictures/
+
 database/centre_tremplin.sqlite
 temp.*
