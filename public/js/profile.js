@@ -52,6 +52,18 @@ async function editProfile() {
         },
         body: JSON.stringify(body)
     });
+
+    res = await res.json();
+
+    if (res.error == "empty") {
+        let errorP = document.getElementById("edit-error");
+        errorP.innerHTML = "Invalid phone number";
+        errorP.parentElement.hidden = false;
+    } else if (res.error == "phone") {
+        let errorP = document.getElementById("edit-error");
+        errorP.innerHTML = "Invalid phone number";
+        errorP.parentElement.hidden = false;
+    }
 }
 
 function changeLoggedInputContent(selector, content) {
@@ -65,7 +77,7 @@ function updateUserEditPage() {
     changeLoggedInputContent(".lastname", user?.lastname);
     changeLoggedInputContent(".email", user?.email);
     changeLoggedInputContent(".phone", user?.phone);
-    changeLoggedInputContent(".mobile", user?.mobile);
+    changeLoggedInputContent(".mobile", user?.mobilephone);
     changeLoggedInputContent(".address", user?.address);
     changeLoggedInputContent(".instagram", user?.instagram);
     changeLoggedInputContent(".facebook", user?.facebook);
@@ -157,7 +169,7 @@ async function register() {
         })
     });
 
-    res = await res.json()
+    res = await res.json();
 
     if (res.error == "email") {
         let errorP = document.getElementById("reg-error");
@@ -166,6 +178,10 @@ async function register() {
     } else if (res.error == "empty") {
         let errorP = document.getElementById("reg-error");
         errorP.innerHTML = "Please fill in everything";
+        errorP.parentElement.hidden = false;
+    } else if (res.error == "phone") {
+        let errorP = document.getElementById("reg-error");
+        errorP.innerHTML = "Invalid phone number";
         errorP.parentElement.hidden = false;
     } else if (res.error == "none") {
         let res = await fetchUser(username, password);

@@ -54,9 +54,18 @@ userApi.post('/getallusers', function (req, res) {
         });
 });
 
+function isNumeric(value) {
+    return /^-?\d+$/.test(value);
+}
+
 userApi.post('/register', function (req, res) {
     let hashed = bcrypt.hashSync(req.body.password, salt);
     var userData = [req.body.email, req.body.username, hashed, req.body.firstname, req.body.lastname, req.body.phone, req.body.mobile, req.body.address];
+    if (!isNumeric(userData[5]) || !isNumeric(userData[6])) {
+        return res.status(400).send({
+            error: 'phone'
+        });
+    }
     userData.forEach(element => {
         if (element == "") {
             return res.status(400).send({
@@ -132,6 +141,20 @@ userApi.get('/logout', function (req, res) {
 
 userApi.post('/edit', async function (req, res) {
     var userData = [req.body.email, req.body.username, req.body.firstname, req.body.lastname, req.body.phone, req.body.mobile, req.body.address];
+
+    if (!isNumeric(userData[5]) || !isNumeric(userData[4])) {
+        return res.status(400).send({
+            error: 'phone'
+        });
+    }
+
+    userData.forEach(element => {
+        if (element == "") {
+            return res.status(400).send({
+                error: 'empty'
+            });
+        }
+    });
 
     let euser = await User.findOne({
         where: { email: userData[0] }
