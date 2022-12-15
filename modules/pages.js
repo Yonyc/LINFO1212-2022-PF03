@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { adminPagesRouter } from "./adminPages.js";
 import { User } from "./database.js";
 import { renderCSS } from "./scss.js";
 
@@ -42,6 +43,8 @@ pagesRouter.use("/booking", (req, res) => {
 });
 
 pagesRouter.use("/appointment", (req, res) => {});
+
+pagesRouter.use("/admin", adminPagesRouter);
 
 pagesRouter.use("/", (req, res) => {
     renderTemplate(req, res, "pages/index", "Centre tremplin", {});

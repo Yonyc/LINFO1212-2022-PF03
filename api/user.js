@@ -12,6 +12,15 @@ async function getUser(username) {
     return User.findOne({ where: { username: username } });
 }
 
+function checkUserLogged(req, res) {
+    if (!req.user || !req.user.id) {
+        res.status(401).json({success: false, message: "User loggin required."});
+        res.end();
+        return false;
+    }
+    return true;
+}
+
 passport.use(new LocalStrategy(
     function (username, password, done) {
         getUser(username)
@@ -270,20 +279,36 @@ userApi.post('/upload_profile_picture', upload.single('profile_picture'), (req, 
 });
 
 userApi.post('/therapist_promotion', async (req, res) => {
-    let new_demand = await Therapist.create({
-        approved: false
-    });
+    if (!checkUserLogged(req, res)) return;
 
-    await User.update(
-        {
-            TherapistId: new_demand.id
-        },
-        {
-            where: { username: req.user.username },
-        }
-    );
+    try {
+        Therapist.findOrCreate({
+            where: {
+                UserId: req.user.id
+            },
+            defaults: {
+                approved: false
+            }
+        });
+        return res.status(200).json({
+            error: 'none'
+        });
+    } catch (error) {
+        return res.status(400).json({
+            error: 'unknown'
+        });
+    }
+});
 
-    return res.status(200).send({
-        error: 'none'
-    });
+userApi.post("/info_therapist", async (req, res) => {
+    if (!checkUserLogged(req, res)) return;
+
+    let therapist = await Therapist.findOne({ where: {UserId: req.user.id} });
+
+    let r = {success: true, asked: Boolean(therapist)};
+    console.log(therapist);
+    if (!therapist || !therapist.approved)
+        return res.status(200).json(r);
+    r.therapist = therapist;
+    return res.status(200).json(r);
 });
