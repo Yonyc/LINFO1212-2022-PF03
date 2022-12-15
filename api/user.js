@@ -12,6 +12,15 @@ async function getUser(username) {
     return User.findOne({ where: { username: username } });
 }
 
+function checkUserLogged(req, res) {
+    if (!req.user || !req.user.id) {
+        res.status(401).json({ success: false, message: "User loggin required." });
+        res.end();
+        return false;
+    }
+    return true;
+}
+
 passport.use(new LocalStrategy(
     function (username, password, done) {
         getUser(username)
@@ -116,23 +125,22 @@ userApi.post('/register', function (req, res) {
     });
 })
 
-userApi.post('/login', passport.authenticate('local', {}),
-    function (req, res) {
-        let data = {
-            success: true,
-            user: {
-                username: req.user.username,
-                firstname: req.user.firstname,
-                lastname: req.user.lastname,
-                email: req.user.email,
-                phone: req.user.phone,
-                mobile: req.user.mobilephone,
-                address: req.user.address,
-                url_pp: req.user.url_pp
-            }
-        };
-        return res.status(200).send(data);
-    });
+userApi.post('/login', passport.authenticate('local', {}), function (req, res) {
+    let data = {
+        success: true,
+        user: {
+            username: req.user.username,
+            firstname: req.user.firstname,
+            lastname: req.user.lastname,
+            email: req.user.email,
+            phone: req.user.phone,
+            mobile: req.user.mobilephone,
+            address: req.user.address,
+            url_pp: req.user.url_pp
+        }
+    };
+    return res.status(200).send(data);
+});
 
 userApi.get('/logout', function (req, res) {
     req.logout();
@@ -234,8 +242,8 @@ const storage = multer.diskStorage({
     },
     filename: async (req, file, cb) => {
         let fileName = Date.now() + path.extname(file.originalname);
-        let file_path = uploadDir + fileName
-        let db_path = file_path.substring(file_path.indexOf("/public/")+8);
+        let file_path = uploadDir + fileName;
+        let db_path = file_path.substring(file_path.indexOf("/public/") + 8);
         await User.update(
             {
                 url_pp: db_path
@@ -250,11 +258,11 @@ const storage = multer.diskStorage({
 
 const fileFilter = (req, file, cb) => {
     if (file.mimetype === "image/jpeg" || file.mimetype === "image/png" || file.mimetype === "image/jpg") {
-      cb(null, true);
+        cb(null, true);
     } else {
-      cb(null, false);
+        cb(null, false);
     }
-  };
+};
 
 const upload = multer({
     storage: storage,
@@ -262,7 +270,7 @@ const upload = multer({
 });
 
 userApi.post('/upload_profile_picture', upload.single('profile_picture'), (req, res) => {
-    let db_path = req.file.path.substring(req.file.path.indexOf("/public/")+8);
+    let db_path = req.file.path.substring(req.file.path.indexOf("/public/") + 8);
     return res.status(200).send({
         error: 'none',
         new_url: db_path
@@ -270,20 +278,36 @@ userApi.post('/upload_profile_picture', upload.single('profile_picture'), (req, 
 });
 
 userApi.post('/therapist_promotion', async (req, res) => {
-    let new_demand = await Therapist.create({
-        approved: false
-    });
+    if (!checkUserLogged(req, res)) return;
 
-    await User.update(
-        {
-            TherapistId: new_demand.id
-        },
-        {
-            where: { username: req.user.username },
-        }
-    );
+    try {
+        Therapist.findOrCreate({
+            where: {
+                UserId: req.user.id
+            },
+            defaults: {
+                approved: false
+            }
+        });
+        return res.status(200).json({
+            error: 'none'
+        });
+    } catch (error) {
+        return res.status(400).json({
+            error: 'unknown'
+        });
+    }
+});
 
-    return res.status(200).send({
-        error: 'none'
-    });
+userApi.post("/info_therapist", async (req, res) => {
+    if (!checkUserLogged(req, res)) return;
+
+    let therapist = await Therapist.findOne({ where: { UserId: req.user.id } });
+
+    let r = { success: true, asked: Boolean(therapist) };
+    console.log(therapist);
+    if (!therapist || !therapist.approved)
+        return res.status(200).json(r);
+    r.therapist = therapist;
+    return res.status(200).json(r);
 });

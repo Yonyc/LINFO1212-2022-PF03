@@ -97,7 +97,7 @@ async function login(username, password) {
     if (res === true) {
         updateUserEditPage();
         display(divSelectors.logged);
-
+        updateTherapistData();
         return;
     };
 }
@@ -168,6 +168,36 @@ async function askTherapistPromotion() {
             "Content-Type": "application/json"
         }
     });
+    updateTherapistData();
+}
+
+async function fetchTherapist() {
+    try {
+        let res = await fetch(api_url + "/user/info_therapist", {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            }
+        });
+        res = await res.json();
+        if (res.success) {
+            if (res.therapist)
+                user.therapist = res.therapist;
+            else if (res.asked)
+                user.therapist = {asked: true}
+        }
+
+    } catch (err) {throw err;
+    }
+}
+
+async function updateTherapistData() {
+    await fetchTherapist();
+    if (user && user.therapist) {
+        let btn = document.querySelector("#profil_ask_therapist");
+        if (btn) 
+            btn.setAttribute("disabled", "true");
+    }
 }
 
 export function main() {
@@ -198,6 +228,8 @@ export function main() {
     $('#profile_picture').click(function(){ $('#profile_pic_input').trigger('click'); });
 
     document.querySelector("#profil_ask_therapist").addEventListener("click", e => askTherapistPromotion());
+
+    updateTherapistData();
 
     if (typeof user !== 'undefined') {
         updateUserEditPage();

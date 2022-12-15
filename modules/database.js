@@ -3,7 +3,7 @@ import { Sequelize, Model, DataTypes } from 'sequelize';
 export var sequelize = new Sequelize({
     dialect: "sqlite",
     storage: "./database/centre_tremplin.sqlite",
-    logging: false
+    logging: true
 });
 
 export class User extends Model { }
@@ -117,7 +117,7 @@ RoomPrice.init({
 }, { sequelize });
 
 User.hasMany(Role);
-Therapist.hasOne(User);
+User.hasOne(Therapist);
 
 User.hasMany(Appointment);
 RoomReservations.hasMany(Appointment);
