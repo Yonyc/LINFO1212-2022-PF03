@@ -34,5 +34,5 @@ app.use("/api", api);
 app.use(pagesRouter);
 
 app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`);
+    console.log(`Centre-tremplin server listening on port ${port}`);
 })
