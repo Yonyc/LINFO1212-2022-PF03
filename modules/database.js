@@ -117,7 +117,7 @@ RoomPrice.init({
 }, { sequelize });
 
 User.hasMany(Role);
-Therapist.hasOne(User);
+User.hasOne(Therapist);
 
 User.hasMany(Appointment);
 RoomReservations.hasMany(Appointment);
