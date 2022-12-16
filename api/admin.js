@@ -13,16 +13,35 @@ adminApi.use("/", (req, res, next) => {
 });
 
 adminApi.post("/therapist_approvals", async (req, res) => {
-    res.status(200).json(await Therapist.findAll({
-        where: {
-            approved: false
-        },
-        include: [
-            {
-                model: User,
-                as: "User",
-                attributes: ["firstname", "lastname"]
-            }
-        ]
-    }));
+    res.status(200).json({
+        success: true,
+        therapists: await Therapist.findAll({
+            where: {
+                approved: false
+            },
+            include: [
+                {
+                    model: User,
+                    as: "User",
+                    attributes: ["firstname", "lastname"]
+                }
+            ]
+        })
+    });
+});
+
+adminApi.post("/promote", async (req, res) => {
+    if (!req.body.therapist) {
+        res.status(400).end();
+        return;
+    }
+    let therapist = await Therapist.findByPk(req.body.therapist);
+    if (!therapist) {
+        res.status(304).end();
+        return;
+    }
+    therapist.approved = true;
+    await therapist.save();
+
+    res.status(200).end();
 });
