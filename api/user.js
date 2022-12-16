@@ -3,6 +3,8 @@ import { User, Therapist } from '../modules/database.js';
 import bcrypt from 'bcrypt';
 import passport from 'passport';
 import { Strategy as LocalStrategy } from "passport-local";
+import multer from 'multer';
+import path from 'path';
 
 export const userApi = new Router();
 
@@ -148,6 +150,8 @@ userApi.get('/logout', function (req, res) {
 });
 
 userApi.post('/edit', async function (req, res) {
+    if (!checkUserLogged()) return;
+
     var userData = [req.body.email, req.body.username, req.body.firstname, req.body.lastname, req.body.phone, req.body.mobile, req.body.address];
 
     if (!isNumeric(userData[5]) || !isNumeric(userData[4])) {
@@ -230,9 +234,6 @@ userApi.post('/edit', async function (req, res) {
     });
 });
 
-import multer from 'multer';
-import path from 'path';
-
 const __dirname = path.resolve();
 const uploadDir = __dirname + "/public/img/profile_pictures/";
 
@@ -270,6 +271,7 @@ const upload = multer({
 });
 
 userApi.post('/upload_profile_picture', upload.single('profile_picture'), (req, res) => {
+    if (!checkUserLogged()) return;
     let db_path = req.file.path.substring(req.file.path.indexOf("/public/") + 8);
     return res.status(200).send({
         error: 'none',
@@ -305,7 +307,6 @@ userApi.post("/info_therapist", async (req, res) => {
     let therapist = await Therapist.findOne({ where: { UserId: req.user.id } });
 
     let r = { success: true, asked: Boolean(therapist) };
-    console.log(therapist);
     if (!therapist || !therapist.approved)
         return res.status(200).json(r);
     r.therapist = therapist;
