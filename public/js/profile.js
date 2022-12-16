@@ -172,6 +172,7 @@ async function askTherapistPromotion() {
 }
 
 async function fetchTherapist() {
+    if (!user) return;
     try {
         let res = await fetch(api_url + "/user/info_therapist", {
             method: 'POST',
