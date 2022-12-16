@@ -239,8 +239,9 @@
         pp_img.src = res_json.new_url;
     }
 </script>
-<%- (args.user) ? `<script>user = ${JSON.stringify(args.user)};</script>` : "" %>
 <script type="module" id="re_script">
     import { main } from "/js/profile.js";
+
+    <%- (args.user) ? `user = ${JSON.stringify(args.user)};` : "" %>
     main();
 </script>

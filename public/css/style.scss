@@ -15,6 +15,10 @@ body {
     min-height: 100%;
 }
 
+.main {
+    min-height: 100%;
+}
+
   
 .container-fluid{
     margin: 0;
@@ -81,4 +85,8 @@ header {
 
 span.error {
     color: red;
+}
+
+.pt-nav {
+    padding-top: 150px;
 }

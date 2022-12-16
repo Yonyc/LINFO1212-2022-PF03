@@ -127,6 +127,7 @@ RoomPrice.init({
 User.hasMany(UserRoles);
 Role.hasMany(UserRoles);
 User.hasOne(Therapist);
+Therapist.hasOne(User);
 
 User.hasMany(Appointment);
 RoomReservations.hasMany(Appointment);
@@ -134,7 +135,7 @@ RoomReservations.belongsTo(Therapist);
 RoomReservations.belongsTo(Room);
 RoomPrice.belongsTo(Room);
 
-sequelize.sync({ force: true });
+sequelize.sync();
 async function createRoles() {
     await new Promise(r => setTimeout(r, 1000));
     Role.findOrCreate({ where: { roleName: "Admin" } });
