@@ -50,6 +50,11 @@ User.init({
         allowNull: false,
         defaultValue: false
     },
+    admin: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false
+    },
     token_confirmation: {
         type: DataTypes.STRING,
         allowNull: true
