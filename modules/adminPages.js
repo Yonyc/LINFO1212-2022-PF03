@@ -24,8 +24,8 @@ adminPagesRouter.use("/", (req, res, next) => {
     next();
 });
 
-adminPagesRouter.use("/therapist_demands", (req, res) => {
-    renderTemplate(req, res, "admin/therapist_demands", "CT - Therapists Demands");
+adminPagesRouter.use("/therapists", (req, res) => {
+    renderTemplate(req, res, "admin/therapists", "CT - Therapists Demands");
 });
 
 adminPagesRouter.use("/users", (req, res) => {
