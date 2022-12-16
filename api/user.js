@@ -283,7 +283,7 @@ userApi.post('/therapist_promotion', async (req, res) => {
     if (!checkUserLogged(req, res)) return;
 
     try {
-        Therapist.findOrCreate({
+        let [therapist, success] = await Therapist.findOrCreate({
             where: {
                 UserId: req.user.id
             },
@@ -291,6 +291,14 @@ userApi.post('/therapist_promotion', async (req, res) => {
                 approved: false
             }
         });
+        await User.update(
+            {
+              TherapistId: therapist.id
+            },
+            {
+              where: { id: req.user.id },
+            }
+        );
         return res.status(200).json({
             error: 'none'
         });
