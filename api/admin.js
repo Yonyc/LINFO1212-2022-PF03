@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { Therapist } from "../modules/database.js";
+import { Therapist, User } from "../modules/database.js";
 
 export const adminApi = new Router();
 
@@ -16,6 +16,13 @@ adminApi.post("/therapist_approvals", async (req, res) => {
     res.status(200).json(await Therapist.findAll({
         where: {
             approved: false
-        }
+        },
+        include: [
+            {
+                model: User,
+                as: "User",
+                attributes: ["firstname", "lastname"]
+            }
+        ]
     }));
 });
