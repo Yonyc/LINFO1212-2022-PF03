@@ -23,6 +23,5 @@ async function fetchUser(username, password) {
             return res.message;
         }
 
-    } catch (err) {throw err;
-    }
+    } catch (err) {throw err;}
 }
