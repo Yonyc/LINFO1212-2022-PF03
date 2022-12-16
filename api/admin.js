@@ -17,7 +17,8 @@ adminApi.post("/therapist_approvals", async (req, res) => {
         success: true,
         therapists: await Therapist.findAll({
             where: {
-                approved: false
+                approved: false,
+                rejected: false
             },
             include: [
                 {
@@ -41,6 +42,22 @@ adminApi.post("/promote", async (req, res) => {
         return;
     }
     therapist.approved = true;
+    await therapist.save();
+
+    res.status(200).end();
+});
+
+adminApi.post("/refuse", async (req, res) => {
+    if (!req.body.therapist) {
+        res.status(400).end();
+        return;
+    }
+    let therapist = await Therapist.findByPk(req.body.therapist);
+    if (!therapist) {
+        res.status(304).end();
+        return;
+    }
+    therapist.rejected = true;
     await therapist.save();
 
     res.status(200).end();
