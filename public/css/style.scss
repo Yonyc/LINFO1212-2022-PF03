@@ -6,6 +6,14 @@
     --text_faded: #6d6d6d;
 }
 
+::-webkit-scrollbar {
+    width: 7px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #9fed7d;
+}
+
 html {
     height: 100%;
 }
