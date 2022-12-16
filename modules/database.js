@@ -136,7 +136,7 @@ RoomPrice.belongsTo(Room);
 
 sequelize.sync({ force: true });
 async function createRoles() {
-    await new Promise(r => setTimeout(r, 1000));
+    await new Promise(r => setTimeout(r, 4000));
     Role.findOrCreate({ where: { roleName: "Admin" } });
 }
 createRoles();
