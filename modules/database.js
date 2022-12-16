@@ -8,6 +8,7 @@ export var sequelize = new Sequelize({
 
 export class User extends Model { }
 export class Role extends Model { }
+export class UserRoles extends Model { }
 export class Therapist extends Model { }
 export class Appointment extends Model { }
 
@@ -64,6 +65,8 @@ Role.init({
     }
 }, { sequelize });
 
+UserRoles.init({}, { sequelize });
+
 Therapist.init({
     approved: {
         type: DataTypes.BOOLEAN,
@@ -116,7 +119,8 @@ RoomPrice.init({
     }
 }, { sequelize });
 
-User.hasMany(Role);
+User.hasMany(UserRoles);
+Role.hasMany(UserRoles);
 User.hasOne(Therapist);
 
 User.hasMany(Appointment);
@@ -125,4 +129,9 @@ RoomReservations.belongsTo(Therapist);
 RoomReservations.belongsTo(Room);
 RoomPrice.belongsTo(Room);
 
-sequelize.sync();
+sequelize.sync({ force: true });
+async function createRoles() {
+    await new Promise(r => setTimeout(r, 1000));
+    Role.findOrCreate({ where: { roleName: "Admin" } });
+}
+createRoles();
