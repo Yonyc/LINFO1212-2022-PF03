@@ -76,7 +76,22 @@ Therapist.init({
     approved: {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
-        allowNull: false
+        allowNull: false,
+        validate: {
+            isNotApproved() {
+                if (this.rejected) throw new Error("User cannot be approved and rejected at the same time.");
+            }
+        }
+    },
+    rejected: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+        allowNull: false,
+        validate: {
+            isNotApproved() {
+                if (this.approved) throw new Error("User cannot be approved and rejected at the same time.");
+            }
+        }
     }
 }, { sequelize });
 
@@ -108,7 +123,7 @@ RoomReservations.init({
         allowNull: false,
         validate: {
             isAfterStart(date) {
-                if (this.start > date) throw new Error("Start cannot be after end...");
+                if (this.start > date) throw new Error("Start cannot be after end.");
             }
         }
     }
@@ -135,7 +150,7 @@ RoomReservations.belongsTo(Therapist);
 RoomReservations.belongsTo(Room);
 RoomPrice.belongsTo(Room);
 
-sequelize.sync();
+sequelize.sync({ force: false });
 async function createRoles() {
     await new Promise(r => setTimeout(r, 4000));
     Role.findOrCreate({ where: { roleName: "Admin" } });
