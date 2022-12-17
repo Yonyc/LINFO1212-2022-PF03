@@ -1,4 +1,4 @@
-import {User, Therapist} from './modules/database.js'
+import {User, UserRoles} from './modules/database.js'
 
 async function main() {
     if (process.argv.length == 2 || process.argv.length > 4) {
@@ -18,7 +18,10 @@ async function main() {
             return;
         }
 
-        user.update({admin: true});
+        UserRoles.create({
+            UserId: user.id,
+            RoleId: 1
+        });
         console.log('User successfully promoted');
         return;
     }
