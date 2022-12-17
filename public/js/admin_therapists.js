@@ -64,7 +64,7 @@ async function reloadTherapistList() {
         list_container.appendChild(card);
     });
 
-    let n_demands = document.querySelector("#therapist_demands_count")
+    let n_demands = document.querySelector("#therapist_demands_count");
     if (n_demands) n_demands.innerText = therapist_demands.therapists.length;
 }
 
