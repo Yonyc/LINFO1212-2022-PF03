@@ -145,7 +145,7 @@ RoomReservations.belongsTo(Therapist);
 RoomReservations.belongsTo(Room);
 RoomPrice.belongsTo(Room);
 
-sequelize.sync({ force: true });
+sequelize.sync({ force: false });
 async function createRoles() {
     await new Promise(r => setTimeout(r, 4000));
     Role.findOrCreate({ where: { roleName: "Admin" } });

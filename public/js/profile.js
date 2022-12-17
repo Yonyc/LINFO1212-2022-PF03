@@ -17,7 +17,7 @@ function displayError(nextTo, error) {
     if (!e || !e.parentNode) return;
     let span = e.parentNode.querySelector("span.error");
     if (span) {
-        span.innerText += error;
+        span.innerText = error;
         return;
     }
 
@@ -99,7 +99,9 @@ async function login(username, password) {
         display(divSelectors.logged);
         updateTherapistData();
         return;
-    };
+    } else {
+        displayError(`${divSelectors.login} > .login input.password`, "Invalid Username/password");
+    }
 }
 
 async function register() {
@@ -139,17 +141,11 @@ async function register() {
     res = await res.json();
 
     if (res.error == "email") {
-        let errorP = document.getElementById("reg-error");
-        errorP.innerHTML = "Incorrect email format";
-        errorP.parentElement.hidden = false;
+        displayError(`${divSelectors.login} > .register input.email`, "Incorrect email format");
     } else if (res.error == "empty") {
-        let errorP = document.getElementById("reg-error");
-        errorP.innerHTML = "Please fill in everything";
-        errorP.parentElement.hidden = false;
+        displayError(`${divSelectors.login} > .register input.address`, "Please fill in everything");
     } else if (res.error == "phone") {
-        let errorP = document.getElementById("reg-error");
-        errorP.innerHTML = "Invalid phone number";
-        errorP.parentElement.hidden = false;
+        displayError(`${divSelectors.login} > .register input.mobile`, "Invalid phone number");
     } else if (res.error == "none") {
         let res = await fetchUser(username, password);
         if (res === true) {
