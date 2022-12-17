@@ -98,3 +98,11 @@ document.addEventListener("scroll", e => {
         navbar.classList.add("bg-light");
     }
 })
+
+function checkPageForNavLink() {
+    if (window.location.pathname == '/booking' || window.location.pathname == '/therapist' || window.location.pathname == '/profile')
+        window.location.href = "/";
+    else if(document.getElementById("aaa").getAttribute("href") == "#one"){
+        window.location.href = "/";
+    }
+ }
