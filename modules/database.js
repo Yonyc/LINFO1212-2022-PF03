@@ -51,11 +51,6 @@ User.init({
         allowNull: false,
         defaultValue: false
     },
-    admin: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-        defaultValue: false
-    },
     token_confirmation: {
         type: DataTypes.STRING,
         allowNull: true
@@ -150,7 +145,7 @@ RoomReservations.belongsTo(Therapist);
 RoomReservations.belongsTo(Room);
 RoomPrice.belongsTo(Room);
 
-sequelize.sync({ force: false });
+sequelize.sync({ force: true });
 async function createRoles() {
     await new Promise(r => setTimeout(r, 4000));
     Role.findOrCreate({ where: { roleName: "Admin" } });
