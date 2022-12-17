@@ -3,6 +3,9 @@
 var calendar;
 
 export function main() {
+    document.getElementById("myTime").min = "08:00";
+    document.getElementById("myTime").max = "19:00";
+
     var calendarEl = document.getElementById('calendar');
 
     calendar = new FullCalendar.Calendar(calendarEl, {
