@@ -1,10 +1,22 @@
 import { Router } from "express";
-import { Therapist, User } from "../modules/database.js";
+import { Therapist, User, UserRoles } from "../modules/database.js";
 
 export const adminApi = new Router();
 
-adminApi.use("/", (req, res, next) => {
-    if (!req.user || !req.user.admin) {
+async function isAdmin(req) {
+    let roles = await UserRoles.findAll({where: {UserId: req.user.id}});
+    roles.forEach(element => {
+        if (element.RoleId == 1) {
+            return true;
+        }
+    });
+
+    return false;
+}
+
+adminApi.use("/", async (req, res, next) => {
+    if (!req.user || !isAdmin(req)) {
+        console.lg
         res.status(401);
         res.end();
         return;
