@@ -81,12 +81,21 @@ window.onpopstate = function(e){
 /* NAVBAR */
 function navbarOverlap() {
     let n = document.querySelector("nav");
-    let s = document.querySelector(".mainpage");
-    if (!n || !s) return;
-    var slider = s.getBoundingClientRect();
+    if (!n) return;
+    let overlapping = false;
+
     var navbar = n.getBoundingClientRect();
 
-    if (navbar.y + navbar.height < slider.y + slider.height) {
+    [".mainpage", "#booking"].forEach(el => {
+        let e = document.querySelector(el);
+        if (!e) return;
+        var rect = e.getBoundingClientRect();
+
+        if (navbar.y + navbar.height < rect.y + rect.height)
+            overlapping = true;
+    });
+
+    if (overlapping) {
         n.classList.remove("bg-light");
     } else {
         n.classList.add("bg-light");
