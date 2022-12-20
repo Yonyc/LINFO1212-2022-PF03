@@ -86,7 +86,7 @@ function navbarOverlap() {
     var slider = s.getBoundingClientRect();
     var navbar = n.getBoundingClientRect();
 
-    if (navbar_btn.classList.contains("collapsed") && navbar.y + navbar.height < slider.y + slider.height) {
+    if (navbar.y + navbar.height < slider.y + slider.height) {
         n.classList.remove("bg-light");
     } else {
         n.classList.add("bg-light");
@@ -94,11 +94,6 @@ function navbarOverlap() {
 }
 
 document.addEventListener("scroll", e => navbarOverlap());
-
-let navbar_btn = document.querySelector("#navbar-toggler");
-if (navbar_btn) {
-    navbar_btn.addEventListener("click", e => navbarOverlap());
-}
 
 function checkPageForNavLink() {
     if (window.location.pathname == '/booking' || window.location.pathname == '/therapist' || window.location.pathname == '/profile')
