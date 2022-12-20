@@ -73,9 +73,9 @@ adminApi.post("/refuse", async (req, res) => {
     }
 });
 
-adminApi.post("/createroom", async (req, res) => {
+adminApi.post("/room_create", async (req, res) => {
     if (!req.body.roomName)
-        return sendError(res, "No room name provided", "ROOM_NO_NAME");
+        return sendError(res, "No room name provided", "ROOM_NAME_MISSING");
 
     let roomData = { name: req.body.roomName };
 
@@ -86,9 +86,27 @@ adminApi.post("/createroom", async (req, res) => {
         roomData.description = req.body.roomDescription;
 
     try {
-        let newRoom = await Room.create(roomData);
-        sendSuccess(res, "New room sucessfully created !", "ROOM_CREATED");
+        await Room.create(roomData);
+        sendSuccess(res, "New room sucessfully created !", "ROOM_CREATION_SUCCESS");
     } catch (error) {
-        sendError(res, "Error encountred while creating new room")
+        sendError(res, "Error encountred while creating new room", "ROOM_CREATION_ERROR");
     }
 });
+
+adminApi.post("/room_delete", (req, res) => {
+    if (!req.body.roomID)
+        return sendError(res, "No room ID provided", "ROOM_ID_MISSING");
+
+    try {
+        await Room.destroy({
+            where: {
+                id: req.body.roomID
+            }
+        });
+        sendSuccess(res, "New room sucessfully deleted !", "ROOM_DELETION_SUCCESS");
+    } catch (error) {
+        sendError(res, "Error encountred while deleting room", "ROOM_DELETION_ERROR");
+    }
+});
+
+// TODO add image to room
