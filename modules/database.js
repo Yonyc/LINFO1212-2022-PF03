@@ -145,6 +145,13 @@ RoomPrice.init({
         validate: {
             min: 0
         }
+    },
+    duration: {
+        type: DataTypes.FLOAT,
+        allowNull: false,
+        validate: {
+            min: 0
+        }
     }
 }, { sequelize });
 
