@@ -111,7 +111,7 @@ Room.init({
     },
     size: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
     }
 }, { sequelize });
 
