@@ -43,8 +43,8 @@ export function loadCarousel() {
 	})(jQuery);
 }
 
-async function getAllUsers() {
-    let res = await fetch(api_url + "/user/getallusers", {
+async function countData(url, selector) {
+	let res = await fetch(api_url + url, {
         method:"POST",
         headers: {
             "Content-Type": "application/json"
@@ -53,55 +53,12 @@ async function getAllUsers() {
 
 	res = await res.json();
 
-	document.querySelector("#getallusers").innerText = res;
-
-}
-
-async function getAllAppointmentOfToday() {
-    let res = await fetch(api_url + "/appointment/getallbooking", {
-        method:"POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-	});
-
-	res = await res.json();
-
-	document.querySelector("#getallbooking").innerText = res;
-
-}
-
-async function getAllRooms() {
-    let res = await fetch(api_url + "/room/getallrooms", {
-        method:"POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-	});
-
-	res = await res.json();
-
-	document.querySelector("#getallrooms").innerText = res;
-
-}
-
-async function getAllTherapist() {
-    let res = await fetch(api_url + "/therapist/getalltherapist", {
-        method:"POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-	});
-
-	res = await res.json();
-
-	document.querySelector("#getalltherapist").innerText = res;
-
+	document.querySelector(selector).innerText = res.data.count;
 }
 
 export function main(){
-	getAllUsers();
-	getAllAppointmentOfToday();
-	getAllRooms();
-	getAllTherapist();
+	countData("/user/getallusers", "#getallusers");
+	countData("/appointment/getallbooking", "#getallbooking");
+	countData("/room/getallrooms", "#getallrooms");
+	countData("/therapist/getalltherapist", "#getalltherapist");
 }

@@ -3,7 +3,7 @@ import { Sequelize, Model, DataTypes } from 'sequelize';
 export var sequelize = new Sequelize({
     dialect: "sqlite",
     storage: "./database/centre_tremplin.sqlite",
-    logging: true
+    logging: false
 });
 
 export class User extends Model { }
@@ -13,6 +13,7 @@ export class Therapist extends Model { }
 export class Appointment extends Model { }
 
 export class Room extends Model { }
+export class RoomPicture extends Model { }
 export class RoomReservations extends Model { }
 export class RoomPrice extends Model { }
 
@@ -51,11 +52,6 @@ User.init({
         allowNull: false,
         defaultValue: false
     },
-    admin: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-        defaultValue: false
-    },
     token_confirmation: {
         type: DataTypes.STRING,
         allowNull: true
@@ -76,7 +72,22 @@ Therapist.init({
     approved: {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
-        allowNull: false
+        allowNull: false,
+        validate: {
+            isNotApproved() {
+                if (this.rejected) throw new Error("User cannot be approved and rejected at the same time.");
+            }
+        }
+    },
+    rejected: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+        allowNull: false,
+        validate: {
+            isNotApproved() {
+                if (this.approved) throw new Error("User cannot be approved and rejected at the same time.");
+            }
+        }
     }
 }, { sequelize });
 
@@ -91,10 +102,23 @@ Appointment.init({
 Room.init({
     name: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
+        unique: true
     },
     description: {
-        type: DataTypes.TEXT
+        type: DataTypes.TEXT,
+        allowNull: true
+    },
+    size: {
+        type: DataTypes.STRING,
+        allowNull: true
+    }
+}, { sequelize });
+
+RoomPicture.init({
+    path: {
+        type: DataTypes.STRING,
+        allowNull: false
     }
 }, { sequelize });
 
@@ -108,7 +132,7 @@ RoomReservations.init({
         allowNull: false,
         validate: {
             isAfterStart(date) {
-                if (this.start > date) throw new Error("Start cannot be after end...");
+                if (this.start > date) throw new Error("Start cannot be after end.");
             }
         }
     }
@@ -116,6 +140,13 @@ RoomReservations.init({
 
 RoomPrice.init({
     price: {
+        type: DataTypes.FLOAT,
+        allowNull: false,
+        validate: {
+            min: 0
+        }
+    },
+    duration: {
         type: DataTypes.FLOAT,
         allowNull: false,
         validate: {
@@ -130,12 +161,13 @@ User.hasOne(Therapist);
 Therapist.hasOne(User);
 
 User.hasMany(Appointment);
+Room.hasMany(RoomPicture)
 RoomReservations.hasMany(Appointment);
 RoomReservations.belongsTo(Therapist);
 RoomReservations.belongsTo(Room);
 RoomPrice.belongsTo(Room);
 
-sequelize.sync();
+sequelize.sync({ force: false });
 async function createRoles() {
     await new Promise(r => setTimeout(r, 4000));
     Role.findOrCreate({ where: { roleName: "Admin" } });

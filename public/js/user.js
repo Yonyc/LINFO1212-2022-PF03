@@ -15,13 +15,14 @@ async function fetchUser(username, password) {
                 password: password
             })
         });
-        res = await res.json();
-        if (res.success) {
-            user = res.user;
-            return true;
-        } else {
-            return res.message;
+        
+        if (res.status == 401) {
+            return false;
         }
+        
+        res = await res.json();
+        user = res.user;
+        return true;
 
     } catch (err) {throw err;}
 }

@@ -79,22 +79,35 @@ window.onpopstate = function(e){
 };
 
 /* NAVBAR */
-function overlap(b, c) {
-    
-    var slider = b.getBoundingClientRect();
-    var navbar = c.getBoundingClientRect();
+function navbarOverlap() {
+    let n = document.querySelector("nav");
+    if (!n) return;
+    let overlapping = false;
 
-    return slider.y <= navbar.y && slider.y + slider.height >= navbar.y ||
-        slider.y <= navbar.y + navbar.height && slider.y + slider.height >= navbar.y + navbar.height;
+    var navbar = n.getBoundingClientRect();
+
+    [".mainpage", "#booking"].forEach(el => {
+        let e = document.querySelector(el);
+        if (!e) return;
+        var rect = e.getBoundingClientRect();
+
+        if (navbar.y + navbar.height < rect.y + rect.height)
+            overlapping = true;
+    });
+
+    if (overlapping) {
+        n.classList.remove("bg-light");
+    } else {
+        n.classList.add("bg-light");
+    }
 }
 
-document.addEventListener("scroll", e => {
-    let navbar = document.querySelector("nav");
-    let carousel = document.querySelector(".mainpage");
-    if (!navbar || !carousel) return;
-    if (overlap(carousel, navbar)) {
-        navbar.classList.remove("bg-light");
-    } else {
-        navbar.classList.add("bg-light");
+document.addEventListener("scroll", e => navbarOverlap());
+
+function checkPageForNavLink() {
+    if (window.location.pathname == '/booking' || window.location.pathname == '/therapist' || window.location.pathname == '/profile')
+        window.location.href = "/";
+    else if(document.getElementById("aaa").getAttribute("href") == "#one"){
+        window.location.href = "/";
     }
-})
+ }
