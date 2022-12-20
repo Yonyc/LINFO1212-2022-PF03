@@ -3,19 +3,20 @@ import { Op } from "sequelize";
 
 export const appointmentApi = new Router();
 
-import {Appointment} from '../modules/database.js'
+import { Appointment } from '../modules/database.js'
+import { sendCustomSuccess, sendError, sendSuccess } from "./api.js";
 
-appointmentApi.post('/getallbooking', function(req,res){
-    Appointment.count({
-        where: {
-            date:{
-                [Op.gte]: new Date()
+appointmentApi.post('/getallbooking', async (req, res) => {
+    try {
+        let appointments = await Appointment.count({
+            where: {
+                date: {
+                    [Op.gte]: new Date()
+                }
             }
-        }
-    })
-    .then(data => {
-        return res.json(data);
-    })    
-    .catch(function (reason) {
-    });
+        });
+        sendCustomSuccess(res, { count: appointments });
+    } catch (error) {
+        sendError(res, "Error encountred while counting incoming appointments", "APPOINTMENT_COUNT_ERROR");
+    }
 })

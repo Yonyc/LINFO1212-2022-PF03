@@ -1,1 +1,142 @@
+<link href='/fullcalendar/packages/core/main.css' rel='stylesheet'>
+<link href='/fullcalendar/packages/daygrid/main.css' rel='stylesheet'>
+<link href='/fullcalendar/packages/timegrid/main.css' rel='stylesheet'>
+<link href='/fullcalendar/packages/list/main.css' rel='stylesheet'>
+<script src='/fullcalendar/packages/core/main.js'></script>
+<script src='/fullcalendar/packages/interaction/main.js'></script>
+<script src='/fullcalendar/packages/daygrid/main.js'></script>
+<script src='/fullcalendar/packages/timegrid/main.js'></script>
+<script src='/fullcalendar/packages/list/main.js'></script>
+
 <!-- Page de réservation -->
+<div class="section" id="booking">
+
+    <div class="section-center">
+
+        <div class="container">
+
+            <div class="row">
+
+                <div class="col"></div>
+
+                <div class="col-8">
+
+                    <div class="booking-cta">
+                        <h1 id="mainTitle">Reserver votre salle</h1>
+                        <p>Bienvenue sur notre page de réservation des salles. Ici vous pouvez réserver les salles que nous vous mettons à disposition mais aussi vérifier leurs disponibilités. Lorsque la salle que vous souhaitez réserver est disponible, vous pouvez convenir une date sur le calendrier. </p>
+                    </div>
+
+                </div>
+
+                <div class="col"></div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="col-md-4 col-md-pull-7">
+
+                    <div class="booking-form">
+
+                        <form>
+
+                            <div class="form-group">
+                                <span class="form-label">Choisissez l'heure</span>
+                                <input class="form-control" id="myTime" type="time" placeholder="00:00">
+                            </div>
+
+                            <div class="form-group">
+                                <span class="form-label">Choisissez une récurrence</span>
+                                <select class="form-control">
+                                    <option>Tous les lundis</option>
+                                    <option>Tous les mardis</option>
+                                    <option>Tous les mercredis</option>
+                                    <option>Tous les jeudis</option>
+                                    <option>Tous les vendredis</option>
+                                    <option>Tous les samedis</option>
+                                    <option>Tous les dimanches</option>
+                                </select>
+                            </div>
+
+                            <div class="row">
+
+                                <div class="col-sm-4">
+
+                                    <div class="form-group">
+                                        <span class="form-label">Salle</span>
+                                        <select class="form-control">
+                                            <option>1</option>
+                                            <option>2</option>
+                                            <option>3</option>
+                                            <option>4</option>
+                                            <option>5</option>
+                                            <option>6</option>
+                                            <option>7</option>
+                                        </select>
+                                        <span class="select-arrow"></span>
+                                    </div>
+
+                                </div>
+
+                                <div class="col-sm-4">
+
+                                    <div class="form-group">
+                                        <span class="form-label">Adulte(s)</span>
+                                        <select class="form-control">
+                                            <option>1</option>
+                                            <option>2</option>
+                                            <option>3</option>
+                                        </select>
+                                        <span class="select-arrow"></span>
+                                    </div>
+
+                                </div>
+
+                                <div class="col-sm-4">
+
+                                    <div class="form-group">
+                                        <span class="form-label">Enfant(s)</span>
+                                        <select class="form-control">
+                                            <option>0</option>
+                                            <option>1</option>
+                                            <option>2</option>
+                                        </select>
+                                        <span class="select-arrow"></span>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="form-btn">
+                                <button class="submit-btn">Vérifier la disponibilité</button>
+                            </div>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-8 col-md-pull-7">
+
+                    <div class="booking-form">
+
+                        <div id='calendar'></div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script type="module" id="re_script">
+    import {main} from '/js/booking.js';
+    main();
+</script>
