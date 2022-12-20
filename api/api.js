@@ -5,6 +5,36 @@ import { roomApi } from "./room.js";
 import { therapistApi } from "./therapist.js";
 import { userApi } from "./user.js";
 
+export function sendCustomError(res, data, http_code = 200) {
+    return res.status(http_code).json({
+        success: false,
+        data: data
+    }).end();
+}
+
+export function sendError(res, message, code, http_code = 200) {
+    return sendCustomError(res, {
+        message: message,
+        code: code
+    }, http_code);
+}
+
+export function sendCustomSuccess(res, data, http_code = 200) {
+    return res.status(http_code).json({
+        success: true,
+        data: data
+    }).end();
+}
+
+export function sendSuccess(res, message, code, http_code = 200) {
+    return sendCustomSuccess(res, {
+        message: message,
+        code: code
+    }, http_code);
+}
+
+console.log("API LOADED !");
+
 export const api = new Router();
 
 
@@ -19,10 +49,5 @@ api.use("/therapist", therapistApi);
 api.use("/admin", adminApi);
 
 api.use('/', (req, res) => {
-    res.json({
-        success: false,
-        data: {
-            message: "No route found!"
-        }
-    });
+    sendError(res, "No route found :/", "NOT_FOUND_ROUTE", 404);
 });
