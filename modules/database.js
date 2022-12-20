@@ -3,7 +3,7 @@ import { Sequelize, Model, DataTypes } from 'sequelize';
 export var sequelize = new Sequelize({
     dialect: "sqlite",
     storage: "./database/centre_tremplin.sqlite",
-    logging: true
+    logging: false
 });
 
 export class User extends Model { }
@@ -13,6 +13,7 @@ export class Therapist extends Model { }
 export class Appointment extends Model { }
 
 export class Room extends Model { }
+export class RoomPicture extends Model { }
 export class RoomReservations extends Model { }
 export class RoomPrice extends Model { }
 
@@ -104,7 +105,19 @@ Room.init({
         allowNull: false
     },
     description: {
-        type: DataTypes.TEXT
+        type: DataTypes.TEXT,
+        allowNull: true
+    },
+    size: {
+        type: DataTypes.STRING,
+        allowNull: false
+    }
+}, { sequelize });
+
+RoomPicture.init({
+    path: {
+        type: DataTypes.STRING,
+        allowNull: false
     }
 }, { sequelize });
 
@@ -140,6 +153,7 @@ User.hasOne(Therapist);
 Therapist.hasOne(User);
 
 User.hasMany(Appointment);
+Room.hasMany(RoomPicture)
 RoomReservations.hasMany(Appointment);
 RoomReservations.belongsTo(Therapist);
 RoomReservations.belongsTo(Room);
