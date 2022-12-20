@@ -79,25 +79,26 @@ window.onpopstate = function(e){
 };
 
 /* NAVBAR */
-function overlap(b, c) {
-    
-    var slider = b.getBoundingClientRect();
-    var navbar = c.getBoundingClientRect();
+function navbarOverlap() {
+    let n = document.querySelector("nav");
+    let s = document.querySelector(".mainpage");
+    if (!n || !s) return;
+    var slider = s.getBoundingClientRect();
+    var navbar = n.getBoundingClientRect();
 
-    return slider.y <= navbar.y && slider.y + slider.height >= navbar.y ||
-        slider.y <= navbar.y + navbar.height && slider.y + slider.height >= navbar.y + navbar.height;
+    if (navbar_btn.classList.contains("collapsed") && navbar.y + navbar.height < slider.y + slider.height) {
+        n.classList.remove("bg-light");
+    } else {
+        n.classList.add("bg-light");
+    }
 }
 
-document.addEventListener("scroll", e => {
-    let navbar = document.querySelector("nav");
-    let carousel = document.querySelector(".mainpage");
-    if (!navbar || !carousel) return;
-    if (overlap(carousel, navbar)) {
-        navbar.classList.remove("bg-light");
-    } else {
-        navbar.classList.add("bg-light");
-    }
-})
+document.addEventListener("scroll", e => navbarOverlap());
+
+let navbar_btn = document.querySelector("#navbar-toggler");
+if (navbar_btn) {
+    navbar_btn.addEventListener("click", e => navbarOverlap());
+}
 
 function checkPageForNavLink() {
     if (window.location.pathname == '/booking' || window.location.pathname == '/therapist' || window.location.pathname == '/profile')
