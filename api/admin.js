@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { Therapist, User, UserRoles } from "../modules/database.js";
+import { Room, Therapist, User, UserRoles } from "../modules/database.js";
 import { sendError, sendSuccess } from "./api.js";
 
 export const adminApi = new Router();
@@ -73,6 +73,22 @@ adminApi.post("/refuse", async (req, res) => {
     }
 });
 
-adminApi.post("/createroom", (req, res) => {
+adminApi.post("/createroom", async (req, res) => {
+    if (!req.body.roomName)
+        return sendError(res, "No room name provided", "ROOM_NO_NAME");
 
+    let roomData = { name: req.body.roomName };
+
+    if (req.body.roomSize)
+        roomData.size = req.body.roomSize;
+
+    if (req.body.roomDescription)
+        roomData.description = req.body.roomDescription;
+
+    try {
+        let newRoom = await Room.create(roomData);
+        sendSuccess(res, "New room sucessfully created !", "ROOM_CREATED");
+    } catch (error) {
+        sendError(res, "Error encountred while creating new room")
+    }
 });
