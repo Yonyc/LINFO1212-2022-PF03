@@ -1,5 +1,6 @@
 import { Router } from "express";
-import { Room, Therapist, User, UserRoles } from "../modules/database.js";
+import { Therapist, User, UserRoles } from "../modules/database.js";
+import { adminRoomApi } from "./admin/room.js";
 import { sendError, sendSuccess } from "./api.js";
 
 export const adminApi = new Router();
@@ -21,6 +22,8 @@ adminApi.use("/", async (req, res, next) => {
     }
     next();
 });
+
+adminApi.use("/room", adminRoomApi);
 
 adminApi.post("/therapist_approvals", async (req, res) => {
     res.status(200).json({
@@ -72,41 +75,3 @@ adminApi.post("/refuse", async (req, res) => {
         return sendError(res, "Error encoutred while rejecting therapist", "THERAPIST_REJECT_ERROR")
     }
 });
-
-adminApi.post("/room_create", async (req, res) => {
-    if (!req.body.roomName)
-        return sendError(res, "No room name provided", "ROOM_NAME_MISSING");
-
-    let roomData = { name: req.body.roomName };
-
-    if (req.body.roomSize)
-        roomData.size = req.body.roomSize;
-
-    if (req.body.roomDescription)
-        roomData.description = req.body.roomDescription;
-
-    try {
-        await Room.create(roomData);
-        sendSuccess(res, "New room sucessfully created !", "ROOM_CREATION_SUCCESS");
-    } catch (error) {
-        sendError(res, "Error encountred while creating new room", "ROOM_CREATION_ERROR");
-    }
-});
-
-adminApi.post("/room_delete", (req, res) => {
-    if (!req.body.roomID)
-        return sendError(res, "No room ID provided", "ROOM_ID_MISSING");
-
-    try {
-        await Room.destroy({
-            where: {
-                id: req.body.roomID
-            }
-        });
-        sendSuccess(res, "New room sucessfully deleted !", "ROOM_DELETION_SUCCESS");
-    } catch (error) {
-        sendError(res, "Error encountred while deleting room", "ROOM_DELETION_ERROR");
-    }
-});
-
-// TODO add image to room
