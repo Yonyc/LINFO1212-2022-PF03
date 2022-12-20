@@ -5,6 +5,7 @@ import passport from 'passport';
 import { Strategy as LocalStrategy } from "passport-local";
 import multer from 'multer';
 import path from 'path';
+import { sendCustomSuccess, sendError } from "./api.js";
 
 export const userApi = new Router();
 
@@ -56,13 +57,13 @@ passport.deserializeUser(function (id, done) {
 
 //=================================================================================================
 
-userApi.post('/getallusers', function (req, res) {
-    User.count()
-        .then(data => {
-            return res.json(data);
-        })
-        .catch(function (reason) {
-        });
+userApi.post('/getallusers', async (req, res) => {
+    try {
+        let users = await User.count();
+        sendCustomSuccess(res, { count: users });
+    } catch (error) {
+        sendError(res, "Error encountred while counting users", "USER_COUNT_ERROR");
+    }
 });
 
 function isNumeric(value) {
@@ -293,10 +294,10 @@ userApi.post('/therapist_promotion', async (req, res) => {
         });
         await User.update(
             {
-              TherapistId: therapist.id
+                TherapistId: therapist.id
             },
             {
-              where: { id: req.user.id },
+                where: { id: req.user.id },
             }
         );
         return res.status(200).json({
