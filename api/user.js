@@ -151,8 +151,6 @@ userApi.get('/logout', function (req, res) {
 });
 
 userApi.post('/edit', async function (req, res) {
-    if (!checkUserLogged()) return;
-
     var userData = [req.body.email, req.body.username, req.body.firstname, req.body.lastname, req.body.phone, req.body.mobile, req.body.address];
 
     if (!isNumeric(userData[5]) || !isNumeric(userData[4])) {
