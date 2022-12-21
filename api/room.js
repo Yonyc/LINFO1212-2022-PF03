@@ -76,7 +76,7 @@ roomApi.post("/book", async (req, res) => {
 
     let end;
     try {
-        if (req.body.duration <= .5) return sendError(res, "Impossible de réserver une plage si peu étendue.", "ROOM_RESERVATION_TOO_SHORT");
+        if (req.body.duration < .5) return sendError(res, "Impossible de réserver une plage si peu étendue.", "ROOM_RESERVATION_TOO_SHORT");
         if (req.body.duration > 4) return sendError(res, "Impossible de réserver une plage si étendue.", "ROOM_RESERVATION_TOO_LONG");
         end = new Date(start + req.body.duration*60*60*1000);
     } catch (error) {
@@ -97,7 +97,7 @@ roomApi.post("/book", async (req, res) => {
                 }
             }
         });
-        if (roomReservations) return sendError(res, "Ce créneau est déjà réservé pour cette salle.", "ROOM_ALREADY_BOOKED");
+        if (roomReservations.length > 0) return sendError(res, "Ce créneau est déjà réservé pour cette salle.", "ROOM_ALREADY_BOOKED");
 
         let therapist = await getTherapist(req);
 
