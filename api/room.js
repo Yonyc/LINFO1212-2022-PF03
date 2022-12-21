@@ -25,16 +25,21 @@ roomApi.post('/display_infos', async (req, res) => {
 });
 
 roomApi.post('/calendar', async (req, res) => {
+    let where = {
+        start: {
+            [Op.lte]: req.body.end
+        },
+        end: {
+            [Op.gte]: req.body.start
+        }
+    };
+
+    if (req.body.roomID)
+        where.RoomId = req.body.roomID;
+
     try {
         let rooms = await RoomReservations.findAll({
-            where: {
-                start: {
-                    [Op.lte]: req.body.end
-                },
-                end: {
-                    [Op.gte]: req.body.start
-                }
-            },
+            where: where,
             attributes: ["id", "start", "end", "RoomId"],
             include: [
                 {
