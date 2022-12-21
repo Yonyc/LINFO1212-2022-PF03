@@ -77,18 +77,29 @@ async function updateRoomList() {
     } catch (err) {throw err;}
 }
 
+function setError(error) {
+    document.querySelector('#booking .error').innerText = error;
+}
+
+function getReservationDate() {
+    let date = document.querySelector('.input_date').value;
+    let hour = document.querySelector('.input_hour').value;
+
+    if (!date || date.length <= 0 || !hour || hour.length <= 0) return;
+
+    return new Date(date.replaceAll("-", "/") + "-" + hour);
+}
+
 function refreshUserEvent() {
     let e = calendar.getEventById("demand");
 
     if (e)
         e.remove();
 
-    let date = document.querySelector('.input_date').value;
-    let hour = document.querySelector('.input_hour').value;
+    let date = getReservationDate();
 
-    if (!date || date.length <= 0 || !hour || hour.length <= 0) return;
+    if (!date) return;
 
-    date = new Date(date.replaceAll("-", "/") + "-" + hour);
     let endDate = new Date(date);
     endDate.setMinutes(endDate.getMinutes() + 60);
 
@@ -153,6 +164,19 @@ function generateCalendarFilters() {
     });
 }
 
+function generateDuration() {
+    let min = .5;
+    let max = 4;
+
+    let selector = document.querySelector(".input_duration");
+    if (!selector) return;
+    selector.innerHTML = "";
+
+    for (let i = min; i <= max; i += .25) {
+        selector.innerHTML += `<option value="${i}">${String(Math.floor(i)).padStart(2, "0")}:${String(i % 1 * 60).padStart(2, "0")}</option>`;
+    }
+}
+
 function updateCalendarFilters() {
     let flipper = document.querySelector(".calendar_container #flip_filters");
     document.querySelectorAll(".calendar_container .filters input[type=checkbox]").forEach(i => {
@@ -161,13 +185,66 @@ function updateCalendarFilters() {
     refreshCalendarEvents();
 }
 
-export async function main() {
-    document.getElementById("myTime").min = "08:00";
-    document.getElementById("myTime").max = "19:00";
+async function askReservation() {
+    let btn = document.querySelector("#reservation_btn");
+    btn.setAttribute("disabled", null);
 
+    let date = getReservationDate();
+    if (!date) return setError("Aucune date sélectionée");
+
+    let duration = document.querySelector(".input_duration");
+    if (!duration) return setError("Aucune durée sélectionée");
+
+    let reccurence = document.querySelector(".input_reccurence");
+    if (!reccurence) return setError("Aucune réccurence sélectionée");
+
+    let end_reccurence = document.querySelector(".input_end_reccurence");
+    if (!end_reccurence || (reccurence.value != "none" && end_reccurence.value.length <= 0)) return;
+    end_reccurence = new Date(end_reccurence.value.replaceAll("-", "/"));
+
+    let room = document.querySelector(".input_room");
+    if (!room) return;
+
+    let err;
+    try {
+        let res = await fetch(api_url + "/room/book", {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                date: date,
+                duration: duration.value,
+                reccurence: reccurence.value,
+                end_reccurence: end_reccurence,
+                room: room.value
+            })
+        });
+        
+        if (res.status != 200) {
+            setError(res.data.message);
+            return;
+        }
+
+        if (!res.success) {
+            setError(res.data.message);
+            return;
+        }
+
+        setError("");
+
+    } catch (e) {err = e;}
+    btn.removeAttribute("disabled");
+    if (!err)
+        document.querySelector("a[href='/therapist']").click();
+}
+
+export async function main() {
     await updateRoomList();
 
     generateCalendarFilters();
+
+    generateDuration();
 
     loadCalendar();
 
@@ -176,4 +253,6 @@ export async function main() {
     document.querySelector(".input_room").addEventListener("input", e => refreshUserEvent());
 
     document.querySelector(".calendar_container #flip_filters").addEventListener("click", e => updateCalendarFilters());
+
+    document.querySelector("#reservation_btn").addEventListener("click", e => askReservation());
 };
