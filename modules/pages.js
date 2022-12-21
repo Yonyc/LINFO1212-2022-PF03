@@ -12,7 +12,7 @@ pagesRouter.use("/", async (req, res, next)=>{
 
 export function renderTemplate(req, res, path="", title="", args={}) {
     if (req.query.content) {
-        res.render(path, args);
+        res.render(path, {args: args});
         return;
     }
     if (req.query.infos) {
