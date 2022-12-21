@@ -36,6 +36,7 @@ function changePage(data, urlPath){
 
     document.title = data.pageTitle;
     window.history.pushState({"html":data.html,"pageTitle":data.pageTitle},"", urlPath);
+    window.scrollTo(0,0)
     changeContentLinkEvent();
 }
 
@@ -74,6 +75,7 @@ window.onpopstate = function(e){
     if(e.state){
         document.querySelector("body > .container-fluid").innerHTML = e.state.html;
         document.title = e.state.pageTitle;
+        window.scrollTo(0,0)
         changeContentLinkEvent();
     }
 };
@@ -105,9 +107,9 @@ function navbarOverlap() {
 document.addEventListener("scroll", e => navbarOverlap());
 
 function checkPageForNavLink() {
-    if (window.location.pathname == '/booking' || window.location.pathname == '/therapist' || window.location.pathname == '/profile')
+    if (window.location.pathname != '/')
         window.location.href = "/";
-    else if(document.getElementById("aaa").getAttribute("href") == "#one"){
+    else if(document.getElementById("a").getAttribute("href") == "#one"){
         window.location.href = "/";
     }
  }
