@@ -1,25 +1,21 @@
 import { Router } from "express";
+import { sendError } from "../api/api.js";
+import { UserRoles } from "./database.js";
+import { renderTemplate } from "./pages.js";
 
 export const adminPagesRouter = new Router();
 
-function renderTemplate(req, res, path="", title="", args={}) {
-    if (req.query.content) {
-        res.render(path, args);
-        return;
-    }
-    if (req.query.infos) {
-        res.json({title: title});
-        return;
-    }
-
-    res.render("partials/template", {title: title, path: "../" + path, args: args });
+async function isAdmin(req) {
+    let roles = await UserRoles.findAll({ where: { UserId: req?.user.id } });
+    for (let i = 0; i < roles.length; i++)
+        if (roles[i].RoleId == 1)
+            return true;
+    return false;
 }
 
-adminPagesRouter.use("/", (req, res, next) => {
-    if (!req.user || !req.user.admin) {
-        res.status(401).send("You are not administrator");
-        res.end();
-        return;
+adminPagesRouter.use("/", async (req, res, next) => {
+    if (!req.user || !(await isAdmin(req))) {
+        return res.status(401).send("You are not administrator").end();
     }
     next();
 });
