@@ -2,10 +2,7 @@
 
 var calendar;
 
-export function main() {
-    document.getElementById("myTime").min = "08:00";
-    document.getElementById("myTime").max = "19:00";
-
+async function loadCalendar() {
     var calendarEl = document.getElementById('calendar');
 
     calendar = new FullCalendar.Calendar(calendarEl, {
@@ -19,19 +16,14 @@ export function main() {
         navLinks: true,
         eventLimit: true,
         eventRender: function(info) {
-            var tooltip = new Tooltip(info.el, {
-                title: info.event.extendedProps.description,
-                placement: 'top',
-                trigger: 'hover',
-                container: 'body'
-            });
         },
-        events: {
-            url: './api/events',
-            failure: function() {
-                document.getElementById('script-warning').style.display = 'block'
+        eventSources: [
+            {
+                url: '/api/room/calendar',
+                method: 'POST',
+                failure: function (e) {}
             }
-        },
+        ],
         eventTimeFormat: { // like '14:30:00'
             hour: '2-digit',
             minute: '2-digit',
@@ -52,5 +44,43 @@ export function main() {
     });
 
     calendar.render();
+}
+
+async function updateRoomList() {
+    try {
+        let res = await fetch(api_url + "/room/display_infos", {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            }
+        });
+        
+        if (res.status != 200)
+            return false;
+        
+        res = await res.json();
+
+        if (!res.success)
+            return false;
+
+        let roomListElem = document.querySelector(".roomlist_selector");
+        if (!roomListElem)
+            return false;
+
+        roomListElem.innerHTML = "";
+        res.data.roomList.forEach(room => {
+            roomListElem.innerHTML += `<option value="${room.id}">${room.name}</option>`;
+        });
+
+    } catch (err) {throw err;}
+}
+
+export function main() {
+    document.getElementById("myTime").min = "08:00";
+    document.getElementById("myTime").max = "19:00";
+
+    loadCalendar();
+
+    updateRoomList();
     
 };
