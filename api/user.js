@@ -15,10 +15,9 @@ async function getUser(username) {
     return User.findOne({ where: { username: username } });
 }
 
-function checkUserLogged(req, res) {
+export function checkUserLogged(req, res) {
     if (!req.user || !req.user.id) {
-        res.status(401).json({ success: false, message: "User loggin required." });
-        res.end();
+        sendError(res, "User loggin required.", "USER_NOT_LOGGED", 401);
         return false;
     }
     return true;

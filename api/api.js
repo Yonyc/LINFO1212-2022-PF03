@@ -33,8 +33,6 @@ export function sendSuccess(res, message, code, http_code = 200) {
     }, null, http_code);
 }
 
-console.log("API LOADED !");
-
 export const api = new Router();
 
 
@@ -51,3 +49,5 @@ api.use("/admin", adminApi);
 api.use('/', (req, res) => {
     sendError(res, "No route found :/", "NOT_FOUND_ROUTE", 404);
 });
+
+console.log("API LOADED !");

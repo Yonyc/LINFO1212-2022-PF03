@@ -10,7 +10,7 @@ pagesRouter.use("/", async (req, res, next)=>{
     next();
 });
 
-function renderTemplate(req, res, path="", title="", args={}) {
+export function renderTemplate(req, res, path="", title="", args={}) {
     if (req.query.content) {
         res.render(path, args);
         return;

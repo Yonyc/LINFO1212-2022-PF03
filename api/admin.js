@@ -6,18 +6,15 @@ import { sendError, sendSuccess } from "./api.js";
 export const adminApi = new Router();
 
 async function isAdmin(req) {
-    let roles = await UserRoles.findAll({ where: { UserId: req.user.id } });
-    roles.forEach(element => {
-        if (element.RoleId == 1) {
+    let roles = await UserRoles.findAll({ where: { UserId: req?.user.id } });
+    for (let i = 0; i < roles.length; i++)
+        if (roles[i].RoleId == 1)
             return true;
-        }
-    });
-
     return false;
 }
 
 adminApi.use("/", async (req, res, next) => {
-    if (!req.user || !isAdmin(req)) {
+    if (!req.user || !(await isAdmin(req))) {
         return sendError(res, "You are not an administrator", "NOT_ADMINISTRATOR", 401);
     }
     next();
