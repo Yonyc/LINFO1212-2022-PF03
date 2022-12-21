@@ -86,8 +86,7 @@ function getReservationDate() {
     let hour = document.querySelector('.input_hour').value;
 
     if (!date || date.length <= 0 || !hour || hour.length <= 0) return;
-
-    return new Date(date.replaceAll("-", "/") + "-" + hour);
+    return new Date(date + " " + hour);
 }
 
 function refreshUserEvent() {
@@ -200,7 +199,7 @@ async function askReservation() {
 
     let end_reccurence = document.querySelector(".input_end_reccurence");
     if (!end_reccurence || (reccurence.value != "none" && end_reccurence.value.length <= 0)) return;
-    end_reccurence = new Date(end_reccurence.value.replaceAll("-", "/"));
+    end_reccurence = new Date(end_reccurence.value);
 
     let room = document.querySelector(".input_room");
     if (!room) return;
