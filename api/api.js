@@ -8,7 +8,8 @@ import { userApi } from "./user.js";
 export function sendCustomError(res, data, suppData = {}, http_code = 200) {
     return res.status(http_code).json({
         success: false,
-        data: {...data, ...suppData}
+        data: data,
+        ...suppData
     }).end();
 }
 
@@ -22,7 +23,8 @@ export function sendError(res, message, code, http_code = 200) {
 export function sendCustomSuccess(res, data, suppData = {}, http_code = 200) {
     return res.status(http_code).json({
         success: true,
-        data: {...data, ...suppData}
+        data: data,
+        ...suppData
     }).end();
 }
 
