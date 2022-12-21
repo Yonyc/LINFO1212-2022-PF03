@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { checkUserTherapist } from "../api/functions.js";
 import { adminPagesRouter } from "./adminPages.js";
 import { User } from "./database.js";
 import { renderCSS } from "./scss.js";
@@ -17,28 +18,24 @@ export async function renderTemplate(req, res, path="", title="", args={}) {
         });
         args.user = user.dataValues;
     }
-    if (req.query.content) {
-        res.render(path, {args: args});
-        return;
-    }
-    if (req.query.infos) {
-        res.json({title: title});
-        return;
-    }
+    if (req.query.content)
+        return res.status(200).render(path, {args: args});
+    if (req.query.infos)
+        return res.status(200).json({title: title}).end();
 
     res.render("partials/template", {title: title, path: "../" + path, args: args });
 }
 
 pagesRouter.use("/profile", async (req, res) => {
-    let args = {};
-    renderTemplate(req, res, "pages/profile", "CT - profile", {args: args});
+    renderTemplate(req, res, "pages/profile", "CT - profile", {});
 });
 
 pagesRouter.use("/therapist", (req, res) => {
     renderTemplate(req, res, "pages/therapist", "Mon espace", {});
 });
 
-pagesRouter.use("/booking", (req, res) => {
+pagesRouter.use("/booking", async (req, res) => {
+    if (!await checkUserTherapist(req, res)) return false;
     renderTemplate(req, res, "pages/booking", "Réservation", {});
 });
 

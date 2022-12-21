@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { Room, RoomPrice } from "../../modules/database.js";
-import { sendError, sendSuccess } from "../api.js";
+import { sendError, sendSuccess } from "../functions.js";
 
 export const adminRoomApi = new Router();
 

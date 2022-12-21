@@ -1,17 +1,9 @@
 import { Router } from "express";
-import { Therapist, User, UserRoles } from "../modules/database.js";
+import { Therapist, User } from "../modules/database.js";
 import { adminRoomApi } from "./admin/room.js";
-import { sendError, sendSuccess } from "./api.js";
+import { isAdmin, sendError, sendSuccess } from "./functions.js";
 
 export const adminApi = new Router();
-
-async function isAdmin(req) {
-    let roles = await UserRoles.findAll({ where: { UserId: req?.user.id } });
-    for (let i = 0; i < roles.length; i++)
-        if (roles[i].RoleId == 1)
-            return true;
-    return false;
-}
 
 adminApi.use("/", async (req, res, next) => {
     if (!req.user || !(await isAdmin(req))) {
