@@ -1,0 +1,20 @@
+<div class="container pt-nav">
+
+    <div class="row">
+
+        <%- include("./sidebar.ejs") %>
+
+        <div class="col-10">
+
+            <%- include("./home.ejs", {args: args}); %>
+
+        </div>
+
+
+    </div>
+</div>
+
+<script type="module" id="re_script">
+    import { main } from "/js/panel.js";
+    main();
+</script>
