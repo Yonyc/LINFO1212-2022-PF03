@@ -199,7 +199,7 @@ async function askReservation() {
 
     let end_reccurence = document.querySelector(".input_end_reccurence");
     if (!end_reccurence || (reccurence.value != "none" && end_reccurence.value.length <= 0)) return;
-    end_reccurence = new Date(end_reccurence.value);
+    end_reccurence = (end_reccurence.value.length > 0) ? new Date(end_reccurence.value) : new Date();
 
     let room = document.querySelector(".input_room");
     if (!room) return;
@@ -221,9 +221,11 @@ async function askReservation() {
         });
         
         if (res.status != 200) {
+            res = await res.json();
             setError(res.data.message);
             return;
         }
+        res = await res.json();
 
         if (!res.success) {
             setError(res.data.message);
@@ -232,7 +234,7 @@ async function askReservation() {
 
         setError("");
 
-    } catch (e) {err = e;}
+    } catch (e) {err = e;console.error(e);}
     btn.removeAttribute("disabled");
     if (!err)
         document.querySelector("a[href='/therapist']").click();
