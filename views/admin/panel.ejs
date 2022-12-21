@@ -5,12 +5,42 @@
         <%- include("./sidebar.ejs") %>
 
         <div class="col-10">
+            
+            <div class="p-4 p-md-5 mb-4 text-white text-center rounded bg-dark">
 
-            <%- include("./home.ejs", {args: args}); %>
+                <div class="px-0">
+                    <h1 class="display-4 fst-italic">Bienvenue sur le panel d'administration</h1>
+                    <p class="lead my-3">Ce panel administratif permet aux administrateurs de gérer les demandes d'élévation des utilisateurs en thérapeute ou en administrateur mais aussi permettre à la création de nouvelles salles et la gestion des locaux du Centre Tremplin.</p>
+                </div>
+            </div>
+            
+            <div class="row mb-2">
 
+                <div class="col-md-6">
+                    <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                        <div class="col p-4 d-flex flex-column position-static">
+                            <strong class="d-inline-block mb-2 text-primary">Thérapeutes</strong>
+                            <h3 class="mb-0">Gestion des demandes d'élévation</h3>
+                            <div class="mb-1 text-muted">Accès admin requis</div>
+                            <p class="card-text mb-auto">Vous retrouverez ici la page permettant de gérer les demandes d'élévation des utilisateurs.</p>
+                            <a class="btn btn-primary" href="#" role="button">Accéder à la page</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                        <div class="col p-4 d-flex flex-column position-static">
+                            <strong class="d-inline-block mb-2 text-success">Salles</strong>
+                            <h3 class="mb-0">Gestion et création des salles</h3>
+                            <div class="mb-1 text-muted">Accès admin requis</div>
+                            <p class="mb-auto">Vous retrouverez ici la page permettant de gérer et créer les salles du Centre Tremplin.</p>
+                            <a class="btn btn-primary" href="#" role="button">Accéder à la page</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-
-
     </div>
 </div>
 
