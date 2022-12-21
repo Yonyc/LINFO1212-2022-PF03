@@ -1,9 +1,24 @@
-<div class="text-center pt-nav">
-    <h1 class="title">Demandes (<span id="therapist_demands_count">0</span>)</h1>
+<div class="container pt-nav">
+
+    <div class="row">
+
+        <%- include("./sidebar.ejs") %>
+
+        <div class="col-10">
+
+            <div class="text-center pt-nav">
+                <h1 class="title">Demandes (<span id="therapist_demands_count">0</span>)</h1>
+            </div>
+            <div class="demands-list container"></div>
+
+        </div>
+
+
+    </div>
 </div>
-<div class="demands-list container"></div>
 
 <script type="module" id="re_script">
     import { main } from "/js/admin_therapists.js";
+    import { main } from "/js/panel.js";
     main();
 </script>
