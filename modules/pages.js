@@ -18,11 +18,7 @@ export async function renderTemplate(req, res, path="", title="", args={}) {
         args.user = user.dataValues;
     }
     if (req.query.content) {
-<<<<<<< HEAD
         res.render(path, {args: args});
-=======
-        res.render(path, {args:args});
->>>>>>> 01bdb9c4f0bcfd2c3678d46e353315f73df53a9a
         return;
     }
     if (req.query.infos) {
