@@ -10,9 +10,19 @@ pagesRouter.use("/", async (req, res, next)=>{
     next();
 });
 
-export function renderTemplate(req, res, path="", title="", args={}) {
+export async function renderTemplate(req, res, path="", title="", args={}) {
+    if (req.user) {
+        let user = await User.findByPk(req.user.id, {
+            attributes: ["username", "firstname", "lastname", "email", "phone", "mobilephone", "address", "url_pp"]
+        });
+        args.user = user.dataValues;
+    }
     if (req.query.content) {
+<<<<<<< HEAD
         res.render(path, {args: args});
+=======
+        res.render(path, {args:args});
+>>>>>>> 01bdb9c4f0bcfd2c3678d46e353315f73df53a9a
         return;
     }
     if (req.query.infos) {
@@ -25,12 +35,6 @@ export function renderTemplate(req, res, path="", title="", args={}) {
 
 pagesRouter.use("/profile", async (req, res) => {
     let args = {};
-    if (req.user) {
-        let user = await User.findByPk(req.user.id, {
-            attributes: ["username", "firstname", "lastname", "email", "phone", "mobilephone", "address", "url_pp"]
-        });
-        args.user = user.dataValues;
-    }
     renderTemplate(req, res, "pages/profile", "CT - profile", {args: args});
 });
 
