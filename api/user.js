@@ -269,7 +269,7 @@ const upload = multer({
 });
 
 userApi.post('/upload_profile_picture', upload.single('profile_picture'), (req, res) => {
-    if (!checkUserLogged()) return;
+    if (!checkUserLogged(req, res)) return;
     let db_path = req.file.path.substring(req.file.path.indexOf("/public/") + 8);
     return res.status(200).send({
         error: 'none',
