@@ -63,7 +63,7 @@ async function updateRoomList() {
         if (!res.success)
             return false;
 
-        let roomListElem = document.querySelector(".roomlist_selector");
+        let roomListElem = document.querySelector(".input_room");
         if (!roomListElem)
             return false;
 
@@ -75,6 +75,33 @@ async function updateRoomList() {
     } catch (err) {throw err;}
 }
 
+function refreshUserEvent() {
+    let e = calendar.getEventById("demand");
+
+    if (e)
+        e.remove();
+
+    let date = document.querySelector('.input_date').value;
+    let hour = document.querySelector('.input_hour').value;
+
+    if (!date || date.length <= 0 || !hour || hour.length <= 0) return;
+
+    date = new Date(date.replaceAll("-", "/") + "-" + hour);
+    let endDate = new Date(date);
+    endDate.setMinutes(endDate.getMinutes() + 60);
+
+    let room = document.querySelector(".input_room");
+    if (!room) return;
+
+    calendar.addEvent({
+        id: "demand",
+        roomID: room.value,
+        title: room[room.selectedIndex].text,
+        start: date.toISOString(),
+        end: endDate.toISOString()
+    });
+}
+
 export function main() {
     document.getElementById("myTime").min = "08:00";
     document.getElementById("myTime").max = "19:00";
@@ -82,5 +109,8 @@ export function main() {
     loadCalendar();
 
     updateRoomList();
-    
+
+    document.querySelector(".input_date").addEventListener("input", e => refreshUserEvent());
+    document.querySelector(".input_hour").addEventListener("input", e => refreshUserEvent());
+    document.querySelector(".input_room").addEventListener("input", e => refreshUserEvent());
 };
