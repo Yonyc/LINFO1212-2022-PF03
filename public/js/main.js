@@ -4,7 +4,8 @@ function preventReloadPageIfLocal(element) {
         if (!href || !href.startsWith(document.location.origin) || href.includes("#")) return;
         e.preventDefault();
         fetchPage(href).then(page => {
-            changePage(page, href);
+            if (page)
+                changePage(page, href);
         });
     });
 }
@@ -55,8 +56,23 @@ async function fetchPage(url) {
         },
     });
 
-    page =  await (await page).text();
-    title = await (await title).json();
+    page = await page;
+    title = await title;
+
+    if (page.status != 200) {
+        page = await page.json();
+        console.log(page.data.message);
+        return;
+    }
+    page =  await page.text();
+
+    if (title.status != 200) {
+        title = await title.json();
+        console.log(title.data.message);
+        return;
+    }
+    title = await title.json();
+
     return {
         html: page,
         pageTitle: title.title

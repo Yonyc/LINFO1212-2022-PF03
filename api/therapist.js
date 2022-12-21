@@ -1,24 +1,8 @@
 import { Router } from "express";
 import { Appointment, Therapist } from '../modules/database.js'
-import { sendCustomSuccess, sendError, sendSuccess } from "./api.js";
-import { checkUserLogged } from "./user.js";
+import { sendCustomSuccess, sendError, sendSuccess } from "./functions.js";
 
 export const therapistApi = new Router();
-
-export async function checkUserTherapist(req, res) {
-    if (!checkUserLogged(req, res)) return false;
-    try {
-        let therapist = Therapist.findAll({
-            where: {
-                UserId: req.user.id
-            }
-        });
-        if (therapist) 
-            return true;
-    } catch (error) {}
-    sendError(res, "You need to be a therapist to access this ressource", "USER_NOT_THERPIST");
-    return false;
-}
 
 therapistApi.post('/getalltherapist', async (req, res) => {
     try {

@@ -1,10 +1,9 @@
 import { Router } from "express";
 import { Op } from "sequelize";
+import { Appointment } from '../modules/database.js'
+import { sendCustomSuccess, sendError } from "./functions.js";
 
 export const appointmentApi = new Router();
-
-import { Appointment } from '../modules/database.js'
-import { sendCustomSuccess, sendError } from "./api.js";
 
 appointmentApi.post('/getallbooking', async (req, res) => {
     try {

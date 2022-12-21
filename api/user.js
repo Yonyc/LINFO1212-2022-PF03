@@ -5,7 +5,8 @@ import passport from 'passport';
 import { Strategy as LocalStrategy } from "passport-local";
 import multer from 'multer';
 import path from 'path';
-import { sendCustomSuccess, sendError } from "./api.js";
+import { sendCustomSuccess, sendError } from "./functions.js";
+import { checkUserLogged } from "./functions.js";
 
 export const userApi = new Router();
 
@@ -13,14 +14,6 @@ const salt = "$2b$10$XzJlrKQwqwFg4DZNXmmHPO";
 
 async function getUser(username) {
     return User.findOne({ where: { username: username } });
-}
-
-export function checkUserLogged(req, res) {
-    if (!req.user || !req.user.id) {
-        sendError(res, "User loggin required.", "USER_NOT_LOGGED", 401);
-        return false;
-    }
-    return true;
 }
 
 passport.use(new LocalStrategy(
