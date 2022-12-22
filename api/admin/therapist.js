@@ -30,7 +30,7 @@ adminTherapistApi.post("/all", async (req, res) => {
 });
 
 
-adminApi.post("/approvals", async (req, res) => {
+adminTherapistApi.post("/approvals", async (req, res) => {
     res.status(200).json({
         success: true,
         therapists: await Therapist.findAll({
@@ -49,7 +49,7 @@ adminApi.post("/approvals", async (req, res) => {
     }).end();
 });
 
-adminApi.post("/promote", async (req, res) => {
+adminTherapistApi.post("/promote", async (req, res) => {
     if (!req.body.therapist)
         return sendError(res, "Therapist id not provided", "THERAPIST_ID_MISSING");
     let therapist = await Therapist.findByPk(req.body.therapist);
@@ -65,7 +65,7 @@ adminApi.post("/promote", async (req, res) => {
     }
 });
 
-adminApi.post("/refuse", async (req, res) => {
+adminTherapistApi.post("/refuse", async (req, res) => {
     if (!req.body.therapist)
         return sendError(res, "Therapist id not provided", "THERAPIST_ID_MISSING");
     let therapist = await Therapist.findByPk(req.body.therapist);
