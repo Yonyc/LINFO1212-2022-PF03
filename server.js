@@ -7,7 +7,7 @@ import { api } from "./api/api.js";
 import passport from "passport";
 
 renderCSS();
-const app = express();
+export const app = express();
 const port = 3000;
 
 // Using ejs as render engine

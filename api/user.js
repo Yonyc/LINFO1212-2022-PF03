@@ -85,8 +85,8 @@ userApi.post('/register', function (req, res) {
 
     }).then(users => {
         if (users) {
-            return res.status(200).send({
-                error: 'none'
+            return res.status(400).send({
+                error: 'exists'
             });
         }
         else {
