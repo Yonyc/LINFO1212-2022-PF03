@@ -102,7 +102,7 @@ roomApi.post("/book", async (req, res) => {
                             [Op.gte]: start
                         },
                         start: {
-                            [Op.lt]: start
+                            [Op.lt]: end
                         }
                     },
                     [Op.and]: {
@@ -110,7 +110,7 @@ roomApi.post("/book", async (req, res) => {
                             [Op.gt]: start
                         },
                         start: {
-                            [Op.lte]: start
+                            [Op.lte]: end
                         }
                     }
                 }
