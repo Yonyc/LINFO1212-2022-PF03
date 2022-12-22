@@ -19,6 +19,7 @@
             <%- include(path, args); %>
         </div>
         <%- include('./footer.ejs', args); %>
+        <%- include('./error.ejs') %>
 
         <%- (args.user) ? `<script>user = ${JSON.stringify(args.user)};</script>` : "" %>
         <script src="https://kit.fontawesome.com/57cafc0dcd.js" crossorigin="anonymous"></script>

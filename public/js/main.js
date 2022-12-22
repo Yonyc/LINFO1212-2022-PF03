@@ -1,3 +1,5 @@
+let errorModal = bootstrap.Toast.getOrCreateInstance(document.querySelector("#errorNotification"));
+
 function preventReloadPageIfLocal(element) {
     element.addEventListener("click", e => {
         let href = e.currentTarget.href;
@@ -58,17 +60,21 @@ async function fetchPage(url) {
 
     page = await page;
     title = await title;
-
+    console.log(errorModal);
     if (page.status != 200) {
         page = await page.json();
-        console.log(page.data.message);
+        if (!errorModal._element) errorModal = bootstrap.Toast.getOrCreateInstance(document.querySelector("#errorNotification"));
+        errorModal._element.querySelector(".error_text").innerText = page.data.message;
+        errorModal.show();
         return;
     }
     page =  await page.text();
 
     if (title.status != 200) {
         title = await title.json();
-        console.log(title.data.message);
+        if (!errorModal._element) errorModal = bootstrap.Toast.getOrCreateInstance(document.querySelector("#errorNotification"));
+        errorModal._element.querySelector(".error_text").innerText = title.data.message;
+        errorModal.show();
         return;
     }
     title = await title.json();
