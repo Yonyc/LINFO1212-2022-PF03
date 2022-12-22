@@ -76,30 +76,47 @@ roomApi.post("/book", async (req, res) => {
 
     let end;
     try {
-        if (req.body.duration < .5) return sendError(res, "Impossible de réserver une plage si peu étendue.", "ROOM_RESERVATION_TOO_SHORT");
-        if (req.body.duration > 4) return sendError(res, "Impossible de réserver une plage si étendue.", "ROOM_RESERVATION_TOO_LONG");
-        end = new Date(start + req.body.duration*60*60*1000);
+        let duration = parseFloat(req.body.duration);
+        if (duration < .5) return sendError(res, "Impossible de réserver une plage si peu étendue.", "ROOM_RESERVATION_TOO_SHORT");
+        if (duration > 4) return sendError(res, "Impossible de réserver une plage si étendue.", "ROOM_RESERVATION_TOO_LONG");
+        end = new Date(start);
+        end.setMinutes(end.getMinutes() + duration*60);
     } catch (error) {
         return sendError(res, "Erreur lors de la conversion de la date de fin.", "DATE_FORMAT_ERROR");
     }
 
     if (end.getHours() > 23) return sendError(res, "La fin de la réservation ne peut pas dépasser 23h.", "ROOM_RESERVATION_TOO_LATE");
 
+    let therapist = await getTherapist(req);
+
     try {
         let roomReservations = await RoomReservations.findAll({
             where: {
-                RoomId: req.body.room,
-                end: {
-                    [Op.gte]: start
+                [Op.or]: {
+                    RoomId: req.body.room,
+                    TherapistId: therapist.id
                 },
-                start: {
-                    [Op.lte]: start
+                [Op.or]: {
+                    [Op.and]: {
+                        end: {
+                            [Op.gte]: start
+                        },
+                        start: {
+                            [Op.lt]: start
+                        }
+                    },
+                    [Op.and]: {
+                        end: {
+                            [Op.gt]: start
+                        },
+                        start: {
+                            [Op.lte]: start
+                        }
+                    }
                 }
             }
         });
         if (roomReservations.length > 0) return sendError(res, "Ce créneau est déjà réservé pour cette salle.", "ROOM_ALREADY_BOOKED");
-
-        let therapist = await getTherapist(req);
 
         await RoomReservations.create({
             RoomId: req.body.room,

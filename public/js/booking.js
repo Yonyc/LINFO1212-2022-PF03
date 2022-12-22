@@ -98,13 +98,14 @@ function refreshUserEvent() {
     let date = getReservationDate();
 
     if (!date) return;
+    
+    let duration = document.querySelector(".input_duration");
 
     let endDate = new Date(date);
-    endDate.setMinutes(endDate.getMinutes() + 60);
+    endDate.setMinutes(endDate.getMinutes() + 60*duration?.value);
 
     let room = document.querySelector(".input_room");
     if (!room) return;
-
     calendar.addEvent({
         id: "demand",
         backgroundColor: "transparent",
@@ -223,12 +224,14 @@ async function askReservation() {
         if (res.status != 200) {
             res = await res.json();
             setError(res.data.message);
+            btn.removeAttribute("disabled");
             return;
         }
         res = await res.json();
 
         if (!res.success) {
             setError(res.data.message);
+            btn.removeAttribute("disabled");
             return;
         }
 
@@ -237,7 +240,7 @@ async function askReservation() {
     } catch (e) {err = e;console.error(e);}
     btn.removeAttribute("disabled");
     if (!err)
-        document.querySelector("a[href='/therapist']").click();
+        document.querySelector("a[href='/profile']").click();
 }
 
 export async function main() {
@@ -252,6 +255,7 @@ export async function main() {
     document.querySelector(".input_date").addEventListener("input", e => refreshUserEvent());
     document.querySelector(".input_hour").addEventListener("input", e => refreshUserEvent());
     document.querySelector(".input_room").addEventListener("input", e => refreshUserEvent());
+    document.querySelector(".input_duration").addEventListener("input", e => refreshUserEvent());
 
     document.querySelector(".calendar_container #flip_filters").addEventListener("click", e => updateCalendarFilters());
 
