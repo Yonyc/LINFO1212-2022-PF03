@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { Therapist, User } from "../modules/database.js";
 import { adminRoomApi } from "./admin/room.js";
+import { adminTherapistApi } from "./admin/therapist.js";
 import { isAdmin, sendError, sendSuccess } from "./functions.js";
 
 export const adminApi = new Router();
@@ -13,6 +14,8 @@ adminApi.use("/", async (req, res, next) => {
 });
 
 adminApi.use("/room", adminRoomApi);
+
+adminApi.use("/therapist", adminTherapistApi);
 
 adminApi.post("/therapist_approvals", async (req, res) => {
     res.status(200).json({
