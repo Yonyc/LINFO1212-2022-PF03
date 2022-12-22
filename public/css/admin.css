@@ -196,6 +196,6 @@
     border-radius: 50%;
 }
 
-footer {
+.main:has( .admin_container) ~ footer {
     display: none;
 }
