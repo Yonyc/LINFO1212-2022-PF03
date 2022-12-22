@@ -122,6 +122,8 @@ export function generateCalendarFilters() {
 
         filters.appendChild(div);
     });
+
+    document.querySelector(".calendar_container #flip_filters").addEventListener("click", e => updateCalendarFilters());
 }
 
 export function updateCalendarFilters() {
