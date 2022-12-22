@@ -197,6 +197,16 @@ async function updateTherapistData() {
     }
 }
 
+async function disconnect() {
+    await fetch(api_url + "/user/logout");
+
+    user = null;
+    
+    updateUserEditPage();
+    display(divSelectors.login);
+    updateTherapistData();
+}
+
 export function main() {
     document.querySelector("#profil_edit")?.addEventListener("click", e => editProfile());
     document.querySelector(`${divSelectors.logged} input.firstname`)?.addEventListener("keyup", e => {
@@ -213,6 +223,7 @@ export function main() {
         login(log, pass);
     });
 
+    document.querySelector("#profil_disconnect").addEventListener("click", e => disconnect());
     document.querySelectorAll(`input`).forEach(el => {
         el.addEventListener("change", e => {
             let a = document.querySelector(`${divSelectors.logged} button#profil_edit`);

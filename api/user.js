@@ -5,7 +5,7 @@ import passport from 'passport';
 import { Strategy as LocalStrategy } from "passport-local";
 import multer from 'multer';
 import path from 'path';
-import { sendCustomSuccess, sendError } from "./functions.js";
+import { sendCustomSuccess, sendError, sendSuccess } from "./functions.js";
 import { checkUserLogged } from "./functions.js";
 
 export const userApi = new Router();
@@ -138,8 +138,11 @@ userApi.post('/login', passport.authenticate('local', {}), function (req, res) {
 });
 
 userApi.get('/logout', function (req, res) {
-    req.logout();
-    res.redirect('/');
+    req.logout((err) => {
+        if (err)
+            return sendError(res, "Une erreur innatendue s'est produite.", "UNEXPECTED_ERROR");
+        return sendSuccess(res);
+    });
 });
 
 userApi.post('/edit', async function (req, res) {
