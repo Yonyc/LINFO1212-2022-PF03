@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { Room, RoomReservations } from '../modules/database.js'
-import { sendCustomSuccess, sendError, sendSuccess } from "./functions.js";
+import { isAdmin, sendCustomSuccess, sendError, sendSuccess } from "./functions.js";
 import { Op } from "sequelize";
 import { checkUserTherapist, getTherapist } from "./functions.js";
 

@@ -9,9 +9,9 @@
 
         <%- include("./sidebar.ejs") %>
 
-        <div class="col-10 calendar_container">
+        <div class="col-10">
 
-            <div class="booking-form">
+            <div class="row calendar_container">
 
                 <div class="text-center">
 
@@ -24,10 +24,19 @@
 
                     <div class="filters"></div>
 
-            <div class="booking-form">
 
-                <div class="text-center">
-                    <h1 class="title">Gestion des salles</h1>
+                    <div class="col-sm-3">
+                        <!-- MULTI INPUT -->
+                        <input type="text" class="form-control input_users rounded-pill px-2" />
+                    </div>
+                    <div class="col-sm-9 users_list d-flex align-content-start flex-wrap"></div>
+            </div>
+            <div class="row">
+
+                <div class="row">
+                    <div class="text-center">
+                        <h1 class="title">Gestion des salles</h1>
+                    </div>
                 </div>
 
                 <div class="row pb-2 pt-4">
