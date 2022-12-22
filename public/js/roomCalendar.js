@@ -12,28 +12,33 @@ export async function updateRoomList() {
             }
         });
         
-        if (res.status != 200)
+        if (res.status != 200) {
+            res = await res.json();
+            console.log(res.data.message);
             return false;
+        }
         
         res = await res.json();
 
-        if (!res.success)
+        if (!res.success) {
+            console.log(res.data.message);
             return false;
+        }
+
+        rooms = res.data.roomList;
 
         let roomListElem = document.querySelector(".input_room");
-        if (!roomListElem)
-            return false;
-
-        roomListElem.innerHTML = "";
-        res.data.roomList.forEach(room => {
-            roomListElem.innerHTML += `<option value="${room.id}">${room.name}</option>`;
-        });
-        rooms = res.data.roomList;
+        if (roomListElem) {
+            roomListElem.innerHTML = "";
+            res.data.roomList.forEach(room => {
+                roomListElem.innerHTML += `<option value="${room.id}">${room.name}</option>`;
+            });
+        }
 
     } catch (err) {throw err;}
 }
 
-export async function loadCalendar() {
+export async function loadCalendar(params = {}) {
     var calendarEl = document.getElementById('calendar');
 
     calendar = new FullCalendar.Calendar(calendarEl, {
@@ -49,7 +54,7 @@ export async function loadCalendar() {
         eventRender: function(info) {},
         eventSources: [
             {
-                url: '/api/room/calendar',
+                url: api_url + (params.api_url ?? '/room/calendar'),
                 method: 'POST',
                 failure: function (e) {}
             }
@@ -76,16 +81,17 @@ export async function loadCalendar() {
     calendar.render();
 }
 
-export function refreshCalendarEvents() {
+export function refreshCalendarEvents(params = {}) {
     calendar.getEventSources().forEach(eS => eS.remove());
 
     document.querySelectorAll(".calendar_container .filters input[type=checkbox]").forEach(i => {
         if (!i.checked) return;
         calendar.addEventSource({
-            url: '/api/room/calendar',
+            url: api_url + (params.api_url ?? '/room/calendar'),
             method: 'POST',
             extraParams: {
-                roomID: i.id.split("_")[1]
+                roomID: i.id.split("_")[1],
+                ...params.suppData
             },
         });
     });
@@ -126,12 +132,12 @@ export function generateCalendarFilters() {
     document.querySelector(".calendar_container #flip_filters").addEventListener("click", e => updateCalendarFilters());
 }
 
-export function updateCalendarFilters() {
+export function updateCalendarFilters(params = {}) {
     let flipper = document.querySelector(".calendar_container #flip_filters");
     document.querySelectorAll(".calendar_container .filters input[type=checkbox]").forEach(i => {
         i.checked = flipper.checked;
     });
-    refreshCalendarEvents();
+    refreshCalendarEvents(params);
 }
 
 export function refreshUserEvent() {

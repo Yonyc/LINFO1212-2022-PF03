@@ -1,5 +1,6 @@
 import { Router } from "express";
-import { Room, RoomPrice } from "../../modules/database.js";
+import { Op } from "sequelize";
+import { Room, RoomPrice, Therapist } from "../../modules/database.js";
 import { sendError, sendSuccess } from "../functions.js";
 
 export const adminRoomApi = new Router();
@@ -66,4 +67,46 @@ adminRoomApi.post("/price/add", async (req, res) => {
     } catch (error) {
         sendError(res, "Error encountred while adding price to room", "ROOM_PRICE_ADD_ERROR");
     }
+});
+
+adminRoomApi.post('/calendar', async (req, res) => {
+    let where = {
+        start: {
+            [Op.lte]: req.body.end
+        },
+        end: {
+            [Op.gte]: req.body.start
+        }
+    };
+
+    if (req.body.roomID)
+        where.RoomId = req.body.roomID;
+
+    try {
+        if (req.body.users) {
+
+            where.Therapist = {};
+            where.Therapist.firstname = {
+                [Op.in]: JSON.parse(req.body.users).map(e => e.split(" ")).flat(1)
+            }
+        }
+    } catch (error) {}
+    try {
+        let rooms = await RoomReservations.findAll({
+            where: where,
+            attributes: ["id", "start", "end", "RoomId"],
+            include: [
+                {
+                    model: Room,
+                    attributes: ["name"]
+                },
+                {
+                    model: Therapist,
+                    attributes: ["firstname", "lastname"]
+                }
+            ]
+        });
+        return res.status(200).json(rooms.map(r => { return { ...r.dataValues, title: r.dataValues.Room.name } })).end();
+    } catch (error) { }
+    return sendError(res, "Error encountred while fetching rooms reservations.", "ROOM_RESERVATIONS_DATA_ERROR");
 });

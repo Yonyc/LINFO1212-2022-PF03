@@ -27,14 +27,12 @@
 
                 </div>
 
-                <div class="text-center">
-                    <link rel="stylesheet"
-                        href="https://cdn.jsdelivr.net/gh/bbbootstrap/libraries@main/choices.min.css">
-                    <div class="row d-flex justify-content-center mt-100">
-                        <div class="col-md-6"style="z-index: 2;">
-                            <select id="input_users" placeholder="Utilisateurs à afficher" multiple ></select>
-                        </div>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <!-- MULTI INPUT -->
+                        <input type="text" class="form-control input_users rounded-pill px-2" />
                     </div>
+                    <div class="col-sm-9 users_list d-flex align-content-start flex-wrap"></div>
                 </div>
 
                 <div id='calendar'></div>
