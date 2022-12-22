@@ -18,10 +18,11 @@ export async function isUserTherapist(req) {
     try {
         let therapist = await Therapist.findAll({
             where: {
-                UserId: req.user.id
+                UserId: req.user.id,
+                approved: true
             }
         });
-        if (therapist) 
+        if (therapist.length == 1) 
             return true;
     } catch (error) {}
 
@@ -32,7 +33,7 @@ export async function isUserTherapist(req) {
 export async function checkUserTherapist(req, res) {
     if (!checkUserLogged(req, res)) return false;
     if (!(await isUserTherapist(req))) {
-        sendError(res, "You need to be a therapist to access this ressource", "USER_NOT_THERAPIST");
+        sendError(res, "Vous devez être thérapeute pour accéder à cette resource.", "USER_NOT_THERAPIST", 401);
         return false;
     }
     return true

@@ -12,7 +12,7 @@ therapistApi.post('/getalltherapist', async (req, res) => {
         sendError(res, "Error encountred while counting active therapists", "THERAPIST_COUNT_ERROR");
     }
 
-})
+});
 
 async function setAppointment(date, duration, RoomReservation) {
     var endDate = new Date(date.getTime() + duration * 60000);
@@ -30,8 +30,4 @@ async function setAppointment(date, duration, RoomReservation) {
     });
 
     return newAppointment;
-}
-
-async function bookRoom(room, therapist, start, end) {
-
 }

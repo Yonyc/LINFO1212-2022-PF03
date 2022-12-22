@@ -6,7 +6,7 @@ export const adminPagesRouter = new Router();
 
 adminPagesRouter.use("/", async (req, res, next) => {
     if (!req.user || !(await isAdmin(req))) {
-        return sendError(res, "Vous devez être administrateur pour accéder à cetter ressource.", "PERMISSION_ADMIN", 401);
+        return sendError(res, "Vous devez être administrateur pour accéder à cette ressource.", "PERMISSION_ADMIN", 401);
     }
     next();
 });
