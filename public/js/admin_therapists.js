@@ -2,7 +2,7 @@ async function reloadTherapistList() {
     let list_container = document.querySelector(".demands-list");
     if (!list_container) return;
 
-    let therapist_demands = await fetch(api_url + "/admin/therapist_approvals", {method: "POST"});
+    let therapist_demands = await fetch(api_url + "/admin/therapist/approvals", {method: "POST"});
     therapist_demands = await therapist_demands.json();
 
     if (!therapist_demands.success) return;
@@ -27,7 +27,7 @@ async function reloadTherapistList() {
         approveBtn.classList.add("btn-outline-success");
         approveBtn.innerText = "Promote";
         approveBtn.addEventListener("click", async e => {
-            await fetch(api_url + "/admin/promote", {
+            await fetch(api_url + "/admin/therapist/promote", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -44,7 +44,7 @@ async function reloadTherapistList() {
         refuseBtn.classList.add("btn-outline-danger");
         refuseBtn.innerText = "Refuse";
         refuseBtn.addEventListener("click", async e => {
-            await fetch(api_url + "/admin/refuse", {
+            await fetch(api_url + "/admin/therapist/refuse", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
