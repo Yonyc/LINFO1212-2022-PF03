@@ -88,6 +88,11 @@ Therapist.init({
                 if (this.approved) throw new Error("User cannot be approved and rejected at the same time.");
             }
         }
+    },
+    description: {
+        type: DataTypes.TEXT,
+        defaultValue: "",
+        allowNull: false
     }
 }, { sequelize });
 
