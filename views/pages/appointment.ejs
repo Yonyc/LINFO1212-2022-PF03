@@ -1,1 +1,98 @@
 <!-- Page de réservation de rendez-vous pour les clients -->
+<div class="section" id="appointment">
+
+    <div class="section-center">
+
+        <div class="container">
+
+            <div class="row">
+
+                <div class="col"></div>
+
+                <div class="col-8">
+
+                    <div class="booking-cta">
+                        <h1 id="mainTitle">Demander un rendez-vous</h1>
+                        <p>Bienvenue sur notre pager de demande de rendez-vous. Ici vous pourrez demander un rendez-vous avec l'un de nos thérapeutes.
+                            Lorsque votre demande sera terminé, elle sera envoyé au thérapeute que vous souhaitez rencontrer. Celui-ci pourra ainsi prendre
+                            contact avec vous pour vous répondre.
+                        </p>
+                    </div>
+
+                </div>
+
+                <div class="col"></div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="col-md">
+
+                    <div class="booking-form">
+
+                        <div class="row pb-2">
+                            <div class="col-sm-6">
+                                <span class="form-label">Heure</span>
+                                <input class="form-control input_hour" type="time" step="900" min="07:00" max="23:00">
+                            </div>
+                            <div class="col-sm-6">
+                                <span class="form-label">Date</span>
+                                <input class="form-control input_date" id="myTime" type="date" placeholder="00:00">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <span class="form-label">Récurrence</span>
+                                    <select class="form-control input_reccurence">
+                                        <option value="none">Aucune</option>
+                                        <option value="daily">Tous les jours</option>
+                                        <option value="weekly">Toute les semaines</option>
+                                        <option value="monthly">Tous les mois</option>
+                                    </select>
+                                    <span class="select-arrow"></span>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <span class="form-label">Fin de réccurence</span>
+                                <input class="form-control input_end_reccurence" id="myTime" type="date" placeholder="00:00">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <span class="form-label">Nom du thérapeute souhaité</span>
+                                    <select class="form-control input_therapist">
+                                        <option value="johndoe">John Doe (Coach scolaire)</option>
+                                    </select>
+                                    <span class="select-arrow"></span>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <span class="form-label">Durée</span>
+                                <select class="form-control input_duration"></select>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <button class="submit-btn btn" id="reservation_btn">Demander le rendez-vous</button>
+                        </div>
+
+                        <div class="row">
+                            <span class="error text-danger"></span>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="module" id="re_script">
+    import { main } from "/js/appointment.js";
+    main();
+</script>
