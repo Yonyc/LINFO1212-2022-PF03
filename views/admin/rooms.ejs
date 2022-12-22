@@ -1,16 +1,59 @@
+<link href='/fullcalendar/packages/core/main.css' rel='stylesheet'>
+<link href='/fullcalendar/packages/daygrid/main.css' rel='stylesheet'>
+<link href='/fullcalendar/packages/timegrid/main.css' rel='stylesheet'>
+<link href='/fullcalendar/packages/list/main.css' rel='stylesheet'>
+
 <div class="container pt-nav">
 
     <div class="row">
 
         <%- include("./sidebar.ejs") %>
 
-        <div class="col-10">
+        <div class="col-10 calendar_container">
 
+            <div class="booking-form">
+
+                <div class="text-center">
+
+                    <span class="badge rounded-pill bg-dark m-2">Filtre:</span>
+
+                    <div class="form-check form-switch form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="flip_filters" checked>
+                        <label class="form-check-label" for="flexSwitchCheckDefault">Tous</label>
+                    </div>
+
+                    <div class="filters"></div>
+
+
+                </div>
+
+                <div class="text-center">
+                    <link rel="stylesheet"
+                        href="https://cdn.jsdelivr.net/gh/bbbootstrap/libraries@main/choices.min.css">
+                    <div class="row d-flex justify-content-center mt-100">
+                        <div class="col-md-6"style="z-index: 2;">
+                            <select id="input_users" placeholder="Utilisateurs à afficher" multiple ></select>
+                        </div>
+                    </div>
+                </div>
+
+                <div id='calendar'></div>
+
+            </div>
         </div>
     </div>
 </div>
 
 <script type="module" id="re_script">
     import { main } from "/js/panel.js";
+    import { main as room } from "/js/admin_rooms.js";
+
+    import '/fullcalendar/packages/core/main.js';
+    import '/fullcalendar/packages/interaction/main.js';
+    import '/fullcalendar/packages/daygrid/main.js';
+    import '/fullcalendar/packages/timegrid/main.js';
+    import '/fullcalendar/packages/list/main.js';
+
     main();
+    room();
 </script>

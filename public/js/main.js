@@ -60,7 +60,6 @@ async function fetchPage(url) {
 
     page = await page;
     title = await title;
-    console.log(errorModal);
     if (page.status != 200) {
         page = await page.json();
         if (!errorModal._element) errorModal = bootstrap.Toast.getOrCreateInstance(document.querySelector("#errorNotification"));
