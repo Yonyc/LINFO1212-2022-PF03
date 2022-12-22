@@ -40,7 +40,9 @@ pagesRouter.use("/booking", async (req, res) => {
     renderTemplate(req, res, "pages/booking", "Réservation", {});
 });
 
-pagesRouter.use("/appointment", (req, res) => {});
+pagesRouter.use("/appointment", (req, res) => {
+    renderTemplate(req, res, "pages/appointment", "CT - Rendez-vous", {});
+});
 
 pagesRouter.use("/admin", adminPagesRouter);
 
