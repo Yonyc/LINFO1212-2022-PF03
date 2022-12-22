@@ -1,15 +1,20 @@
 import { Therapist, UserRoles } from "../modules/database.js";
 
+export function isUserLogged(req) {
+    return req.user && req.user.id;
+}
+
 export function checkUserLogged(req, res) {
-    if (!req.user || !req.user.id) {
+    if (!isUserLogged(req)) {
         sendError(res, "User loggin required.", "USER_NOT_LOGGED", 401);
         return false;
     }
     return true;
 }
 
-export async function checkUserTherapist(req, res) {
-    if (!checkUserLogged(req, res)) return false;
+export async function isUserTherapist(req) {
+    if (!isUserLogged(req)) return false;
+
     try {
         let therapist = await Therapist.findAll({
             where: {
@@ -19,8 +24,18 @@ export async function checkUserTherapist(req, res) {
         if (therapist) 
             return true;
     } catch (error) {}
-    sendError(res, "You need to be a therapist to access this ressource", "USER_NOT_THERAPIST");
+
     return false;
+    
+}
+
+export async function checkUserTherapist(req, res) {
+    if (!checkUserLogged(req, res)) return false;
+    if (!(await isUserTherapist(req))) {
+        sendError(res, "You need to be a therapist to access this ressource", "USER_NOT_THERAPIST");
+        return false;
+    }
+    return true
 }
 
 export async function getTherapist(req) {
