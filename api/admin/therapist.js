@@ -42,7 +42,7 @@ adminTherapistApi.post("/approvals", async (req, res) => {
                 {
                     model: User,
                     as: "User",
-                    attributes: ["firstname", "lastname"]
+                    attributes: ["firstname", "lastname", "email", "phone", "username", "url_pp"]
                 }
             ]
         })
