@@ -45,7 +45,7 @@ export async function getTherapist(req) {
                 UserId: req.user.id
             }
         });
-        return therapist;
+        return therapist[0];
     } catch (error) {}
 }
 
