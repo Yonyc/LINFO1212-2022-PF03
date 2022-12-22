@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { adminApi } from "./admin.js";
 import { appointmentApi } from "./appointment.js";
+import { sendError } from "./functions.js";
 import { roomApi } from "./room.js";
 import { therapistApi } from "./therapist.js";
 import { userApi } from "./user.js";
