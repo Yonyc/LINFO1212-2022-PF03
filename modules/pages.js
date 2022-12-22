@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { checkUserTherapist } from "../api/functions.js";
+import { checkUserTherapist, isAdmin, isUserTherapist, sendError } from "../api/functions.js";
 import { adminPagesRouter } from "./adminPages.js";
 import { User } from "./database.js";
 import { renderCSS } from "./scss.js";
@@ -30,12 +30,13 @@ pagesRouter.use("/profile", async (req, res) => {
     renderTemplate(req, res, "pages/profile", "CT - profile", {});
 });
 
-pagesRouter.use("/therapist", (req, res) => {
+pagesRouter.use("/therapist", async (req, res) => {
+    if (!await checkUserTherapist(req, res)) return false;
     renderTemplate(req, res, "pages/therapist", "Mon espace", {});
 });
 
 pagesRouter.use("/booking", async (req, res) => {
-    if (!await checkUserTherapist(req, res)) return false;
+    if (!(await isUserTherapist(req) || await isAdmin(req))) return sendError(res, "Vous devez être thérapeute pour accéder à cette resource.", "USER_NOT_THERAPIST", 401);
     renderTemplate(req, res, "pages/booking", "Réservation", {});
 });
 
