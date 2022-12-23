@@ -11,5 +11,5 @@ export function main(){
 }
 
 export function updateTextInput(val) {
-    document.getElementById('textInput').value=val; 
+    document.querySelector('#roomPrice').value=val; 
 }

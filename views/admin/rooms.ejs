@@ -9,128 +9,133 @@
 
         <%- include("./sidebar.ejs") %>
 
-        <div class="col-10 pb-5">
+            <div class="col-10 pb-5">
 
-            <div class="booking-form row mt-5">
+                <div class="booking-form row mt-5">
 
-                <div class="row">
-                    <div class="text-center">
-                        <h1 class="title">Création de salle</h1>
-                    </div>
-                </div>
-
-                <div class="row pb-2 pt-4">
-                    <div class="col-sm-6">
-                        <i class="fa-sharp fa-solid fa-tag"></i> <label class="form-label"
-                            for="customRange1">Prix</label>
-                        <input type="number" id="textInput" value="" style="border:none;">
-                        <div class="range">
-                            <input type="range" name="rangeInput" class="form-range" min="0" max="100"
-                                id="customRange1" />
+                    <div class="row">
+                        <div class="text-center">
+                            <h1 class="title">Création de salle</h1>
                         </div>
                     </div>
-                    <div class="col-sm-6">
-                        <i class="fa-solid fa-calendar-days"></i> <span class="form-label">Heure</span>
-                        <input class="form-control input_hour" type="time" step="900" min="07:00" max="23:00">
-                    </div>
-                </div>
 
-                <div class="row">
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            <i class="fa-solid fa-font"></i> <span class="form-label">Nom de la salle</span>
-                            <input type="text" class="form-control" placeholder="Nom ou numéro"
-                                aria-label="Username" aria-describedby="basic-addon1">
+                    <div class="row pb-2 pt-4">
+                        <div class="col-sm-6">
+                            <i class="fa-sharp fa-solid fa-tag"></i> <label class="form-label"
+                                for="roomPriceRange">Prix</label>
+                            <input type="number" class="input_roomPrice" id="roomPrice" value="" style="border:none;">
+                            <div class="range">
+                                <input type="range" name="rangeInput" class="form-range" min="0" max="100"
+                                    id="roomPriceRange" />
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <i class="fa-solid fa-calendar-days"></i> <span class="form-label">Durée de la tarification</span>
+                            <input class="form-control input_roomHour" type="time" step="900" min="07:00" max="23:00">
                         </div>
                     </div>
-                    <div class="col-sm-6">
-                        <i class="fa-sharp fa-solid fa-file-lines"></i> <span class="form-label">Description de la
-                            salle</span>
-                        <textarea class="form-control input_description" aria-label="With textarea"></textarea>
-                    </div>
-                </div>
 
-                <div class="row">
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            <i class="fa-solid fa-weight-hanging"></i> <span class="form-label">Taille</span>
-                            <select class="form-control input_size">
-                                <option value="small">Petite</option>
-                                <option value="medium">Moyenne</option>
-                                <option value="large">Grande</option>
-                                <option value="xlarge">Très grande</option>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <i class="fa-solid fa-font"></i> <span class="form-label">Nom de la salle</span>
+                                <input type="text" class="form-control input_roomName" placeholder="Nom de la salle">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <i class="fa-sharp fa-solid fa-file-lines"></i> <span class="form-label">Description de
+                                la salle</span>
+                            <textarea class="form-control input_roomDescription" aria-label="With textarea"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <i class="fa-solid fa-weight-hanging"></i> <span class="form-label">Taille</span>
+                                <select class="form-control input_roomSize">
+                                    <option value="small">Petite</option>
+                                    <option value="medium">Moyenne</option>
+                                    <option value="large">Grande</option>
+                                    <option value="xlarge">Très grande</option>
+                                </select>
+                                <span class="select-arrow"></span>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <i class="fa-solid fa-people-roof"></i> <span class="form-label">Capacité</span>
+                            <select class="form-control input_roomCapacity">
+                                <option value="one">1 personne</option>
+                                <option value="two">2 personnes</option>
+                                <option value="three">3 personnes</option>
+                                <option value="four">4 personnes</option>
+                                <option value="four">5 personnes</option>
+                                <option value="four">6 personnes</option>
                             </select>
                             <span class="select-arrow"></span>
                         </div>
                     </div>
-                    <div class="col-sm-6">
-                        <i class="fa-solid fa-people-roof"></i> <span class="form-label">Capacité</span>
-                        <select class="form-control input_capacity">
-                            <option value="one">1 personne</option>
-                            <option value="two">2 personnes</option>
-                            <option value="three">3 personnes</option>
-                            <option value="four">4 personnes</option>
-                            <option value="four">5 personnes</option>
-                            <option value="four">6 personnes</option>
-                        </select>
-                        <span class="select-arrow"></span>
+
+                    <div class="row">
+                        <button class="submit-btn btn room_creation_btn">Créer la salle</button>
                     </div>
+
+                    <div class="row">
+                        <span class="roomCreationError text-danger"></span>
+                    </div>
+
                 </div>
 
-                <div class="row">
-                    <button class="submit-btn btn" id="reservation_btn">Créer la salle</button>
+                <div class="booking-form mt-2">
+                    <select class="form-control input_room"></select>
                 </div>
 
-                <div class="row">
-                    <span class="error text-danger"></span>
-                </div>
+                <div class="booking-form mt-5 row calendar_container">
 
+                    <div class="row">
+                        <div class="text-center mb-2">
+                            <h1 class="title">Liste des réservations de salle</h1>
+                        </div>
+                    </div>
+
+                    <div class="text-center">
+                        <span class="badge rounded-pill bg-dark m-2">Filtre:</span>
+
+                        <div class="form-check form-switch form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="flip_filters" checked>
+                            <label class="form-check-label" for="flexSwitchCheckDefault">Tous</label>
+                        </div>
+
+                        <div class="filters"></div>
+
+
+                        <div class="col-sm-3">
+                            <!-- MULTI INPUT -->
+                            <!-- <input type="text" class="form-control input_users rounded-pill px-2" /> -->
+                        </div>
+                        <div class="col-sm-9 users_list d-flex align-content-start flex-wrap"></div>
+                    </div>
+
+                    <div id="calendar"></div>
+                </div>
             </div>
-
-            <div class="booking-form mt-5 row calendar_container">
-
-                <div class="row">
-                    <div class="text-center mb-2">
-                        <h1 class="title">Liste des réservations de salle</h1>
-                    </div>
-                </div>
-
-                <div class="text-center">
-                    <span class="badge rounded-pill bg-dark m-2">Filtre:</span>
-
-                    <div class="form-check form-switch form-check-inline">
-                        <input class="form-check-input" type="checkbox" id="flip_filters" checked>
-                        <label class="form-check-label" for="flexSwitchCheckDefault">Tous</label>
-                    </div>
-
-                    <div class="filters"></div>
-
-
-                    <div class="col-sm-3">
-                        <!-- MULTI INPUT -->
-                        <input type="text" class="form-control input_users rounded-pill px-2" />
-                    </div>
-                    <div class="col-sm-9 users_list d-flex align-content-start flex-wrap"></div>
-                </div>
-
-                <div id="calendar"></div>
-            </div>
-        </div>
     </div>
 </div>
 
 <script type="module" id="re_script">
     import { main } from "/js/panel.js";
     import { updateTextInput } from "/js/panel.js";
-    document.querySelector("#customRange1").addEventListener("input", e => updateTextInput(e.target.value));
-    main();
-    updateTextInput(50);
     import { main as room } from "/js/admin_rooms.js";
     import '/fullcalendar/packages/core/main.js';
     import '/fullcalendar/packages/interaction/main.js';
     import '/fullcalendar/packages/daygrid/main.js';
     import '/fullcalendar/packages/timegrid/main.js';
     import '/fullcalendar/packages/list/main.js';
+
+    document.querySelector("#roomPriceRange").addEventListener("input", e => updateTextInput(e.target.value));
+    main();
+    updateTextInput(50);
+
     main();
     room();
 </script>

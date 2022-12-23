@@ -6,22 +6,26 @@ import { sendError, sendSuccess } from "../functions.js";
 export const adminRoomApi = new Router();
 
 adminRoomApi.post("/create", async (req, res) => {
-    if (!req.body.roomName)
+    if (!req.body.name)
         return sendError(res, "No room name provided", "ROOM_NAME_MISSING");
 
-    let roomData = { name: req.body.roomName };
+    let roomData = {
+        name: req.body.name,
+        size: ""
+    };
 
-    if (req.body.roomSize)
-        roomData.size = req.body.roomSize;
+    if (req.body.size)
+        roomData.size = req.body.size;
 
-    if (req.body.roomDescription)
-        roomData.description = req.body.roomDescription;
+    if (req.body.description)
+        roomData.description = req.body.description;
 
     try {
         await Room.create(roomData);
-        sendSuccess(res, "New room sucessfully created", "ROOM_CREATION_SUCCESS");
+        return sendSuccess(res, "New room sucessfully created", "ROOM_CREATION_SUCCESS");
     } catch (error) {
-        sendError(res, "Error encountred while creating new room", "ROOM_CREATION_ERROR");
+        console.error(error);
+        return sendError(res, "Une erreur innatendue est survenue.", "UNEXPECTED_ERROR");
     }
 });
 
