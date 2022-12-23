@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "NODE_OPTIONS=--experimental-vm-modules jest --detectOpenHandles",
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest --forceExit",
     "start": "node server.js"
   },
   "repository": {
@@ -31,7 +31,8 @@
     "passport-local": "^1.0.0",
     "sequelize": "^6.23.1",
     "sqlite3": "^5.1.2",
-    "supertest": "^6.3.3"
+    "supertest": "^6.3.3",
+    "supertest-session": "^4.1.0"
   },
   "type": "module"
 }
