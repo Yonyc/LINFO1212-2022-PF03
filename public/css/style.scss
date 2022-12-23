@@ -98,3 +98,13 @@ span.error {
 .pt-nav {
     padding-top: 150px;
 }
+
+.tharpist_home {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: fit-content;
+    min-width: 25%;
+    margin-bottom: 50px;
+}

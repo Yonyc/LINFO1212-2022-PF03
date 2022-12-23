@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { checkUserTherapist, isAdmin, isUserTherapist, sendError } from "../api/functions.js";
 import { adminPagesRouter } from "./adminPages.js";
-import { User } from "./database.js";
+import { Therapist, User } from "./database.js";
 import { renderCSS } from "./scss.js";
 
 export const pagesRouter = new Router();
@@ -28,6 +28,29 @@ export async function renderTemplate(req, res, path="", title="", args={}) {
 
 pagesRouter.use("/profile", async (req, res) => {
     renderTemplate(req, res, "pages/profile", "CT - profile", {});
+});
+
+pagesRouter.use("/therapist/:id(\\d+)", async (req, res) => {
+    try {
+        let therapists = await Therapist.findAll({
+            where: { 
+                approved: true,
+                id: req.params.id
+            },
+            attributes: ["id", "description"],
+            include: [
+                {
+                    model: User,
+                    attributes: ["firstname", "lastname", "username", "url_pp"]
+                }
+            ]
+        });
+        if (therapists.length != 1) return sendError(res, "Le thérapeute n'existe pas.", "THERAPIST_NOT_EXIST");
+        let therapist = therapists[0];
+        return renderTemplate(req, res, "pages/therapist_presentation", `CT - ${therapist.User.username}`, {therapist: therapist});
+    } catch (error) {
+        return sendError(res, "Une erreur innatendue est survenue.", "UNEXPECTED_ERROR");
+    }
 });
 
 pagesRouter.use("/therapist", async (req, res) => {
