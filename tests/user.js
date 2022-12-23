@@ -1,9 +1,8 @@
 import request from 'supertest';
-import { User } from '../modules/database.js';
 import {app} from '../server.js';
 
-describe('Register', () => {
-    it('wrong phone number', async () => {
+export const testSuite1 = () => describe('Register', () => {
+    it('invalid phone number', async () => {
       const res = await request(app)
         .post('/api/user/register')
         .send({
@@ -68,7 +67,7 @@ describe('Register', () => {
       })
 })
 
-describe('Login', () => {
+export const testSuite2 = () => describe('Login', () => {
     it('wrong credentials', async () => {
       const res = await request(app)
         .post('/api/user/login')
@@ -87,8 +86,5 @@ describe('Login', () => {
             password: 'test'
           })
       expect(res.statusCode).toEqual(200)
-      await User.destroy({
-        where: { username: "test" },
-      });
     })
 })
