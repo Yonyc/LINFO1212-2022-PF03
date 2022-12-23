@@ -4,34 +4,16 @@
 
 .section {
     position: relative;
-    height: 100vh;
+    padding: 5%;
 }
 
-.section .section-center {
-    position: absolute;
-    top: 20%;
-    margin-top: 400px;
-    left: 0;
-    right: 0;
-    -webkit-transform: translateY(-50%);
-    transform: translateY(-50%);
-}
+.section .section-center {}
 
 #booking {
     font-family: 'Montserrat', sans-serif;
     background-image: url("/img/home_carousel/bureau_4.jpg");
     background-size: cover;
     background-position: center;
-}
-
-#booking::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    top: 0;
-    background: rgba(47, 103, 177, 0.6);
 }
 
 .booking-form {

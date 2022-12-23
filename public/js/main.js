@@ -94,7 +94,16 @@ document.addEventListener("DOMContentLoaded", e => {
 
 window.onpopstate = function(e){
     if(e.state){
-        document.querySelector("body > .container-fluid").innerHTML = e.state.html;
+        let container = document.querySelector("body > .container-fluid");
+        container.innerHTML = e.state.html;
+        let script = container.querySelector("#re_script");
+        if (script) {
+            let newScript = document.createElement("script");
+            newScript.id = "re_script";
+            newScript.type = script.type;
+            newScript.appendChild(document.createTextNode(script.innerHTML));
+            script.parentNode.replaceChild(newScript, script)
+        }
         document.title = e.state.pageTitle;
         window.scrollTo(0,0)
         changeContentLinkEvent();

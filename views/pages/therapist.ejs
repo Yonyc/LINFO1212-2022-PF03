@@ -1,1 +1,73 @@
 <!-- Page d'espace des thérapistes -->
+<div class="section" id="therapist">
+    <div class="section-center mt-5">
+        <div class="container">
+            <div class="row">
+
+                <div class="col"></div>
+
+                <div class="col-8">
+
+                    <div class="booking-cta">
+                        <h1 id="mainTitle" style="color: black;">Mes demandes</h1>
+                    </div>
+
+                </div>
+
+                <div class="col"></div>
+
+            </div>
+
+            <div class="row">
+                <ul class="col-md appointement_demands list-unstyled"></ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<template id="appointment_demand">
+    <li class="position-relative booking">
+        <h4 class="card-title">Demande en cours</h4>
+
+        <div class="media">
+
+            <div class="msg-img">
+                <img class="profile_picture" alt="">
+            </div>
+
+            <div class="media-body">
+                <h5 class="mb-4 name"></h5>
+                <div class="mb-3">
+                    <span class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0">Date:</span>
+                    <span class="bg-light-blue appointment_date"></span>
+                </div>
+                <div class="mb-3">
+                    <span class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0">Durée:</span>
+                    <span class="bg-light-blue appointment_duration"></span>
+                </div>
+                <div class="mb-3">
+                    <span class="mr-2 d-block d-sm-inline-block mb-2 mb-sm-0">Détails:</span>
+                    <span class="bg-light-blue reccurence"></span>
+                    <span class="bg-light-blue reccurence_end"></span>
+                </div>
+                <div class="mb-5">
+                    <span class="mr-2 d-block d-sm-inline-block mb-1 mb-sm-0">Détail del'utilisateur:</span>
+                    <span class="border-right pr-2 mr-2 name"></span>
+                    <span class="border-right pr-2 mr-2 email"></span>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="buttons-to-right">
+            <a href="#" class="btn-gray mr-2 btn_refuse"><i class="far fa-times-circle mr-2"></i>Refuser</a>
+            <a href="#" class="btn-gray btn_accept"><i class="far fa-check-circle mr-2"></i>Accepter</a>
+        </div>
+    </li>
+
+</template>
+
+<script type="module" id="re_script">
+    import { main } from "/js/therapist.js";
+    main();
+</script>
