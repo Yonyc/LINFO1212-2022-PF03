@@ -84,7 +84,7 @@ async function refreshTherapists() {
 	let therapistList = document.querySelector(".therapist_list");
 	if (!therapistList) return false;
 	therapists.forEach(t => {
-		therapistList.innerHTML += `<a class="tharpist_home" href="/therapist/${t.id}">
+		therapistList.innerHTML += `<a class="tharpist_home text-decoration-none" href="/therapist/${t.id}">
 			<img src="${t.User.url_pp}" alt="wrapkit" class="therapists img-fluid rounded-circle" />
 
 			<div class="col-md-12 text-center">
