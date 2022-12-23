@@ -3,7 +3,7 @@ import { User } from '../modules/database.js';
 import {app} from '../server.js';
 
 describe('Register', () => {
-    it('wrong phone number', async () => {
+    it('invalid phone number', async () => {
       const res = await request(app)
         .post('/api/user/register')
         .send({
