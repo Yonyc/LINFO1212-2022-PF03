@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { Appointment, Therapist } from '../modules/database.js'
+import { Appointment, Therapist, User } from '../modules/database.js'
 import { sendCustomSuccess, sendError, sendSuccess } from "./functions.js";
 
 export const therapistApi = new Router();
@@ -12,6 +12,24 @@ therapistApi.post('/getalltherapist', async (req, res) => {
         sendError(res, "Error encountred while counting active therapists", "THERAPIST_COUNT_ERROR");
     }
 
+});
+
+therapistApi.post("/list", async (req, res) => {
+    try {
+        let therapists = await Therapist.findAll({
+            where: { approved: true },
+            attributes: ["id"],
+            include: [
+                {
+                    model: User,
+                    attributes: ["firstname", "lastname", "username", "url_pp"]
+                }
+            ]
+        });
+        return sendCustomSuccess(res, { therapists: therapists });
+    } catch (error) {
+        return sendError(res, "Une erreur innatendue est survenue.", "UNEXPECTED_ERROR");
+    }
 });
 
 async function setAppointment(date, duration, RoomReservation) {

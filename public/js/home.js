@@ -56,9 +56,51 @@ async function countData(url, selector) {
 	document.querySelector(selector).innerText = res.data.count;
 }
 
+async function refreshTherapists() {
+	let therapists = [];
+	try {
+        let res = await fetch(api_url + "/therapist/list", {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            }
+        });
+        
+        if (res.status != 200) return false;
+        
+        res = await res.json();
+
+		if (!res.success) {
+			errorModal._element.querySelector(".error_text").innerText = res.data.message;
+        	errorModal.show();
+			return false;
+		};
+
+		therapists = res.data.therapists;
+
+    } catch (err) {throw err;}
+
+
+	let therapistList = document.querySelector(".therapist_list");
+	if (!therapistList) return false;
+	therapists.forEach(t => {
+		therapistList.innerHTML += `<a class="tharpist_home" href="/therapist/${t.id}">
+			<img src="${t.User.url_pp}" alt="wrapkit" class="therapists img-fluid rounded-circle" />
+
+			<div class="col-md-12 text-center">
+				<div class="pt-2">
+					<h5 class="mt-4 font-weight-medium mb-0">${t.User.firstname} ${t.User.lastname}</h5>
+					<h6 class="subtitle mb-3">${t.User.username}</h6>
+				</div>
+			</div>
+		</a>`;
+	});
+}
+
 export function main(){
 	countData("/user/getallusers", "#getallusers");
 	countData("/appointment/getallbooking", "#getallbooking");
 	countData("/room/getallrooms", "#getallrooms");
 	countData("/therapist/getalltherapist", "#getalltherapist");
+	refreshTherapists();
 }
