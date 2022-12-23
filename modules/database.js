@@ -11,6 +11,7 @@ export class Role extends Model { }
 export class UserRoles extends Model { }
 export class Therapist extends Model { }
 export class Appointment extends Model { }
+export class AppointmentDemand extends Model { }
 
 export class Room extends Model { }
 export class RoomPicture extends Model { }
@@ -93,6 +94,10 @@ Therapist.init({
         type: DataTypes.TEXT,
         defaultValue: "",
         allowNull: false
+    },
+    job: {
+        type: DataTypes.TEXT,
+        allowNull: false
     }
 }, { sequelize });
 
@@ -102,6 +107,39 @@ Appointment.init({
         allowNull: false
     },
     duration: DataTypes.FLOAT
+}, { sequelize });
+
+AppointmentDemand.init({
+    date: {
+        type: DataTypes.DATE,
+        allowNull: false
+    },
+    reccurence: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    reccurenceEnd: {
+        type: DataTypes.DATE,
+        allowNull: true,
+        validate: {
+            isThereReccurence(recEnd) {
+                return this.reccurence !== null;
+            }
+        }
+    },
+    duration: {
+        type: DataTypes.FLOAT,
+        allowNull: false,
+        defaultValue: 0.0
+    },
+    refused: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
+    },
+    accepted: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
+    }
 }, { sequelize });
 
 Room.init({
@@ -171,6 +209,9 @@ RoomReservations.hasMany(Appointment);
 RoomReservations.belongsTo(Therapist);
 RoomReservations.belongsTo(Room);
 RoomPrice.belongsTo(Room);
+
+AppointmentDemand.belongsTo(User);
+AppointmentDemand.belongsTo(Therapist);
 
 sequelize.sync({ force: false });
 async function createRoles() {

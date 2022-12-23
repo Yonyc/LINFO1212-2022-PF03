@@ -22,12 +22,12 @@ export async function isUserTherapist(req) {
                 approved: true
             }
         });
-        if (therapist.length == 1) 
+        if (therapist.length == 1)
             return true;
-    } catch (error) {}
+    } catch (error) { }
 
     return false;
-    
+
 }
 
 export async function checkUserTherapist(req, res) {
@@ -39,15 +39,14 @@ export async function checkUserTherapist(req, res) {
     return true
 }
 
-export async function getTherapist(req) {
+export async function getTherapistById(id) {
     try {
-        let therapist = await Therapist.findAll({
-            where: {
-                UserId: req.user.id
-            }
-        });
-        return therapist[0];
-    } catch (error) {}
+        return await Therapist.findOne({ where: { UserId: id } });
+    } catch (error) { }
+}
+
+export async function getTherapist(req) {
+    return await getTherapistById(req.user.id);
 }
 
 export async function isAdmin(req) {

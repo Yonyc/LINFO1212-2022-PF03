@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { Appointment, Therapist, User } from '../modules/database.js'
-import { sendCustomSuccess, sendError, sendSuccess } from "./functions.js";
+import { Appointment, AppointmentDemand, Therapist, User } from '../modules/database.js'
+import { checkUserLogged, getTherapist, getTherapistById, sendCustomSuccess, sendError, sendSuccess } from "./functions.js";
 
 export const therapistApi = new Router();
 
@@ -18,11 +18,11 @@ therapistApi.post("/list", async (req, res) => {
     try {
         let therapists = await Therapist.findAll({
             where: { approved: true },
-            attributes: ["id"],
+            attributes: ["id", "job"],
             include: [
                 {
                     model: User,
-                    attributes: ["firstname", "lastname", "username", "url_pp"]
+                    attributes: ["firstname", "lastname", "username", "url_pp", "email"]
                 }
             ]
         });
@@ -31,21 +31,3 @@ therapistApi.post("/list", async (req, res) => {
         return sendError(res, "Une erreur innatendue est survenue.", "UNEXPECTED_ERROR");
     }
 });
-
-async function setAppointment(date, duration, RoomReservation) {
-    var endDate = new Date(date.getTime() + duration * 60000);
-    let overlaps = await Appointment.findAll({ where: { date: { [Op.between]: [date, endDate] } } });
-
-    if (overlaps) {
-        return false;
-    }
-
-    let newAppointment = await Appointment.create({
-        UserId: req.user.id,
-        date: date,
-        duration: duration,
-        RoomReservationId: RoomReservation.id
-    });
-
-    return newAppointment;
-}

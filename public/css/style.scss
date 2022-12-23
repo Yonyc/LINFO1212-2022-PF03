@@ -27,10 +27,13 @@ body {
     min-height: 100%;
 }
 
-  
-.container-fluid{
+.container-fluid {
     margin: 0;
     padding: 0;
+}
+
+.section {
+    min-height: 100vh;
 }
 
 header {
@@ -39,30 +42,32 @@ header {
     .navbar-brand {
         width: 100px;
         aspect-ratio: 1;
-        img {
-            width: 100%;
-            height: 100%;
-        }
-    }
-    
-    .navbar-profile {
-        width: 50px;
-        aspect-ratio: 1;
-        overflow: hidden;
-        border-radius: 50%;
-        align-self: end;
-    
+
         img {
             width: 100%;
             height: 100%;
         }
     }
 
-    .nav-item{
+    .navbar-profile {
+        width: 50px;
+        aspect-ratio: 1;
+        overflow: hidden;
+        border-radius: 50%;
+        align-self: end;
+
+        img {
+            width: 100%;
+            height: 100%;
+        }
+    }
+
+    .nav-item {
         font-size: larger !important;
         padding: 20px !important;
         color: var(--color3) !important;
     }
+
     .nav-item:hover {
         background: url("/img/fond.svg") no-repeat;
         background-size: 100% 100%;
@@ -72,7 +77,7 @@ header {
 .profile_page {
     min-height: 100%;
     padding-top: 150px;
-    
+
     > :not(:first-child) {
         display: none;
     }
@@ -107,4 +112,58 @@ span.error {
     width: fit-content;
     min-width: 25%;
     margin-bottom: 50px;
+}
+
+.autocomplete {
+    /*the container must be positioned relative:*/
+    position: relative;
+
+    input {
+        border: 1px solid transparent;
+        background-color: #f1f1f1;
+        padding: 10px;
+        font-size: 16px;
+    }
+
+    input[type=text] {
+        background-color: #f1f1f1;
+        width: 100%;
+    }
+
+    input[type=submit] {
+        background-color: DodgerBlue;
+        color: #fff;
+    }
+
+    .autocomplete-items {
+        position: absolute;
+        border: 1px solid #d4d4d4;
+        border-bottom: none;
+        border-top: none;
+        z-index: 99;
+        /*position the autocomplete items to be the same width as the container:*/
+        top: 100%;
+        left: 0;
+        right: 0;
+        max-height: 300px;
+        overflow-y: scroll;
+    }
+
+    .autocomplete-items div {
+        padding: 10px;
+        cursor: pointer;
+        background-color: #fff;
+        border-bottom: 1px solid #d4d4d4;
+    }
+
+    .autocomplete-items div:hover {
+        /*when hovering an item:*/
+        background-color: #e9e9e9;
+    }
+
+    .autocomplete-active {
+        /*when navigating through the items using the arrow keys:*/
+        background-color: DodgerBlue !important;
+        color: #ffffff;
+    }
 }
