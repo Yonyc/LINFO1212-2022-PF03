@@ -35,7 +35,6 @@ function time_convert(num) {
 function generateDemand(infos) {
     var temp = document.querySelector("#appointment_demand");
     var demand = temp.content.cloneNode(true);
-    console.log(infos)
     demand.querySelector(".card-title").innerHTML = (infos.accepted) ? `<span class="text-success">Demande acceptée</span>` : ((infos.refused) ? `<span class="text-danger">Demande refusée</span>` : `<span class="text-warning">Demande en cours</span>`);
 
     demand.querySelector(".profile_picture").src = infos.User.url_pp;

@@ -120,7 +120,7 @@ appointmentApi.post("/therapist_demands", async (req, res) => {
             include: [
                 {
                     model: User,
-                    attributes: ["firstname", "lastname"]
+                    attributes: ["firstname", "lastname", "email", "phone"]
                 }
             ],
             order: [
