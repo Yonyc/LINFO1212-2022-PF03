@@ -97,6 +97,7 @@ Therapist.init({
     },
     job: {
         type: DataTypes.TEXT,
+	defaultValue: "",
         allowNull: false
     }
 }, { sequelize });
