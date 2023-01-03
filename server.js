@@ -8,7 +8,7 @@ import passport from "passport";
 
 renderCSS();
 export const app = express();
-const port = 3000;
+const port = 83;
 
 // Using ejs as render engine
 app.set('view engine', 'ejs');
