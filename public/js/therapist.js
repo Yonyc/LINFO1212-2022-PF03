@@ -26,6 +26,12 @@ async function respond(response, id) {
     } catch (e) { console.error(e); }
 }
 
+function time_convert(num) {
+    var hours = Math.floor(num / 60);
+    var minutes = num % 60;
+    return String(hours).padStart(2, "0") + ":" + String(minutes).padStart(2, "0");
+}
+
 function generateDemand(infos) {
     var temp = document.querySelector("#appointment_demand");
     var demand = temp.content.cloneNode(true);
