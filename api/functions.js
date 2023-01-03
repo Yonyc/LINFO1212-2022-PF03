@@ -86,3 +86,7 @@ export function sendSuccess(res, message, code, http_code = 200) {
         code: code
     }, null, http_code);
 }
+
+export function isPhone(s) {
+    return /^\+{0,2}([\-\. ])?(\(?\d{0,3}\))?([\-\. ])?\(?\d{0,3}\)?([\-\. ])?\d{3}([\-\. ])?\d{4}/.test(s);
+}
