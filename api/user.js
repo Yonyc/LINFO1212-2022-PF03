@@ -5,7 +5,7 @@ import passport from 'passport';
 import { Strategy as LocalStrategy } from "passport-local";
 import multer from 'multer';
 import path from 'path';
-import { sendCustomSuccess, sendError, sendSuccess } from "./functions.js";
+import { isPhone, sendCustomSuccess, sendError, sendSuccess } from "./functions.js";
 import { checkUserLogged } from "./functions.js";
 
 export const userApi = new Router();
