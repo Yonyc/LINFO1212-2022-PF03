@@ -133,7 +133,7 @@ async function register() {
             email: email,
             password: password,
             phone: phone,
-            mobile: mobile,
+            mobilephone: mobile,
             address: address
         })
     });

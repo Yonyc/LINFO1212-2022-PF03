@@ -59,8 +59,8 @@ userApi.post('/getallusers', async (req, res) => {
 
 userApi.post('/register', function (req, res) {
     let hashed = bcrypt.hashSync(req.body.password, salt);
-    var userData = [req.body.email, req.body.username, hashed, req.body.firstname, req.body.lastname, req.body.phone, req.body.mobile, req.body.address];
-    if ((userData[5].length > 0 && !isPhone(userData[5])) || (userData[5].length > 0 && !isPhone(userData[6]))) {
+    var userData = [req.body.email, req.body.username, hashed, req.body.firstname, req.body.lastname, req.body.phone, req.body.mobilephone, req.body.address];
+    if ((userData[5].length > 0 && !isPhone(userData[5])) || (userData[4].length > 0 && !isPhone(userData[4]))) {
         return res.status(400).send({
             error: 'phone'
         });
@@ -124,7 +124,7 @@ userApi.post('/login', passport.authenticate('local', {}), function (req, res) {
             lastname: req.user.lastname,
             email: req.user.email,
             phone: req.user.phone,
-            mobile: req.user.mobilephone,
+            mobilephone: req.user.mobilephone,
             address: req.user.address,
             url_pp: req.user.url_pp
         }
@@ -143,7 +143,7 @@ userApi.get('/logout', function (req, res) {
 userApi.post('/edit', async function (req, res) {
     var userData = [req.body.email, req.body.username, req.body.firstname, req.body.lastname, req.body.phone, req.body.mobile, req.body.address];
 
-    if ((userData[5].length > 0 && !isPhone(userData[5])) || (userData[6].length > 0 && !isPhone(userData[6]))) {
+    if ((userData[5].length > 0 && !isPhone(userData[5])) || (userData[4].length > 0 && !isPhone(userData[4]))) {
         return res.status(400).send({
             error: 'phone'
         });
