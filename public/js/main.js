@@ -24,8 +24,8 @@ function changeContentLinkEvent() {
     });
 }
 
-function changePage(data, urlPath){
-    window.history.replaceState({"html":document.querySelector("body > .container-fluid").innerHTML, "pageTitle":document.title}, '', document.location.href);
+function changePage(data, urlPath) {
+    window.history.replaceState({ "html": document.querySelector("body > .container-fluid").innerHTML, "pageTitle": document.title }, '', document.location.href);
     let container = document.querySelector("body > .container-fluid");
     container.innerHTML = data.html;
     let script = container.querySelector("#re_script");
@@ -38,8 +38,8 @@ function changePage(data, urlPath){
     }
 
     document.title = data.pageTitle;
-    window.history.pushState({"html":data.html,"pageTitle":data.pageTitle},"", urlPath);
-    window.scrollTo(0,0)
+    window.history.pushState({ "html": data.html, "pageTitle": data.pageTitle }, "", urlPath);
+    window.scrollTo(0, 0)
     changeContentLinkEvent();
 }
 
@@ -67,7 +67,7 @@ async function fetchPage(url) {
         errorModal.show();
         return;
     }
-    page =  await page.text();
+    page = await page.text();
 
     if (title.status != 200) {
         title = await title.json();
@@ -85,15 +85,15 @@ async function fetchPage(url) {
 }
 
 document.addEventListener("DOMContentLoaded", e => {
-    window.history.replaceState({"html":document.querySelector("body > .container-fluid").innerHTML, "pageTitle":document.title}, '', document.location.href);
+    window.history.replaceState({ "html": document.querySelector("body > .container-fluid").innerHTML, "pageTitle": document.title }, '', document.location.href);
     start();
     document.querySelectorAll("[data-background-image-url]").forEach(el => {
-		el.style.backgroundImage = "url(" + el.dataset.backgroundImageUrl + ")";
-	});
+        el.style.backgroundImage = "url(" + el.dataset.backgroundImageUrl + ")";
+    });
 });
 
-window.onpopstate = function(e){
-    if(e.state){
+window.onpopstate = function (e) {
+    if (e.state) {
         let container = document.querySelector("body > .container-fluid");
         container.innerHTML = e.state.html;
         let script = container.querySelector("#re_script");
@@ -105,7 +105,7 @@ window.onpopstate = function(e){
             script.parentNode.replaceChild(newScript, script)
         }
         document.title = e.state.pageTitle;
-        window.scrollTo(0,0)
+        window.scrollTo(0, 0)
         changeContentLinkEvent();
     }
 };
@@ -125,6 +125,9 @@ function navbarOverlap() {
 
         if (navbar.y + navbar.height < rect.y + rect.height)
             overlapping = true;
+
+        if (window.scrollY > 0)
+            overlapping = false;
     });
 
     if (overlapping) {
@@ -139,7 +142,7 @@ document.addEventListener("scroll", e => navbarOverlap());
 function checkPageForNavLink() {
     if (window.location.pathname != '/')
         window.location.href = "/";
-    else if(document.getElementById("a").getAttribute("href") == "#one"){
+    else if (document.getElementById("a").getAttribute("href") == "#one") {
         window.location.href = "/";
     }
- }
+}
