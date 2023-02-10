@@ -47,7 +47,7 @@ async function editProfile() {
     });
 
     let res = await fetch(api_url + "/user/edit", {
-        method:"POST",
+        method: "POST",
         headers: {
             "Content-Type": "application/json"
         },
@@ -79,10 +79,7 @@ function updateUserEditPage() {
     changeLoggedInputContent(".mobilephone", user?.mobilephone);
     changeLoggedInputContent(".address", user?.address);
 
-    document.querySelectorAll(`.profile_picture`).forEach(e => {
-        if (user?.url_pp)
-            e.src = user.url_pp;
-    });
+    updatePP();
 
     updateText(`${divSelectors.logged} span.firstname`, document.querySelector(`${divSelectors.logged} input.firstname`)?.value);
     updateText(`${divSelectors.logged} span.lastname`, document.querySelector(`${divSelectors.logged} input.lastname`)?.value);
@@ -131,22 +128,22 @@ async function register() {
         addError("#reg-username", "Veuillez entrer un nom d'utilisateur faisant au moins 3 caractères");
         error = true;
     }
-    
+
     if (firstname.length <= 0) {
         addError("#reg-firstname", "Veuillez entrer un prénom");
         error = true;
     }
-    
+
     if (lastname.length <= 0) {
         addError("#reg-lastname", "Veuillez entrer un nom");
         error = true;
     }
-    
+
     if (email.length <= 0 || !/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
         addError("#reg-email", "Veuillez entrer un email valide");
         error = true;
     }
-    
+
     if (password.length < 8) {
         addError("#reg-password", "Veuillez entrer un mot de passe faisant au moins 8 caractères");
         error = true;
@@ -190,7 +187,7 @@ async function register() {
 
 async function askTherapistPromotion() {
     let res = await fetch(api_url + "/user/therapist_promotion", {
-        method:"POST",
+        method: "POST",
         headers: {
             "Content-Type": "application/json"
         }
@@ -204,7 +201,7 @@ async function fetchTherapist() {
         let res = await fetch(api_url + "/user/info_therapist", {
             method: 'POST',
             headers: {
-              'Content-Type': 'application/json',
+                'Content-Type': 'application/json',
             }
         });
         res = await res.json();
@@ -212,10 +209,11 @@ async function fetchTherapist() {
             if (res.therapist)
                 user.therapist = res.therapist;
             else if (res.asked)
-                user.therapist = {asked: true}
+                user.therapist = { asked: true }
         }
 
-    } catch (err) {throw err;
+    } catch (err) {
+        throw err;
     }
 }
 
@@ -223,7 +221,7 @@ async function updateTherapistData() {
     await fetchTherapist();
     if (user && user.therapist) {
         let btn = document.querySelector("#profil_ask_therapist");
-        if (btn) 
+        if (btn)
             btn.setAttribute("disabled", "true");
     }
 }
@@ -232,7 +230,7 @@ async function disconnect() {
     await fetch(api_url + "/user/logout");
 
     user = null;
-    
+
     updateUserEditPage();
     display(divSelectors.login);
     updateTherapistData();
@@ -264,7 +262,7 @@ export function main() {
     });
 
     document.getElementById("reg-submit").addEventListener("click", e => register());
-    $('#profile_picture').click(function(){ $('#profile_pic_input').trigger('click'); });
+    $('#profile_picture').click(function () { $('#profile_pic_input').trigger('click'); });
 
     document.querySelector("#profil_ask_therapist").addEventListener("click", e => askTherapistPromotion());
 

@@ -1,5 +1,12 @@
 let errorModal = bootstrap.Toast.getOrCreateInstance(document.querySelector("#errorNotification"));
 
+function updatePP() {
+    document.querySelectorAll(`.profile_picture`).forEach(e => {
+        if (user?.url_pp)
+            e.src = "/" + user.url_pp;
+    });
+}
+
 function preventReloadPageIfLocal(element) {
     element.addEventListener("click", e => {
         let href = e.currentTarget.href;
@@ -39,8 +46,10 @@ function changePage(data, urlPath) {
 
     document.title = data.pageTitle;
     window.history.pushState({ "html": data.html, "pageTitle": data.pageTitle }, "", urlPath);
-    window.scrollTo(0, 0)
+    window.scrollTo(0, 0);
     changeContentLinkEvent();
+
+    updatePP();
 }
 
 async function fetchPage(url) {
@@ -90,6 +99,7 @@ document.addEventListener("DOMContentLoaded", e => {
     document.querySelectorAll("[data-background-image-url]").forEach(el => {
         el.style.backgroundImage = "url(" + el.dataset.backgroundImageUrl + ")";
     });
+    updatePP();
 });
 
 window.onpopstate = function (e) {
