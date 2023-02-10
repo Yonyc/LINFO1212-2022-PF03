@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { Therapist, User } from "../../modules/database.js";
-import { sendCustomSuccess, sendError } from "../functions.js";
+import { sendCustomSuccess, sendError, sendSuccess } from "../functions.js";
 
 export const adminTherapistApi = new Router();
 
@@ -49,6 +49,44 @@ adminTherapistApi.post("/approvals", async (req, res) => {
     }).end();
 });
 
+adminTherapistApi.post("/list", async (req, res) => {
+    res.status(200).json({
+        success: true,
+        therapists: await Therapist.findAll({
+            where: {
+                approved: true,
+                rejected: false
+            },
+            include: [
+                {
+                    model: User,
+                    as: "User",
+                    attributes: ["firstname", "lastname", "email", "phone", "username", "url_pp"]
+                }
+            ]
+        })
+    }).end();
+});
+
+adminTherapistApi.post("/rejected", async (req, res) => {
+    res.status(200).json({
+        success: true,
+        therapists: await Therapist.findAll({
+            where: {
+                approved: false,
+                rejected: true
+            },
+            include: [
+                {
+                    model: User,
+                    as: "User",
+                    attributes: ["firstname", "lastname", "email", "phone", "username", "url_pp"]
+                }
+            ]
+        })
+    }).end();
+});
+
 adminTherapistApi.post("/promote", async (req, res) => {
     if (!req.body.therapist)
         return sendError(res, "Therapist id not provided", "THERAPIST_ID_MISSING");
@@ -57,6 +95,8 @@ adminTherapistApi.post("/promote", async (req, res) => {
         return sendError(res, "Therapist does not exists", "THERAPIST_NOT_FOUND");
 
     try {
+        therapist.rejected = false;
+        await therapist.save();
         therapist.approved = true;
         await therapist.save();
         return sendSuccess(res, "Therapist has been promoted", "THERAPIST_PROMOTE_SUCCESS");
@@ -73,6 +113,8 @@ adminTherapistApi.post("/refuse", async (req, res) => {
         return sendError(res, "Therapist does not exists", "THERAPIST_NOT_FOUND");
 
     try {
+        therapist.approved = false;
+        await therapist.save();
         therapist.rejected = true;
         await therapist.save();
         return sendSuccess(res, "Therapist has been rejected", "THERAPIST_REJECT_SUCCESS");
