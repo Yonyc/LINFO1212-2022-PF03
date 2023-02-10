@@ -57,25 +57,55 @@ userApi.post('/getallusers', async (req, res) => {
     }
 });
 
-userApi.post('/register', function (req, res) {
-    let hashed = bcrypt.hashSync(req.body.password, salt);
-    var userData = [req.body.email, req.body.username, hashed, req.body.firstname, req.body.lastname, req.body.phone, req.body.mobilephone, req.body.address];
-    if ((userData[5].length > 0 && !isPhone(userData[5])) || (userData[4].length > 0 && !isPhone(userData[4]))) {
+function checkUserData(req, res, ignore = {}) {
+    if (!ignore.username && (!req.body.username || req.body.username.length < 3))
+        return res.status(400).send({
+            error: 'username'
+        });
+
+    if (!ignore.firstname && (!req.body.firstname || req.body.firstname.length <= 0))
+        return res.status(400).send({
+            error: 'firstname'
+        });
+
+    if (!ignore.username && (!req.body.lastname || req.body.lastname.length <= 0))
+        return res.status(400).send({
+            error: 'lastname'
+        });
+
+    if (!ignore.username && (!req.body.email || req.body.email.length <= 0 || !/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(req.body.email)))
+        return res.status(400).send({
+            error: 'email'
+        });
+
+    if (!ignore.password && (!req.body.password || req.body.password.length < 8))
+        return res.status(400).send({
+            error: 'password'
+        });
+
+    if (!ignore.phone && (req.body.phone && req.body.phone.length > 0 && !isPhone(req.body.phone)))
         return res.status(400).send({
             error: 'phone'
         });
-    }
-    userData.forEach(element => {
-        if (element == "") {
-            return res.status(400).send({
-                error: 'empty'
-            });
-        }
-    });
+
+    if (!ignore.mobilephone && (req.body.mobilephone && req.body.mobilephone.length > 0 && !isPhone(req.body.mobilephone)))
+        return res.status(400).send({
+            error: 'mobilephone'
+        });
+}
+
+userApi.post('/register', function (req, res) {
+    //var userData = [req.body.email, req.body.username, hashed, req.body.firstname, req.body.lastname, req.body.phone, req.body.mobilephone, req.body.address];
+
+    let userDataValidated = checkUserData(req, res);
+    if (userDataValidated) return userDataValidated;
+    let hashed = bcrypt.hashSync(req.body.password, salt);
+
+
     User.findOne({
         where: {
-            email: userData[0],
-            username: userData[1]
+            email: req.body.email,
+            username: req.body.username
         }
 
     }).then(users => {
@@ -86,17 +116,16 @@ userApi.post('/register', function (req, res) {
         }
         else {
             User.create({
-                email: userData[0],
-                username: userData[1],
-                password: userData[2],
-                firstname: userData[3],
-                lastname: userData[4],
-                phone: userData[5],
-                mobilephone: userData[6],
-                address: userData[7],
+                email: req.body.email,
+                username: req.body.username,
+                password: hashed,
+                firstname: req.body.firstname,
+                lastname: req.body.lastname,
+                phone: req.body.phone,
+                mobilephone: req.body.mobilephone,
+                address: req.body.address,
                 url_pp: "/img/profile_pictures/photo-anonyme.png",
                 confirmed: false
-
             }).then(users => {
                 return res.status(200).send({
                     error: 'none'
@@ -105,7 +134,7 @@ userApi.post('/register', function (req, res) {
                 console.log("Account creation Rejected");
                 if (reason.errors[0].type == "Validation error" && reason.errors[0].path == "email") {
                     return res.status(400).send({
-                        error: 'email'
+                        error: 'email_taken'
                     });
                 }
             });
@@ -141,59 +170,39 @@ userApi.get('/logout', function (req, res) {
 });
 
 userApi.post('/edit', async function (req, res) {
-    var userData = [req.body.email, req.body.username, req.body.firstname, req.body.lastname, req.body.phone, req.body.mobile, req.body.address];
-
-    if ((userData[5].length > 0 && !isPhone(userData[5])) || (userData[4].length > 0 && !isPhone(userData[4]))) {
-        return res.status(400).send({
-            error: 'phone'
-        });
-    }
-
-    userData.forEach(element => {
-        if (element == "") {
-            return res.status(400).send({
-                error: 'empty'
-            });
-        }
-    });
+    if (!checkUserLogged(req, res)) return;
+    let userDataValidated = checkUserData(req, res, { password: true });
+    if (userDataValidated) return userDataValidated;
 
     let euser = await User.findOne({
-        where: { email: userData[0] }
+        where: { email: req.body.email }
     })
 
     if (euser && euser.username != req.user.username) {
         return res.status(400).send({
-            error: 'emailTaken'
+            error: 'email_taken'
         });
     }
 
     let uuser = await User.findOne({
-        where: { username: userData[1] }
+        where: { username: req.body.username }
     })
 
     if (uuser && uuser.email != req.user.email) {
         return res.status(400).send({
-            error: 'usernameTaken'
+            error: 'username_taken'
         });
     }
 
-    userData.forEach(element => {
-        if (element == "") {
-            return res.status(400).send({
-                error: 'empty'
-            });
-        }
-    });
-
     await User.update(
         {
-            email: userData[0],
-            username: userData[1],
-            firstname: userData[2],
-            lastname: userData[3],
-            phone: userData[4],
-            mobilephone: userData[5],
-            address: userData[6],
+            email: req.body.email,
+            username: req.body.username,
+            firstname: req.body.firstname,
+            lastname: req.body.lastname,
+            phone: req.body.phone,
+            mobilephone: req.body.mobilephone,
+            address: req.body.address,
         },
         {
             where: { username: req.user.username },
@@ -201,13 +210,13 @@ userApi.post('/edit', async function (req, res) {
     );
 
     const updatedUser = req.user;
-    updatedUser.email = userData[0];
-    updatedUser.username = userData[1];
-    updatedUser.firstname = userData[2];
-    updatedUser.lastname = userData[3];
-    updatedUser.phone = userData[4];
-    updatedUser.mobilephone = userData[5];
-    updatedUser.address = userData[6];
+    updatedUser.email = req.body.email;
+    updatedUser.username = req.body.username;
+    updatedUser.firstname = req.body.firstname;
+    updatedUser.lastname = req.body.lastname;
+    updatedUser.phone = req.body.phone;
+    updatedUser.mobilephone = req.body.mobilephone;
+    updatedUser.address = req.body.address;
 
 
     req.login(updatedUser, async (error) => {

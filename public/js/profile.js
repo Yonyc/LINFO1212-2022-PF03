@@ -36,9 +36,10 @@ function updateText(selector, value) {
 }
 
 async function editProfile() {
+    removeErrors();
     if (typeof user === 'undefined' || !user) window.location = "/";
     let body = {};
-    let ids = ["website", "instagram", "facebook", "username", "firstname", "lastname", "phone", "mobile", "address", "email"];
+    let ids = ["website", "instagram", "facebook", "username", "firstname", "lastname", "phone", "mobilephone", "address", "email"];
     ids.forEach(key => {
         let v = document.querySelector("input." + key);
         if (v && v.value)
@@ -55,14 +56,12 @@ async function editProfile() {
 
     res = await res.json();
 
-    if (res.error == "empty") {
-        let errorP = document.getElementById("edit-error");
-        errorP.innerHTML = "Invalid phone number";
-        errorP.parentElement.hidden = false;
-    } else if (res.error == "phone") {
-        let errorP = document.getElementById("edit-error");
-        errorP.innerHTML = "Invalid phone number";
-        errorP.parentElement.hidden = false;
+    if (!res.error) return;
+
+    if (res.error == "email_taken") {
+        addError("input.email", "Cette adresse email est déjà utilisée");
+    } else {
+        addError("input." + res.error, "Ce champ n'a pas pu être modifié du côté du serveur");
     }
 }
 
@@ -77,11 +76,8 @@ function updateUserEditPage() {
     changeLoggedInputContent(".lastname", user?.lastname);
     changeLoggedInputContent(".email", user?.email);
     changeLoggedInputContent(".phone", user?.phone);
-    changeLoggedInputContent(".mobile", user?.mobilephone);
+    changeLoggedInputContent(".mobilephone", user?.mobilephone);
     changeLoggedInputContent(".address", user?.address);
-    changeLoggedInputContent(".instagram", user?.instagram);
-    changeLoggedInputContent(".facebook", user?.facebook);
-    changeLoggedInputContent(".website", user?.website);
 
     document.querySelectorAll(`.profile_picture`).forEach(e => {
         if (user?.url_pp)
@@ -104,6 +100,20 @@ async function login(username, password) {
     }
 }
 
+function addError(selector, value) {
+    let d = document.querySelector(selector);
+    if (!d) return;
+    let e = document.createElement("span");
+    e.classList.add("error");
+    e.classList.add("text-danger");
+    e.innerText = value;
+    d.after(e);
+}
+
+function removeErrors(selector = "") {
+    document.querySelectorAll(selector + " .error").forEach(e => e.remove());
+}
+
 async function register() {
     let username = document.getElementById('reg-username').value;
     let firstname = document.getElementById('reg-firstname').value;
@@ -113,13 +123,36 @@ async function register() {
     let phone = document.getElementById('reg-phone').value;
     let mobile = document.getElementById('reg-mobile').value;
     let address = document.getElementById('reg-address').value;
+    removeErrors();
 
-    if (username == "" || firstname == "" || lastname == "" || email == "" || password == "" || phone == "" || mobile == "" || address == "") {
-        let errorP = document.getElementById("reg-error");
-        errorP.innerHTML = "Please fill in everything";
-        errorP.parentElement.hidden = false;
-        return;
+    let error = false;
+
+    if (username.length < 3) {
+        addError("#reg-username", "Veuillez entrer un nom d'utilisateur faisant au moins 3 caractères");
+        error = true;
     }
+    
+    if (firstname.length <= 0) {
+        addError("#reg-firstname", "Veuillez entrer un prénom");
+        error = true;
+    }
+    
+    if (lastname.length <= 0) {
+        addError("#reg-lastname", "Veuillez entrer un nom");
+        error = true;
+    }
+    
+    if (email.length <= 0 || !/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
+        addError("#reg-email", "Veuillez entrer un email valide");
+        error = true;
+    }
+    
+    if (password.length < 8) {
+        addError("#reg-password", "Veuillez entrer un mot de passe faisant au moins 8 caractères");
+        error = true;
+    }
+
+    if (error) return;
 
     let res = await fetch(api_url + "/user/register", {
         method: "POST",
@@ -140,13 +173,7 @@ async function register() {
 
     res = await res.json();
 
-    if (res.error == "email") {
-        displayError(`${divSelectors.login} > .register input.email`, "Incorrect email format");
-    } else if (res.error == "empty") {
-        displayError(`${divSelectors.login} > .register input.address`, "Please fill in everything");
-    } else if (res.error == "phone") {
-        displayError(`${divSelectors.login} > .register input.mobile`, "Invalid phone number");
-    } else if (res.error == "none") {
+    if (res.error == "none") {
         let res = await fetchUser(username, password);
         if (res === true) {
             updateUserEditPage();
@@ -154,6 +181,10 @@ async function register() {
 
             return;
         };
+    } else if (res.error == "email_taken") {
+        addError("reg-email", "Addresse email déjà utilisée");
+    } else {
+        addError("reg-" + res.error, "Vérification de cette donnée impossible (serveur)");
     }
 }
 
