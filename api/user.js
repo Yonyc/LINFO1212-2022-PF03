@@ -256,6 +256,7 @@ const storage = multer.diskStorage({
 });
 
 const fileFilter = (req, file, cb) => {
+    if (!checkUserLogged(req, null)) return;
     if (file.mimetype === "image/jpeg" || file.mimetype === "image/png" || file.mimetype === "image/jpg") {
         cb(null, true);
     } else {
@@ -265,11 +266,16 @@ const fileFilter = (req, file, cb) => {
 
 const upload = multer({
     storage: storage,
-    fileFilter: fileFilter
+    fileFilter: fileFilter,
+    limits: { fileSize: 10 * 1024 * 1024 }
 });
 
 userApi.post('/upload_profile_picture', upload.single('profile_picture'), (req, res) => {
     if (!checkUserLogged(req, res)) return;
+    if (!req.file || !req.file.path)
+        return res.status(400).send({
+            error: 'file_missing'
+        });
     let db_path = req.file.path.substring(req.file.path.indexOf("/public/") + 8);
     return res.status(200).send({
         error: 'none',

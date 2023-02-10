@@ -6,7 +6,8 @@ export function isUserLogged(req) {
 
 export function checkUserLogged(req, res) {
     if (!isUserLogged(req)) {
-        sendError(res, "User loggin required.", "USER_NOT_LOGGED", 401);
+        if (res)
+            sendError(res, "User loggin required.", "USER_NOT_LOGGED", 401);
         return false;
     }
     return true;
