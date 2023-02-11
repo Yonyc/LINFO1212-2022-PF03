@@ -42,9 +42,9 @@ async function uploadProfilePic() {
         body: data
     });
 
-    const pp_img = document.getElementById('profile_picture');
     let res_json = await res.json();
-    pp_img.src = res_json.new_url;
+    user.url_pp = res_json.new_url;
+    updatePP();
 
     if (loader) loader.style.display = "none";
 }
