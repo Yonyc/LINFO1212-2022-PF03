@@ -97,9 +97,13 @@
                     <div class="card-body">
                         <div class="d-flex flex-column align-items-center text-center">
                             <input type="file" accept="image/png, image/jpeg, image/jpg" id="profile_pic_input"
-                                style="display:none" onchange="uploadProfilePic();" />
-                            <img alt="Profil Picture" class="rounded-circle profile_picture" width="150"
-                                id="profile_picture" loading="lazy">
+                                style="display:none" />
+                            <div class="profile_picture_container">
+                                <img alt="Profil Picture" class="rounded-circle profile_picture" width="150"
+                                    id="profile_picture" loading="lazy">
+                                <div class="lds-dual-ring"></div>
+
+                            </div>
                             <div class="mt-3">
                                 <h4><span class="firstname"></span> <span class="lastname"></span></h4>
                             </div>
@@ -193,23 +197,6 @@
     </div>
 </div>
 </div>
-<script>
-    async function uploadProfilePic() {
-        const selectedFile = document.getElementById('profile_pic_input').files[0];
-
-        var data = new FormData()
-        data.append('profile_picture', selectedFile);
-
-        let res = await fetch('/api/user/upload_profile_picture', {
-            method: 'POST',
-            body: data
-        });
-
-        const pp_img = document.getElementById('profile_picture');
-        let res_json = await res.json();
-        pp_img.src = res_json.new_url;
-    }
-</script>
 <script type="module" id="re_script">
     import { main } from "/js/profile.js";
     main();

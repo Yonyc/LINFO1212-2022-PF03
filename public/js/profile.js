@@ -27,6 +27,28 @@ function displayError(nextTo, error) {
     e.after(span);
 }
 
+
+async function uploadProfilePic() {
+    let loader = document.querySelector(".profile_picture_container .lds-dual-ring");
+    if (loader) loader.style.display = "block";
+
+    const selectedFile = document.getElementById('profile_pic_input').files[0];
+
+    var data = new FormData();
+    data.append('profile_picture', selectedFile);
+
+    let res = await fetch('/api/user/upload_profile_picture', {
+        method: 'POST',
+        body: data
+    });
+
+    const pp_img = document.getElementById('profile_picture');
+    let res_json = await res.json();
+    pp_img.src = res_json.new_url;
+
+    if (loader) loader.style.display = "none";
+}
+
 //displayError(`${divSelectors.login} > .register input.username`, "bananan");
 
 function updateText(selector, value) {
@@ -262,7 +284,9 @@ export function main() {
     });
 
     document.getElementById("reg-submit").addEventListener("click", e => register());
-    $('#profile_picture').click(function () { $('#profile_pic_input').trigger('click'); });
+    
+    document.querySelector("#profile_picture").addEventListener("click", e => document.querySelector("#profile_pic_input").click());
+    document.querySelector("#profile_pic_input").addEventListener("change", e => uploadProfilePic());
 
     document.querySelector("#profil_ask_therapist").addEventListener("click", e => askTherapistPromotion());
 
