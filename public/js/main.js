@@ -3,7 +3,7 @@ let errorModal = bootstrap.Toast.getOrCreateInstance(document.querySelector("#er
 function updatePP() {
     document.querySelectorAll(`.profile_picture`).forEach(e => {
         if (user?.url_pp)
-            e.src = "/" + user.url_pp;
+            e.src = (user.url_pp.startsWith("/") ? "" : "/") + user.url_pp;
     });
 }
 
@@ -106,14 +106,13 @@ window.onpopstate = function (e) {
     if (e.state) {
         let container = document.querySelector("body > .container-fluid");
         container.innerHTML = e.state.html;
-        let script = container.querySelector("#re_script");
-        if (script) {
+        container.querySelectorAll("#re_script, .re_script").forEach(e => {
             let newScript = document.createElement("script");
             newScript.id = "re_script";
-            newScript.type = script.type;
-            newScript.appendChild(document.createTextNode(script.innerHTML));
-            script.parentNode.replaceChild(newScript, script)
-        }
+            newScript.type = e.type;
+            newScript.appendChild(document.createTextNode(e.innerHTML));
+            e.parentNode.replaceChild(newScript, e);
+        });
         document.title = e.state.pageTitle;
         window.scrollTo(0, 0)
         changeContentLinkEvent();
