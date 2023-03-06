@@ -21,7 +21,7 @@ app.use(session({
     secret: 'centretremplin',
     resave: false,
     saveUninitialized: true,
-    cookie: { maxAge: 60 * 60 * 1000 * 24 * 5 }
+    cookie: { maxAge: 60 * 60 * 1000 * 24 * 365 }
 }));
 
 app.use(passport.initialize());

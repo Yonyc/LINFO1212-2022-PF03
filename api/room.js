@@ -116,7 +116,12 @@ roomApi.post("/book", async (req, res) => {
                 }
             }
         });
-        if (roomReservations.length > 0) return sendError(res, "Ce créneau est déjà réservé pour cette salle.", "ROOM_ALREADY_BOOKED");
+        if (roomReservations.length > 0){
+            if (roomReservations.filter(r => r.TherapistId == therapist.id).length > 0)
+                return sendError(res, "Vous avez déjà réservé une salle pour ce créneau", "THERAPIST_ALREADY_BOOKED");
+            if (roomReservations.filter(r => r.RoomId == req.body.room).length > 0)
+                return sendError(res, "Cette salle est déjà réservée pour ce créneau", "ROOM_ALREADY_BOOKED");
+        }
 
         await RoomReservations.create({
             RoomId: req.body.room,

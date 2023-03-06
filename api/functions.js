@@ -51,6 +51,8 @@ export async function getTherapist(req) {
 }
 
 export async function isAdmin(req) {
+    if (!req?.user.id) return false;
+
     let roles = await UserRoles.findAll({ where: { UserId: req?.user.id } });
     for (let i = 0; i < roles.length; i++)
         if (roles[i].RoleId == 1)
