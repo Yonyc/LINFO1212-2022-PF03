@@ -31,14 +31,19 @@ async function askReservation() {
     let btn = document.querySelector("#reservation_btn");
     btn.setAttribute("disabled", null);
 
+    function returnError(message) {
+        btn.removeAttribute("disabled");
+        return setError(message);
+    }
+
     let date = getReservationDate();
-    if (!date) return setError("Aucune date sélectionée");
+    if (!date) return returnError("Aucune date sélectionée");
 
     let duration = document.querySelector(".input_duration");
-    if (!duration) return setError("Aucune durée sélectionée");
+    if (!duration) return returnError("Aucune durée sélectionée");
 
     let reccurence = document.querySelector(".input_reccurence");
-    if (!reccurence) return setError("Aucune réccurence sélectionée");
+    if (!reccurence) return returnError("Aucune réccurence sélectionée");
 
     let end_reccurence = document.querySelector(".input_end_reccurence");
     if (!end_reccurence || (reccurence.value != "none" && end_reccurence.value.length <= 0)) return;
@@ -65,16 +70,12 @@ async function askReservation() {
         
         if (res.status != 200) {
             res = await res.json();
-            setError(res.data.message);
-            btn.removeAttribute("disabled");
-            return;
+            return returnError(res.data.message);;
         }
         res = await res.json();
 
         if (!res.success) {
-            setError(res.data.message);
-            btn.removeAttribute("disabled");
-            return;
+            return returnError(res.data.message);
         }
 
         setError("");

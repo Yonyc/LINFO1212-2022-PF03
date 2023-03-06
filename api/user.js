@@ -266,8 +266,7 @@ const fileFilter = (req, file, cb) => {
 
 const upload = multer({
     storage: storage,
-    fileFilter: fileFilter,
-    limits: { fileSize: 10 * 1024 * 1024 }
+    fileFilter: fileFilter
 });
 
 userApi.post('/upload_profile_picture', upload.single('profile_picture'), (req, res) => {

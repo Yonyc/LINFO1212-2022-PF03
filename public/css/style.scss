@@ -88,7 +88,7 @@ header {
 
         &:placeholder-shown {
             border-bottom: 1px dotted gray;
-        }
+        }   
     }
 
     .profile_picture:hover {
@@ -116,6 +116,14 @@ span.error {
     width: fit-content;
     min-width: 25%;
     margin-bottom: 50px;
+}
+
+#therapist_presentation {
+    overflow: hidden;
+}
+
+.therapist_attribute {
+    width: 100%;
 }
 
 .autocomplete {
@@ -172,6 +180,7 @@ span.error {
     }
 }
 
+/* LOADER */
 .lds-dual-ring {
     display: inline-block;
     width: 80px;
@@ -203,12 +212,12 @@ span.error {
 .profile_picture_container {
     position: relative;
     user-select: none;
+}
 
-    .lds-dual-ring {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        display: none;
-    }
+.lds-dual-ring {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: none;
 }

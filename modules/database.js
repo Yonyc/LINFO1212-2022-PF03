@@ -92,12 +92,32 @@ Therapist.init({
             }
         }
     },
+    shown: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+        allowNull: false
+    },
     description: {
         type: DataTypes.TEXT,
         defaultValue: "",
         allowNull: false
     },
     job: {
+        type: DataTypes.TEXT,
+        defaultValue: "",
+        allowNull: false
+    },
+    whoami: {
+        type: DataTypes.TEXT,
+        defaultValue: "",
+        allowNull: false
+    },
+    whatido: {
+        type: DataTypes.TEXT,
+        defaultValue: "",
+        allowNull: false
+    },
+    infos: {
         type: DataTypes.TEXT,
         defaultValue: "",
         allowNull: false

@@ -90,7 +90,7 @@ async function refreshTherapists() {
 			<div class="col-md-12 text-center">
 				<div class="pt-2">
 					<h5 class="mt-4 font-weight-medium mb-0">${t.User.firstname} ${t.User.lastname}</h5>
-					<h6 class="subtitle mb-3">${t.User.username}</h6>
+					<h6 class="subtitle mb-3">${t.job}</h6>
 				</div>
 			</div>
 		</a>`;

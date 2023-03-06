@@ -1,5 +1,4 @@
 import { getReservationDate } from "./booking.js";
-
 var calendar;
 var rooms = [];
 
@@ -8,20 +7,18 @@ export async function updateRoomList() {
         let res = await fetch(api_url + "/room/display_infos", {
             method: 'POST',
             headers: {
-              'Content-Type': 'application/json',
+                'Content-Type': 'application/json',
             }
         });
-        
+
         if (res.status != 200) {
             res = await res.json();
-            console.log(res.data.message);
             return false;
         }
-        
+
         res = await res.json();
 
         if (!res.success) {
-            console.log(res.data.message);
             return false;
         }
 
@@ -35,28 +32,35 @@ export async function updateRoomList() {
             });
         }
 
-    } catch (err) {throw err;}
+    } catch (err) { throw err; }
 }
 
 export async function loadCalendar(params = {}) {
     var calendarEl = document.getElementById('calendar');
 
     calendar = new FullCalendar.Calendar(calendarEl, {
-        plugins: [ 'interaction', 'dayGrid', 'timeGrid', 'list' ],
-        header: {
-            left: 'prev,next today',
+        headerToolbar: {
+            start: 'prev,next today',
             center: 'title',
-            right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+            end: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
         },
         editable: false,
         navLinks: true,
-        eventLimit: true,
-        eventRender: function(info) {},
+        eventDidMount: function (info) {
+            $(info.el).popover({
+                title: info.event.title,
+                placement: 'top',
+                trigger: 'hover',
+                content: params.popupcontent ? params.popupcontent(info) : "" ,
+                container: 'body'
+            });
+        },
+        eventClick: params.eventClick,
         eventSources: [
             {
                 url: api_url + (params.api_url ?? '/room/calendar'),
                 method: 'POST',
-                failure: function (e) {}
+                failure: function (e) { }
             }
         ],
         eventTimeFormat: { // like '14:30:00'
@@ -69,9 +73,9 @@ export async function loadCalendar(params = {}) {
             minute: '2-digit',
             hour12: false
         },
-        minTime: "08:00:00",
-        maxTime: "20:00:00",
-        defaultView: 'timeGridWeek',
+        slotMinTime: "08:00:00",
+        slotMaxTime: "20:00:00",
+        initialView: 'timeGridWeek',
         allDaySlot: false,
         locale: 'fr',
         firstDay: 1,
@@ -149,11 +153,11 @@ export function refreshUserEvent() {
     let date = getReservationDate();
 
     if (!date) return;
-    
+
     let duration = document.querySelector(".input_duration");
 
     let endDate = new Date(date);
-    endDate.setMinutes(endDate.getMinutes() + 60*duration?.value);
+    endDate.setMinutes(endDate.getMinutes() + 60 * duration?.value);
 
     let room = document.querySelector(".input_room");
     if (!room) return;

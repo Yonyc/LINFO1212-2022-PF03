@@ -1,3 +1,7 @@
+var therapistData;
+
+import { loadCalendar } from "/js/roomCalendar.js";
+
 async function respond(response, id) {
     try {
         let res = await fetch(api_url + "/appointment/" + response, {
@@ -100,8 +104,206 @@ async function getDemands() {
     });
 }
 
+function genEditFields() {
+    let editors = document.querySelector("#therapist_editors");
+    if (!editors) return;
+
+    let vals = {
+        "whoami": "Qui suis-je ?",
+        "whatido": "Que fais-je ?",
+        "infos": "Infos pratiques"
+    };
+
+    Object.keys(vals).forEach(val => {
+        editors.innerHTML += `<div class="row container-fluid">
+            <div class="row mt-5">
+                <div class="col d-flex justify-content-between">
+                    <h1 class="aquaticfont">${vals[val]}</h1>
+                    <button class="btn btn-info align-self-end" id="${val}_edit">Engregistrer</button>
+                </div>
+            </div>
+            <div class="row mt-1">
+                <form class="col" id="${val}_form">
+                    <textarea id="${val}" class="therapist_attribute text_editor">${therapistData[val] ?? ""}</textarea>
+                </form>
+            </div>
+        </div>`;
+    });
+
+    Object.keys(vals).forEach(async val => {
+        let editor = await tinymce.init({
+            selector: '#' + val,
+            plugins: [
+                'a11ychecker', 'advlist', 'advcode', 'advtable', 'autolink', 'checklist', 'export',
+                'lists', 'link', 'image', 'charmap', 'preview', 'anchor', 'searchreplace', 'visualblocks',
+                'powerpaste', 'fullscreen', 'formatpainter', 'insertdatetime', 'media', 'table', 'help', 'wordcount'
+            ],
+            toolbar: 'undo redo | formatpainter casechange blocks | bold italic backcolor | ' +
+                'alignleft aligncenter alignright alignjustify | ' +
+                'bullist numlist checklist outdent indent | removeformat | a11ycheck code table help'
+        });
+
+
+        let el = document.querySelector(`#${val}_edit`);
+        if (!el) return;
+
+
+
+        el.addEventListener("click", async e => {
+            if (el.getAttribute("disabled")) return;
+            el.setAttribute("disabled", true);
+            try {
+                let res = await fetch(api_url + "/therapist/edit/" + val, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        data: editor[0].getContent()
+                    })
+                });
+            } catch (e) {
+                errorModal._element.querySelector(".error_text").innerText = e;
+                errorModal.show();
+            }
+            el.removeAttribute("disabled");
+        });
+    });
+}
+
+async function setTherapistData() {
+    //profile_show
+    let err, res;
+    try {
+        res = await fetch(api_url + "/therapist/data", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+
+        if (res.status != 200) {
+            errorModal._element.querySelector(".error_text").innerText = res.data.message;
+            errorModal.show();
+            return;
+        }
+        res = await res.json();
+
+        if (!res.success) {
+            errorModal._element.querySelector(".error_text").innerText = res.data.message;
+            errorModal.show();
+            return;
+        }
+    } catch (e) { err = e; }
+    if (err) return;
+
+    therapistData = res.data;
+
+    let listShow = document.querySelector("#profile_show");
+
+    if (listShow) {
+        listShow.checked = res.data.shown;
+    }
+
+    let job = document.querySelector("#job_field");
+
+    if (job && res.data.job) {
+        job.value = res.data.job;
+    }
+
+    genEditFields();
+}
+
+async function setupBtns() {
+    let btn_job = document.querySelector("#job_edit");
+    let jobField = document.querySelector("#job_field");
+    if (btn_job && jobField) {
+        btn_job.removeAttribute("disabled");
+        jobField.removeAttribute("disabled");
+        btn_job.addEventListener("click", async e => {
+            e.target.setAttribute("disabled", true);
+            try {
+                let res = await fetch(api_url + "/therapist/edit/job", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        job: jobField.value
+                    })
+                });
+            } catch (e) {
+                errorModal._element.querySelector(".error_text").innerText = e;
+                errorModal.show();
+            }
+            e.target.removeAttribute("disabled");
+        });
+    }
+
+    let listShow = document.querySelector("#profile_show");
+    if (listShow) {
+        listShow.removeAttribute("disabled");
+        listShow.addEventListener("change", async e => {
+            e.target.setAttribute("disabled", true);
+            try {
+                let res = await fetch(api_url + "/therapist/edit/shown", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        shown: e.target.checked
+                    })
+                });
+            } catch (e) {
+                errorModal._element.querySelector(".error_text").innerText = e;
+                errorModal.show();
+            }
+            e.target.removeAttribute("disabled");
+        });
+    }
+
+
+}
+
 export async function main() {
+    loadCalendar({
+        api_url: "/room/mycalendar",
+        popupcontent: (infos) => {
+            return "Cliquez pour annuler la réservation";
+        },
+        eventClick: async (info) => {
+            console.log(info.event);
+            try {
+                let res = await fetch(api_url + "/room/cancel", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        reservationID: info.event.id
+                    })
+                });
 
+                if (res.status != 200) return;
+
+                res = await res.json();
+
+                if (!res.success) {
+                    errorModal._element.querySelector(".error_text").innerText = res.data.message;
+                    errorModal.show();
+                    return;
+                }
+
+                location.reload();
+
+            } catch (e) {
+                errorModal._element.querySelector(".error_text").innerText = e;
+                errorModal.show();
+            }
+        }
+    });
     getDemands();
-
+    setupBtns();
+    setTherapistData();
 }

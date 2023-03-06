@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { Room, RoomReservations } from '../modules/database.js'
-import { isAdmin, sendCustomSuccess, sendError, sendSuccess } from "./functions.js";
+import { checkUserLogged, isAdmin, sendCustomSuccess, sendError, sendSuccess } from "./functions.js";
 import { Op } from "sequelize";
 import { checkUserTherapist, getTherapist } from "./functions.js";
 
@@ -50,6 +50,37 @@ roomApi.post('/calendar', async (req, res) => {
             ]
         });
         return res.status(200).json(rooms.map(r => { return { ...r.dataValues, title: r.dataValues.Room.name } })).end();
+    } catch (error) { }
+    return sendError(res, "Error encountred while fetching rooms reservations.", "ROOM_RESERVATIONS_DATA_ERROR");
+});
+
+roomApi.post('/mycalendar', async (req, res) => {
+    if (!checkUserTherapist(req, res)) return false;
+
+    let therapist = await getTherapist(req);
+
+    let where = {
+        start: {
+            [Op.lte]: req.body.end
+        },
+        end: {
+            [Op.gte]: req.body.start
+        },
+        TherapistId: therapist.id
+    };
+
+    try {
+        let rooms = await RoomReservations.findAll({
+            where: where,
+            attributes: ["id", "start", "end", "RoomId"],
+            include: [
+                {
+                    model: Room,
+                    attributes: ["name"]
+                }
+            ]
+        });
+        return res.status(200).json(rooms.map(r => { return { ...r.dataValues, title: r.dataValues.Room.name }; })).end();
     } catch (error) { }
     return sendError(res, "Error encountred while fetching rooms reservations.", "ROOM_RESERVATIONS_DATA_ERROR");
 });
@@ -133,4 +164,25 @@ roomApi.post("/book", async (req, res) => {
     } catch (error) {
         return sendError(res, "Une erreur innatendue est survenue.", "UNEXPECTED_ERROR");
     }
+});
+
+roomApi.post("/cancel", async (req, res) => {
+    if (!checkUserTherapist(req, res)) return false;
+
+    let therapist = await getTherapist(req);
+
+    try {
+        let reservation = await RoomReservations.findByPk(req.body.reservationID);
+
+        if (reservation.TherapistId != therapist.id) return sendError(res, "Erreur, cette réservation ne vous appartient pas.", "THERAPIST_WRONG_RESERVATION_CANCEL");
+
+        console.log(reservation.start, new Date((new Date()) + 48*60*60*1000));
+
+        if (reservation.start < new Date((new Date()) + 48*60*60*1000)) return sendError(res, "Erreur, cette réservation débute dans moins de 48h.", "RESERVATION_CANCEL_TOO_LATE");
+
+        reservation.destroy();
+
+        return sendSuccess(res);
+    } catch (error) {console.error(error); }
+    return sendError(res, "Error encountred while fetching rooms reservations.", "ROOM_RESERVATIONS_DATA_ERROR");
 });
