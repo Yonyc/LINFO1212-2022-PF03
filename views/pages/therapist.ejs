@@ -1,26 +1,55 @@
-<!-- Page d'espace des thérapistes -->
-<div class="section" id="therapist">
+<!-- Page d'espace des thérapistes --><div class="section" id="therapist_page">
     <div class="section-center mt-5">
-        <div class="container">
+        <div class="row">
+            <div class="row text-center">
+                <h1 class="aquaticfont">Mon calendrier</h1>
+            </div>
+            <div id='calendar'></div>
+        </div>
+
+        <div class="row container-fluid mt-5" id="presentation_editor">
+            <div class="row text-center">
+                <h1 class="aquaticfont">Mes informations</h1>
+            </div>
+
             <div class="row">
-
-                <div class="col"></div>
-
-                <div class="col-8">
-
-                    <div class="booking-cta">
-                        <h1 id="mainTitle" style="color: black;">Mes demandes</h1>
+                <div class="col-sm-1">
+                    <h6 class="mb-0">Job</h6>
+                </div>
+                <input value="" class="col-sm-2 text-secondary" type="text" placeholder=" " id="job_field" disabled>
+                <div class="col-sm-1">
+                    <div class="col text-right">
+                        <button class="btn btn-info" id="job_edit" disabled>Engregistrer</button>
                     </div>
+                </div>
+                <div class="col-sm"></div>
+                <div class="col-sm-2 form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="profile_show" disabled>
+                    <label class="form-check-label" for="profile_show">Apparaître dans la liste</label>
+                </div>
+            </div>
 
+            <div class="row container-fluid" id="therapist_editors"></div>
+        </div>
+
+        <div class="row">
+
+            <div class="col"></div>
+
+            <div class="col-8">
+
+                <div class="booking-cta">
+                    <h1 id="mainTitle" style="color: black;">Mes demandes</h1>
                 </div>
 
-                <div class="col"></div>
-
             </div>
 
-            <div class="row">
-                <ul class="col-md appointement_demands list-unstyled"></ul>
-            </div>
+            <div class="col"></div>
+
+        </div>
+
+        <div class="row">
+            <ul class="col-md appointement_demands list-unstyled"></ul>
         </div>
     </div>
 </div>
@@ -69,5 +98,7 @@
 
 <script type="module" id="re_script">
     import { main } from "/js/therapist.js";
+    import "https://cdn.tiny.cloud/1/cw1dxcxfix77hsehfkwdk02njwq6q5ems2s73m8iuw9emel1/tinymce/6/tinymce.min.js";
+    
     main();
 </script>
