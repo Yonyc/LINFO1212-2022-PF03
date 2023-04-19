@@ -176,9 +176,11 @@ roomApi.post("/cancel", async (req, res) => {
 
         if (reservation.TherapistId != therapist.id) return sendError(res, "Erreur, cette réservation ne vous appartient pas.", "THERAPIST_WRONG_RESERVATION_CANCEL");
 
-        console.log(reservation.start, new Date((new Date()) + 48*60*60*1000));
 
-        if (reservation.start < new Date((new Date()) + 48*60*60*1000)) return sendError(res, "Erreur, cette réservation débute dans moins de 48h.", "RESERVATION_CANCEL_TOO_LATE");
+        let now = new Date();
+        now.setHours(now.getHours() + 48);
+
+        if (reservation.start < now) return sendError(res, "Erreur, cette réservation débute dans moins de 48h.", "RESERVATION_CANCEL_TOO_LATE");
 
         reservation.destroy();
 
