@@ -99,6 +99,8 @@ export async function main() {
     document.querySelector(".input_hour").addEventListener("input", e => refreshUserEvent());
     document.querySelector(".input_room").addEventListener("input", e => refreshUserEvent());
     document.querySelector(".input_duration").addEventListener("input", e => refreshUserEvent());
+    document.querySelector(".input_reccurence").addEventListener("input", e => refreshUserEvent());
+    document.querySelector(".input_number_reccurence").addEventListener("input", e => refreshUserEvent());
 
     document.querySelector("#reservation_btn").addEventListener("click", e => askReservation());
 };

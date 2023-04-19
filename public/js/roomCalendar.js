@@ -42,7 +42,7 @@ export async function loadCalendar(params = {}) {
         headerToolbar: {
             start: 'prev,next today',
             center: 'title',
-            end: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+            end: '' /* 'dayGridMonth,timeGridWeek,timeGridDay,listWeek' */
         },
         editable: false,
         navLinks: true,
@@ -144,11 +144,10 @@ export function updateCalendarFilters(params = {}) {
     refreshCalendarEvents(params);
 }
 
+var customEvents = [];
 export function refreshUserEvent() {
-    let e = calendar.getEventById("demand");
-
-    if (e)
-        e.remove();
+    customEvents.forEach(e => e.remove());
+    customEvents = [];
 
     let date = getReservationDate();
 
@@ -161,13 +160,38 @@ export function refreshUserEvent() {
 
     let room = document.querySelector(".input_room");
     if (!room) return;
-    calendar.addEvent({
-        id: "demand",
-        backgroundColor: "transparent",
-        borderColor: "red",
-        textColor: "black",
-        roomID: room.value,
-        start: date.toISOString(),
-        end: endDate.toISOString()
-    });
+
+    let reccurence = 1;
+    let reccurenceType = document.querySelector(".input_reccurence");
+    let reccurenceNumber = document.querySelector(".input_number_reccurence");
+    if (!reccurenceNumber) return;
+    reccurence = reccurenceNumber.value;
+
+    for (let index = 0; index < reccurence; index++) {
+        let newStart = new Date(date.getTime());
+        let newEnd = new Date(endDate.getTime());
+
+        if (reccurenceType) {
+            if (reccurenceType.value == "daily") {
+                newStart.setDate(newEnd.getDate() + 1 * index);
+                newEnd.setDate(newEnd.getDate() + 1 * index);
+            } else if (reccurenceType.value == "weekly") {
+                newStart.setDate(newEnd.getDate() + 7 * index);
+                newEnd.setDate(newEnd.getDate() + 7 * index);
+            } else if (reccurenceType.value == "monthly") {
+                newStart.setMonth(newEnd.getMonth() + 1 * index);
+                newEnd.setMonth(newEnd.getMonth() + 1 * index);
+            }
+        }
+
+        customEvents.push(calendar.addEvent({
+            id: "demand_" + index,
+            backgroundColor: "transparent",
+            borderColor: "red",
+            textColor: "black",
+            roomID: room.value,
+            start: newStart.toISOString(),
+            end: newEnd.toISOString()
+        }));
+    }
 }
