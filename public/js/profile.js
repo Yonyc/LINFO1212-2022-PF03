@@ -139,7 +139,6 @@ async function register() {
     let lastname = document.getElementById('reg-lastname').value;
     let email = document.getElementById('reg-email').value;
     let password = document.getElementById('reg-password').value;
-    let phone = document.getElementById('reg-phone').value;
     let mobile = document.getElementById('reg-mobile').value;
     let address = document.getElementById('reg-address').value;
     removeErrors();
@@ -184,7 +183,6 @@ async function register() {
             lastname: lastname,
             email: email,
             password: password,
-            phone: phone,
             mobilephone: mobile,
             address: address
         })
