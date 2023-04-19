@@ -119,7 +119,7 @@ function genEditFields() {
             <div class="row mt-5">
                 <div class="col d-flex justify-content-between">
                     <h1 class="aquaticfont">${vals[val]}</h1>
-                    <button class="btn btn-info align-self-end" id="${val}_edit">Engregistrer</button>
+                    <button class="btn btn-info align-self-end" id="${val}_edit">Enregistrer</button>
                 </div>
             </div>
             <div class="row mt-1">
@@ -134,9 +134,7 @@ function genEditFields() {
         let editor = await tinymce.init({
             selector: '#' + val,
             plugins: [
-                'a11ychecker', 'advlist', 'advcode', 'advtable', 'autolink', 'checklist', 'export',
-                'lists', 'link', 'image', 'charmap', 'preview', 'anchor', 'searchreplace', 'visualblocks',
-                'powerpaste', 'fullscreen', 'formatpainter', 'insertdatetime', 'media', 'table', 'help', 'wordcount'
+                'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview', 'anchor', 'searchreplace', 'visualblocks', 'fullscreen', 'insertdatetime', 'media', 'table', 'help', 'wordcount'
             ],
             toolbar: 'undo redo | formatpainter casechange blocks | bold italic backcolor | ' +
                 'alignleft aligncenter alignright alignjustify | ' +
@@ -270,7 +268,7 @@ export async function main() {
     loadCalendar({
         api_url: "/room/mycalendar",
         popupcontent: (infos) => {
-            return "Cliquez pour annuler la réservation";
+            return "Cliquez sur la réservation pour l'annuler";
         },
         eventClick: async (info) => {
             console.log(info.event);
