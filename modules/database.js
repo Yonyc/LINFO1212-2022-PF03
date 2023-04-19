@@ -10,8 +10,6 @@ export class User extends Model { }
 export class Role extends Model { }
 export class UserRoles extends Model { }
 export class Therapist extends Model { }
-export class SocialMediaLink extends Model { }
-export class SocialMedia extends Model { }
 export class Appointment extends Model { }
 export class AppointmentDemand extends Model { }
 
@@ -124,32 +122,6 @@ Therapist.init({
     }
 }, { sequelize });
 
-SocialMedia.init({
-    name: {
-        type: DataTypes.TEXT,
-        allowNull: false
-    },
-    color: {
-        type: DataTypes.TEXT,
-        allowNull: false
-    },
-    svgPath: {
-        type: DataTypes.TEXT,
-        allowNull: false
-    }
-}, { sequelize });
-
-SocialMediaLink.init({
-    name: {
-        type: DataTypes.TEXT,
-        allowNull: false
-    },
-    url: {
-        type: DataTypes.TEXT,
-        allowNull: false
-    }
-}, { sequelize });
-
 Appointment.init({
     date: {
         type: DataTypes.DATE,
@@ -252,9 +224,6 @@ Role.hasMany(UserRoles);
 User.hasOne(Therapist);
 Therapist.hasOne(User);
 
-SocialMediaLink.belongsTo(SocialMedia);
-SocialMediaLink.belongsTo(Therapist);
-
 User.hasMany(Appointment);
 Room.hasMany(RoomPicture)
 RoomReservations.hasMany(Appointment);
@@ -266,30 +235,9 @@ AppointmentDemand.belongsTo(User);
 AppointmentDemand.belongsTo(Therapist);
 
 
-sequelize.sync({ force: false });
 async function createRoles() {
+    sequelize.sync({ force: false });
     await new Promise(r => setTimeout(r, 4000));
     await Role.findOrCreate({ where: { roleName: "Admin" } });
-    await SocialMedia.findOrCreate({
-        where: { name: "Web" },
-        defaults: {
-            color: "black",
-            svgPath: "M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"
-        }
-    });
-    await SocialMedia.findOrCreate({
-        where: { name: "Facebook" },
-        defaults: {
-            color: "rgb(13,110,253)",
-            svgPath: "M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"
-        }
-    });
-    await SocialMedia.findOrCreate({
-        where: { name: "Instagram" },
-        defaults: {
-            color: "#dc3545",
-            svgPath: "M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"
-        }
-    });
 }
 createRoles();
